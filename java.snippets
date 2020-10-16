@@ -1,0 +1,238 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+global !p
+import os, re
+
+def get_java_package():
+	root = os.getcwd()										  # get root dir
+	rel_path = re.sub(root, '', path)				# strip root dir from abs filepath
+	rel_dir_path = re.sub(fn, '', rel_path) # strip current buffer filename from path
+
+	try:
+		if 'java/' in rel_dir_path:
+			end_index =  rel_dir_path.index('java/') + 5 # Get the end index of java/
+		else:
+			end_index = rel_dir_path.index('src/') + 4 # Get the end index of src/
+	except ValueError:
+		return # Return nothing if no src file directory
+	return 'package ' + rel_dir_path.replace('/', '.')[end_index:-1] + ';'
+endglobal
+
+# Must be in root folder for auto package detect to work. Use vim-rooter
+snippet pac "Java package header" b
+`!p snip.rv = get_java_package()`
+endsnippet
+
+
+snippet temp "Java class template" bA
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+public class `!p snip.rv = fn.rstrip('.java')` {$0}
+endsnippet
+
+snippet ctemp "Java basic class template with constructor" bA
+`!p snip.rv = get_java_package()`
+
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+public class `!p snip.rv = fn.rstrip('.java')` {
+
+	public `!p snip.rv = fn.rstrip('.java') + "()"` {
+		$0
+	}
+
+}
+endsnippet
+
+snippet mtemp "Java basic template with main method" bA
+`!p snip.rv = get_java_package()`
+
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+public class `!p snip.rv = fn.rstrip('.java')` {
+	public static void main(String[] args) {
+		$0
+	}
+}
+endsnippet
+
+snippet itemp "Java basic interface template" bA
+`!p snip.rv = get_java_package()`
+
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+public interface `!p snip.rv = fn.rstrip('.java')` {
+	$0
+}
+endsnippet
+
+snippet atemp "Java basic abstract class template" bA
+`!p snip.rv = get_java_package()`
+
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+public abstract class `!p snip.rv = fn.rstrip('.java')` {
+	$0
+}
+endsnippet
+
+snippet etemp "Java enum class template" bA
+`!p snip.rv = get_java_package()`
+
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+public enum `!p snip.rv = fn.rstrip('.java')` {
+	$0
+}
+endsnippet
+
+snippet customtemp "java basic Class template" bA
+`!p snip.rv = get_java_package()`
+
+/**
+ * ${1:Class description.}
+ *
+ * @author${2:Mark Lucernas}
+ */
+public class `!p snip.rv = fn.rstrip('.java')` extends Object {
+	//////////////////// fields ////////////////////
+	${3:Type} ${4:varName1};
+	${5:Type} ${6:varName2};
+	${7:Type} ${8:varName3};
+
+	///////////////// constructors /////////////////
+	/**
+		* No-argument constructor
+		*/
+	public `!p snip.rv = fn.rstrip('.java')`() {}
+
+	/**
+		* ${6:Constructor description...}
+		* @param $4
+		* @param $6
+		* @param $8
+		*/
+	public `!p snip.rv = fn.rstrip('.java')`($3 $4, $5 $6, $7 $8) {
+		this.$4 = $4;
+		this.$6 = $6;
+		this.$8 = $8;
+	}
+
+	//////////////////// methods ///////////////////
+	public String toString() {
+		return "";
+	}
+}
+endsnippet
+
+snippet head "Java javadoc header" bA
+/**
+ * TODO Class Description.
+ *
+ * @author Mark Lucernas
+ * Created on `date +'%m/%d/%Y'.`
+ */
+endsnippet
+
+snippet jdoc "Java javadoc" bA
+/**
+ * $0
+ */
+endsnippet
+
+snippet bcom "Java block comment" bA
+/*
+	${0:${VISUAL}}
+ */
+endsnippet
+
+snippet 'for(i|j|x|y)' "Java generic for loop" rA
+`!p
+var = match.group(1)
+snip.rv = f"for (int {var} = 0; {var} < $1; {var}++) " + "{\n\t$0\n}"
+`
+endsnippet
+
+snippet pln "Java System.out.println" b
+System.out.println(${1:${VISUAL}});$0
+endsnippet
+
+snippet dpln "Java debug System.out.println" b
+////////// TODO: DELETE ME LATER //////////
+System.out.println(${1:${VISUAL}});$0
+endsnippet
+
+snippet prsf "Java private static final field" bA
+private static final $0;
+endsnippet
+
+snippet pusf "Java public static final field" bA
+public static final $0;
+endsnippet
+
+snippet pus "Java public static" b
+public static $0;
+endsnippet
+
+snippet pusv "Java public static void" b
+public static void ${1:${VISUAL}}($2) {
+	$0
+}
+endsnippet
+
+snippet try "Java try-catch block" bw
+try {
+	${0:${VISUAL}}
+} catch(${1:Exception} e) {
+	e.printStackTrace();
+}
+endsnippet
+

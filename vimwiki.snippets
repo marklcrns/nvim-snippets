@@ -1,0 +1,1591 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+# Mathjax snippets reference:
+# https://github.com/gillescastel/latex-snippets/blob/master/tex.snippets
+
+global !p
+import os, re
+
+def get_wiki_files_dir():
+	root = os.getcwd()
+	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
+	files_path = re.sub(fn, '', rel_path) # remove current buffer file from path
+	subdir_count = 0
+	wiki_path = ''
+
+	try:
+		if 'md/' in files_path:
+			file_index_end =  files_path.index('md/') + 2 # Get the end index of 'md' dir
+			stripped_path = files_path[file_index_end:]		# Strip trailing path from after 'md' dir
+			wiki_path = files_path[file_index_end + 1:]
+			# Count how deep current buffer dir relative to 'md' dir or stripped path
+			for i in stripped_path:
+				if i == '/':
+					subdir_count += 1
+	except ValueError:
+		return # Return nothing if no 'md' dir
+
+	# return path to 'files/' dir relative to current buffer dir
+	return "../" * subdir_count + "files/" + wiki_path
+
+from datetime import datetime, timedelta, date
+
+# Make all multi-line jump placeholder strings jumpable. Used with `post_jump`
+def post_jump_expand_ph(snip):
+	# Create annonymous snippet body
+	anon_snippet_body = ""
+	# Get start and end line number of expanded snippet
+	start = snip.snippet_start[0]
+	end = snip.snippet_end[0]
+	for i in range(start, end + 1):
+		# Append current line into annonymous snippet
+		anon_snippet_body += snip.buffer[i]
+		# Append new line if still not the end of snippet line
+		anon_snippet_body += "" if i == end else "\n"
+
+	# Delete old expanded snippet line till second to last snippet line
+	for i in range(start, end):
+		del snip.buffer[start]
+
+	# Empty last old expanded snippet line while preserving line
+	snip.buffer[start] = ''
+
+	# Expand new annonymous snippet
+	snip.expand_anon(anon_snippet_body)
+
+# Gets next day of the week. Returns today's date if, say '6' was passed in, and
+# today is sunday.
+# Sample usage: get_next_week_date(6), will return the date of next "Sunday"
+# https://stackoverflow.com/a/8801197/11850077
+def get_next_week_date(week_date):
+	day = date.today()
+	while day.weekday() != week_date:
+		day += timedelta(1)
+	return day
+
+# https://stackoverflow.com/a/13565185/11850077
+def get_last_day_of_month(ref_date):
+	end = ref_date.replace(day=28) + timedelta(days=4)  # this will never fail
+	end = end - timedelta(days=end.day)
+	return end
+
+# https://stackoverflow.com/a/59199379/11850077
+def get_start_of_next_month(ref_date):
+    start = (ref_date.replace(day=1) + timedelta(days=32)).replace(day=1)
+    return start
+
+# Mathjax matrix dictionary
+boundaries = {
+	"b": ["[", "]"],
+	"B": ["{", "}"],
+	"p": ["(", ")"],
+	"v": ["|", "|"],
+	"V": ["||", "||"]
+}
+weekdays = {
+	"0": "Monday",
+	"1": "Tuesday",
+	"2": "Wednesday",
+	"3": "Thursday",
+	"4": "Friday",
+	"5": "Saturday",
+	"6": "Sunday"
+}
+
+# Todo meds taskk
+def create_meds_task_head(desc, time):
+	time = int(time)
+	str_date_time = ""
+
+	if time > 2399:
+		time = time - 2400
+
+	if time > 999:
+		str_date_time += str(time)
+		str_date_time = str_date_time[:2] + ":" + str_date_time[2:]
+	elif time < 1000 and time > 99:
+		str_date_time += "0" + str(time)
+		str_date_time = str_date_time[:2] + ":" + str_date_time[2:]
+	elif time < 100 and time > 0:
+		str_date_time += "00" + str(time)
+		str_date_time = str_date_time[:2] + ":" + str_date_time[2:]
+	elif time == 0:
+		str_date_time += "00:00"
+
+	str_date_time = "(" + tomorrow + " " + str_date_time + ")"
+
+	task =  desc + " " + str_date_time
+	return task
+
+def create_meds_task(desc, time, offset):
+	time = int(time) + (offset)
+	date = today
+	str_time = ""
+	str_date_time = ""
+
+	if time > 2399:
+		time = time - 2400
+		date = tomorrow
+
+	if time > 999:
+		str_time += str(time)
+		str_time = str_time[:2] + ":" + str_time[2:]
+		str_date_time += str(time)
+		str_date_time = str_date_time[:2] + ":" + str_date_time[2:]
+	elif time < 1000 and time > 99:
+		str_time += "0" + str(time)
+		str_time = str_time[:2] + ":" + str_time[2:]
+		str_date_time += "0" + str(time)
+		str_date_time = str_date_time[:2] + ":" + str_date_time[2:]
+	elif time < 100 and time > 0:
+		str_time += "00" + str(time)
+		str_time = str_time[:2] + ":" + str_time[2:]
+		str_date_time += "00" + str(time)
+		str_date_time = str_date_time[:2] + ":" + str_date_time[2:]
+	elif time == 0:
+		str_time += "00:00"
+		str_date_time += "00:00"
+
+	str_date_time = "(" + date + " " + str_date_time + ")"
+
+	task =  str_time + " " + desc + " " + str_date_time
+	return task
+endglobal
+
+# ====================Vimwiki/Markdown Snippets====================
+
+snippet h1 "Header 1" bA
+# $1
+$0
+endsnippet
+
+snippet h2 "Header 2" bA
+## $1
+$0
+endsnippet
+
+snippet h3 "Header 3" bA
+### $1
+$0
+endsnippet
+
+snippet h4 "Header 4" bA
+#### $1
+$0
+endsnippet
+
+snippet h5 "Header 5" bA
+##### $1
+$0
+endsnippet
+
+snippet h6 "Header 6" bA
+###### $1
+$0
+endsnippet
+
+snippet tag "HTML tag <>" b
+<$1>
+
+${0:${VISUAL}}
+
+</$1>
+endsnippet
+
+snippet itag "In-line HTML tag <>" wA
+<$1>${0:${VISUAL}}</$1>
+endsnippet
+
+snippet '(.+)?fen' "Fenced code block" rbA
+\`\`\``!p snip.rv = "" if match.group(1) == None else match.group(1)`
+${0:${VISUAL}}
+\`\`\`
+endsnippet
+
+snippet mcom "Markdown comment" bA
+[$1]: # $0
+endsnippet
+
+snippet hcom "Markdown comment" bA
+<!--- $1 --->$0
+endsnippet
+
+snippet br "Markdown breakline" w
+<br>
+endsnippet
+
+snippet l "Simple link"
+[${1:${VISUAL}}]($2)$0
+endsnippet
+
+snippet w "Web link"
+[🌎 ${1:${VISUAL}}]($2)$0
+endsnippet
+
+snippet m "Markdown file link" w
+[↪ ${1:${VISUAL}}]($2)$0
+endsnippet
+
+snippet v "Video link" w
+[🎬 ${1:${VISUAL}}]($2)$0
+endsnippet
+
+snippet f "File Link" w
+[⬇ ${1:${VISUAL}}](file:`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet vf "vfile link" w
+[⬇ ${1:${VISUAL}}](vfile:`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet i "Image link" w
+![${1:${VISUAL}}](`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet a "Markdown anchor link" w
+[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2-\E/g})$0
+endsnippet
+
+snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
+`!p
+ref = match.group(1)
+
+# Transform special chars into uniformed separators
+ref = ref.replace(' ', '-')
+ref = ref.replace('_', '-')
+ref = ref.replace('\`', '-')
+ref = ref.replace('.', '-')
+ref = ref.replace(',', '')
+
+conv_ref = ref
+
+# Remove all prepending digits (including '-' separators) until non-digit
+if ref[:1].isdigit():
+	</a>
+endsnippet
+
+snippet pre "Html code block tag" w
+<pre>
+$0
+</pre>
+endsnippet
+
+snippet kbd "Markdown key bindings tag" wA
+<kbd>${1:${VISUAL}}</kbd>$0
+endsnippet
+
+snippet ** "Markdown Bold tag" iA
+**${1:${VISUAL}}**$0
+endsnippet
+
+snippet __ "Markdown Italic tag" iA
+_${1:${VISUAL}}_$0
+endsnippet
+
+snippet hbo "Html bold tag" wA
+<b>${1:${VISUAL}}</b>$0
+endsnippet
+
+snippet hit "Html italic tag" wA
+<i>${1:${VISUAL}}</i>$0
+endsnippet
+
+snippet meta "Meta deta template" b
+---
+title: ${1:(INSERT TITLE)}
+subtitle: ${2:(INSERT SUBTITLE)}
+author: ${3:Mark Lucernas}
+date: `date +'%b %d, %Y'`
+---
+
+
+$0
+endsnippet
+
+snippet temp "Vimwiki document template" b
+---
+title: ${1:(INSERT TITLE)}
+subtitle: ${2:(INSERT SUBTITLE)}
+author: ${3:Mark Lucernas}
+date: `date +'%b %d, %Y'`
+---
+
+
+# $0
+
+
+<br>
+
+# Resources
+
+endsnippet
+
+snippet res "Vimwiki document resources header" b
+<br>
+
+# Resources
+
+endsnippet
+
+# Creates Todo list with Task Warrior.
+# Prepend "!" to include weekly and monthly todos
+# Prepend "@" to include overdue todos
+# Prepend "&" to generate nested side todo templates
+# Prepend "&&" to generate nested todo ONLY
+post_jump "post_jump_expand_ph(snip)"
+snippet '([!@&0-9]+)?td' "To-do list template" rbA
+`!p
+# parse date filename
+fn_date = fn.rstrip('.md')
+fn_date = fn_date.split("-")
+flags = match.group(1) if match.group(1) != None else ""
+
+# Date strings
+date_format = '%Y-%m-%d'
+date_format_verbose = '%b %d, %Y'
+base = datetime(int(fn_date[0]), int(fn_date[1]), int(fn_date[2]))
+today = datetime.strftime(base, date_format)
+today_verbose = datetime.strftime(base, date_format_verbose)
+end_of_day = datetime.strftime(base, date_format) + "T23:59:59"
+end_of_week = (get_next_week_date(6)).strftime(date_format) + "T23:59:59"
+end_of_month = get_last_day_of_month(base).strftime(date_format) + "T23:59:59"
+
+# Meta
+title = f"title: TODO list"
+subtitle = f"subtitle: {weekdays[str(base.weekday())]} to-do list. Managed by Taskwarrior and Taskwiki"
+author = "author: Mark Lucernas"
+date = f"date: {today_verbose}"
+meta = f"---\n{title}\n{subtitle}\n{author}\n{date}\n---\n\n\n"
+
+# Task warrior filters
+proj = "proj:Todo"
+sched = f"sched:{today}"
+due = f"due:{end_of_day}"
+
+result = ""
+task_checkbox = "* [ ] "
+
+# Daily task header
+if "&&" not in flags:
+	main_header = meta + "# TODOs || " + proj + "\n"
+	result += main_header + "\n"
+
+# Overdue
+	if "@" in flags:
+		overdue_task_header = "## Overdue"
+		overdue_task_filter = " | +OVERDUE"
+		result += overdue_task_header
+		result += overdue_task_filter + "\n\n"
+
+	daily_task_header = "## Daily"
+	daily_task_filter = " | +daily -OVERDUE " + sched + " " + due
+	result += daily_task_header
+	result += daily_task_filter + "\n"
+	result += task_checkbox + "$0" + "\n"
+
+# Append side task snippet into result if '&' flag was given
+if "&" in flags:
+	result += "\n" if "&&" not in flags else ""
+	# Extract multiplier from flag if any
+	mult = [int(c) for c in flags if c.isdigit()]
+	mult = mult[0] if mult else 1
+
+	for i in range(1, (mult * 3) + 1, 3):
+		side_task_header = "## ${" + str(i) + ":Side}"
+		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} -OVERDUE priority:${" + str(i + 1) + ":H} " + sched + " " + due
+		result += side_task_header
+		result += side_task_filter + "\n"
+		result += task_checkbox + "$" + str(i + 2)
+		# Single new line on last iteration if conditions are met
+		if i <= (mult * 3) - 3:
+			result += "\n\n"
+		elif "&&" not in flags or "!" in flags or '@' in flags:
+			result += "\n"
+
+# weekly and monthly tasks
+if "!" in flags and "&&" not in flags:
+	end_of_week_header = "## Weekly"
+	end_of_week_filter = " | +weekly -OVERDUE " + f"due:{end_of_week}"
+	end_of_month_header = "## Monthly"
+	end_of_month_filter = " | +monthly -OVERDUE " + f"due:{end_of_month}"
+	# Append weekly todo
+	result += "\n"
+	result += end_of_week_header
+	result += end_of_week_filter + "\n"
+	result += "\n"
+	# Append monthly todo
+	result += end_of_month_header
+	result += end_of_month_filter + "\n"
+
+# Output
+snip.rv = result`
+endsnippet
+
+snippet '(\d+)meds' "Description" rbA
+`!p
+# parse date filename
+fn_date = fn.rstrip('.md')
+date = fn_date.split("-")
+init_time = match.group(1)
+# get today, and day after tomorrow's date in string
+base = datetime(int(date[0]), int(date[1]), int(date[2]))
+today = datetime.strftime(base, '%Y-%m-%d')
+tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
+`* [ ] `!p snip.rv = create_meds_task("2 Acetaminophen 6hrs", init_time, 0)`
+* [ ] `!p snip.rv = create_meds_task("2 Acetaminophen 6hrs", init_time, 600)`
+* [ ] `!p snip.rv = create_meds_task("2 Acetaminophen 6hrs", init_time, 1200)`
+* [ ] `!p snip.rv = create_meds_task("1 Indomethacine 8hrs", init_time, 0)`
+* [ ] `!p snip.rv = create_meds_task("1 Indomethacine 8hrs", init_time, 800)`
+* [ ] `!p snip.rv = create_meds_task("1 Indomethacine 8hrs", init_time, 1600)`
+* [ ] `!p snip.rv = create_meds_task("1 Aspirin EC 12hrs", init_time, 0)`
+* [ ] `!p snip.rv = create_meds_task("1 Aspirin EC 12hrs", init_time, 1200)`
+* [ ] `!p snip.rv = create_meds_task("2 Sennosides-docusate 2daily", init_time, 0)`
+* [ ] `!p snip.rv = create_meds_task("2 Sennosides-docusate 2daily", init_time, 1200)`
+* [ ] `!p snip.rv = create_meds_task("1 Famotidine 1daily", init_time, 400)`
+endsnippet
+
+snippet due "Description" w
+`!p
+# parse date filename
+fn_date = fn.rstrip('.md')
+date = fn_date.split("-")
+# get today, and day after tomorrow's date in string
+base = datetime(int(date[0]), int(date[1]), int(date[2]))
+tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
+snip.rv = "(" + tomorrow + ")"`
+endsnippet
+
+snippet cbox "Todo checkbox" bA
+* [ ] $0
+endsnippet
+
+post_jump "post_jump_expand_ph(snip)"
+snippet '(\d+)([cC]{1,2})?t' "Markdown table (n)t" brA
+`!p
+t_column_ct = int(match.group(1))
+flags = match.group(2) if match.group(2) != None else ""
+
+t_head = "| $0  "
+t_sep = "|:-:" if 'C' in flags else "|---"
+t_cell = "|   "
+
+t_header = t_head + (t_cell * (t_column_ct - 1)) + "|"
+t_sep = t_sep + (t_sep * (t_column_ct - 1)) + "|"
+t_body = t_cell + (t_cell * (t_column_ct - 1)) + "|"
+
+result = t_header + "\n" + t_sep + "\n" + t_body
+
+if 'c' in flags:
+	result = "<center>\n\n" + result + "\n\n</center>"
+
+snip.rv = result
+`
+endsnippet
+
+# Usage: [wrap]?table, optional wrapper char for each table cell
+# Note: Lines should trail '&' char for splitting. Only until second to last.
+# Ref: http://vimcasts.org/episodes/ultisnips-visual-placeholder/
+snippet '([`$_*])?([cC]{1,2})?atab' "Markdown Table Builder" rbA
+`!p
+# Fetch visual selected text
+wrap_char =  match.group(1) if match.group(1) != None else "" # Wraper char to wrap table cell items
+flags = match.group(2) if match.group(2) != None else ""
+text = snip.v.text
+
+if match.group(1) != None:
+	if wrap_char == '$': # '\\' to escape '$' wrap char
+		wrap = "\\" + wrap_char
+	elif wrap_char == '*':
+		wrap = "**"
+	else:
+		wrap = wrap_char
+else:
+	wrap = ""
+
+delim = "\t" # Delimeter
+lines = text.split("\n") # Split lines delimited by new line
+result = "" # String container to be returned
+line_count = 0
+for line in lines[:-1]: # Loop over lines
+	line_tmp = ""
+	separator = ""
+	line = line.split(delim) # Split all items in line
+	for item in line: # Loop over items in lines
+		# Strip leading and trailing whitespaces
+		item = item.lstrip().rstrip()
+
+		if line_count == 0:
+			line_tmp += "| " + item + " " # Format without wrap and append item to line
+			if 'C' in flags:
+				separator += "|:" + ("-" * (len(item))) + ":" # Centered table contents
+			else:
+				separator += "|" + ("-" * (len(item) + 2))
+
+		if line_count >= 1:
+			line_tmp += "| " + wrap + item + wrap + " " # Format with wrap and append item to line
+
+	result += line_tmp + "|\n" # Append new line and close table row
+
+	if line_count == 0: # Table header and body separator
+		result += separator + "|\n"
+
+	line_count += 1
+
+if 'c' in flags:
+	result = "<center>\n\n" + result + "\n</center>"
+
+snip.rv = result
+`
+endsnippet
+
+snippet tab2 "Two tables side by side" bA
+<center>
+
+<table>
+%% Table Headings are OPTIONAL
+<tr><th>${1:Table Heading 1}</th><th>${2:Table Heading 2}</th></tr>
+<tr><td>
+
+%% Insert first table HERE
+
+</td><td>
+
+%% Insert second table HERE
+
+</td></tr>
+</table>
+
+</center>
+endsnippet
+
+snippet tab3 "Three tables side by side" bA
+<center>
+
+<table>
+%% Table Headings are OPTIONAL
+<tr><th>${1:Table Heading 1}</th><th>${2:Table Heading 2}</th><th>${3:Table Heading 3}</th></tr>
+<tr><td>
+
+%% Insert first table HERE
+
+</td><td>
+
+%% Insert second table HERE
+
+</td><td>
+
+%% Insert Third table HERE
+
+</td></tr>
+</table>
+
+</center>
+endsnippet
+
+snippet TM "Markdown trademark symbol" i
+&trade;
+endsnippet
+
+snippet R "Markdown registered symbol" i
+&reg;
+endsnippet
+
+snippet C "Markdown copyright symbol" i
+&copy;
+endsnippet
+
+# ==========Note taking snippets========== #
+snippet tstamp "Video lecture timestamps" bA
+Timestamps
+
+	$0
+endsnippet
+
+snippet ttime "Video lecture timestamp item" iA
+- ${1:title} ${2:1:00}
+endsnippet
+
+# TODO: Truncate regex match to fix "maxmempattern" error
+# VERSION 2
+# Usage: (00:00:00 or 00:00)<youtube-url>&y
+snippet '((\d{1,2}:)?(\d{1,2}):(\d{2}))((https:\/\/)?(www\.)?(youtube.com))((\/embed\/)?(.*))&y' "Youtube video lecture time stamp with link" wrA
+[(`!p snip.rv = match.group(1)`)](`!p
+# check if hours exist
+hours = match.group(2)
+if hours:
+	hours = int(hours).rstrip(":")
+else:
+	hours = 0
+
+minutes = int(match.group(3))
+seconds = int(match.group(4))
+home_url = match.group(5)
+http_url = match.group(6)
+www_url = match.group(7)
+domain_url = match.group(8)
+video_url = match.group(9)
+embed = match.group(10)
+video_id = match.group(11)
+link = ""
+
+# check if valid home url
+#if not http_url or not www_url:
+#  if not http_url and not www_url:
+#    link = "https://www." + domain_url
+#  if not http_url:
+#    link = "https://" + www_url + domain_url
+#  if not www_url:
+#    link = http_url + "www." + domain_url
+#else:
+#	link = http_url + www_url + domain_url
+link = "https://www.youtube.com"
+
+# check if video_url is embedded
+if embed:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+# convert timestamp to seconds then append to link
+snip.rv = link + "&t=" + str((hours * 60) + (minutes * 60) + seconds)
+`)
+endsnippet
+
+# Usage: <youtube-url>&y
+snippet '(\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/)?(.*))&y' "Clean and create Youtube link" wrA
+`!p
+home_url = match.group(2)
+http_url = match.group(3)
+www_url = match.group(4)
+domain_url = match.group(5)
+video_url = match.group(6)
+embed = match.group(7)
+video_id = match.group(8)
+link = ""
+
+# check if valid home url
+#if not http_url or not www_url:
+#  if not http_url and not www_url:
+#    link = "https://www." + domain_url
+#  if not http_url:
+#    link = "https://" + www_url + domain_url
+#  if not www_url:
+#    link = http_url + "www." + domain_url
+#else:
+#	link = http_url + www_url + domain_url
+link = "https://www.youtube.com"
+
+# check if video_url is embedded
+if embed:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+# If inside markdown link wrapper, don't wrap, else, wrap it.
+if match.group(1):
+  snip.rv = match.group(1) + link
+else:
+  snip.rv = "[VIDEO $1: $2](" + link + ")$0"
+`
+endsnippet
+
+# Usage: &name-of-link&alink
+snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wrA
+[`!p
+snip.rv = match.group(1).replace("-", " ")
+`]($1#${2:`!p
+		snip.rv = match.group(1).replace(" ", "-").lower() if match.group(2) == None else match.group(1).replace(" ", "-").lower() + "-term"
+`})$0
+endsnippet
+
+# USAGE
+# Termininology name&iterm
+# **Terminology name**&term
+# **terminology name**&iterm
+#
+# In-line flag:
+# &terminology name&term -- in-line definition
+# terminology name&iterm -- same line definition
+#
+# Abbreviation flag:
+# terminology name&aterm
+# &terminology name&aterm
+#
+# Capitalization flags:
+# terminology name&cterm -- capitalize
+# &terminology name&tterm -- titlelize
+#
+# Mixed flags:
+# terminology name&iaterm -- same line definition with abbrev
+# terminology name&iacterm -- capitalized same line definition with abbrev
+# a, i, c or t flags are interchangeable
+post_jump "post_jump_expand_ph(snip)"
+snippet '(&)?(\*\*)?([^.*\[\]#&]+)(\*\*)?&([ia(t|c)]{1,3})?term$' "Word or phrase definition auto" wrA
+`!p
+orig_term = match.group(3).lstrip().rstrip()
+flags = match.group(5)
+text = ""
+copy = True
+# Check if theres parenthesis and exclude its contents from anchor link
+parenthesis = set('()')
+if any((c in parenthesis) for c in orig_term):
+	for i in range(0, len(orig_term) - 1):
+		if ((orig_term[i] == "(" or orig_term[i + 1] == "(") and copy == True):
+			copy = False
+			continue
+		elif (orig_term[i] == ")" and copy == False):
+			copy = True
+			continue
+
+		if copy == True:
+			text += orig_term[i]
+else:
+  text = orig_term
+
+# Anchor link with '-term' appended to name
+anchor = "<a name=\"" + text.replace(" ", "-").lower() + "-term\">"
+# Flags
+if flags:
+	# Abbreviation
+	if 'a' in flags:
+		# Credits: https://stackoverflow.com/a/41191867/11850077
+		abbrev = (" (" + ''.join([s[0] for s in orig_term.split()]).upper() + ")")
+	else:
+		abbrev = ""
+	# In-line
+	if match.group(1):	# In-line definition. If term sandwhiched by '&'
+		end = "$0"
+	elif 'i' in flags:				# Same line definition
+		end = " - $0<br>"
+	else:
+		end = "\n\n- $0"				# Multi-line definition
+	# Capitalizations
+	if 'c' in flags:					# Capitalize term
+		term = orig_term.capitalize()
+	elif 't' in flags:				# Titlelize term
+		term = orig_term.title()
+	else:
+		term = orig_term
+else:
+	abbrev = ""
+	if match.group(1):	# In-line definition. If term sandwhiched by '&'
+		end = "$0"
+	else:
+		end = "\n\n- $0"
+	term = orig_term
+
+snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
+endsnippet
+
+# ====================Mathjax Snippets with Mathjax====================
+
+snippet b$$ "Mathjax block" bA
+$$
+${1:${VISUAL}}
+$$
+endsnippet
+
+snippet $$ "Mathjax in-line" wA
+$${1:${VISUAL}}$
+endsnippet
+
+snippet '(?<!\\)\$([0-9,]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
+`!p snip.rv = "\$" + match.group(1) + " "`
+endsnippet
+
+snippet @@ "Mathjax text" iA
+\text{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xsbo "Mathjax symbol bold" wA
+\boldsymbol{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmbo "Mathjax math bold" wA
+\mathbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmit "Mathjax math italic" wA
+\mathit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtbo "Mathjax text bold" wA
+\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtit "Mathjax text italic" wA
+\textit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet __ "Mathjax underline" w
+\underline{${1:${VISUAL}}}$0
+endsnippet
+
+snippet nl "Mathjax empty line" bA
+~\\\\
+endsnippet
+
+# Usage: n==, where n is the number of equations stack
+post_jump "post_jump_expand_ph(snip)"
+snippet '(\d+)==' "KaTex block align equations" brA
+`!p
+lines = match.group(1)
+res = ""
+placeholder = 1
+for column in range(0, int(lines)):
+	res = res + f"${placeholder} &= ${placeholder + 1} \\\\\\\\\n"
+	placeholder = placeholder + 2
+snip.rv = "\\begin{aligned}\n" + res[:-6] + "\n\\end{aligned}"
+`$0
+endsnippet
+
+# Fractions
+# ============================================================
+snippet '(d|t)?f/' "Mathjax normal/display/textstyle fraction" riA
+`!p
+snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
+`frac{${1:${VISUAL}}}{$2}$0
+endsnippet
+
+# snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "Mathjax tab auto fraction" wr
+# \\frac{`!p snip.rv = match.group(1)`}{$1}$0
+# endsnippet
+snippet '^.*\)/' "Mathjax () auto fraction" wrA
+`!p
+stripped = match.string[:-1]
+depth = 0
+i = len(stripped) - 1
+while True:
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i-=1
+snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
+# Exponents, Superscript, Subscript
+# ============================================================
+
+# Auto exponent/superscript
+# Matches ^ followed by pattern of charactersk using negative lookbehind
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" irA
+^{$1}$0
+endsnippet
+
+snippet _ "Mathjax subscript" i
+_{$1}$0
+endsnippet
+
+snippet sqrt "Mathjax square root" i
+\sqrt{${1:${VISUAL}}}$0
+endsnippet
+
+snippet 'sqrt(\d+|n|x|y|z)' "Mathjax root of n" ir
+\sqrt[`!p snip.rv = match.group(1)`]{$1}$0
+endsnippet
+
+# Logarthmic function
+snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "Mathjax Logarithmic function" rw
+`!p
+log = match.group(1)
+base = "_{" + match.group(2) + "}" if match.group(2) else ""
+snip.rv = "\\" + log + base`{$1}$0
+endsnippet
+
+# Symbols
+# ============================================================
+
+snippet '(?<=[a-zA-Z0-9])deg' "Mathjax auto degrees symbol" irA
+^{\circ}
+endsnippet
+
+snippet oo "Mathjax degrees symbol" w
+\circ
+endsnippet
+
+snippet '([a-zA-Z0-9]+|\s|)pi' "Mathjax auto pi symbol" r
+`!p
+if match.group(1) == " ":
+	result = "\pi"
+elif match.group(1) == "":
+	result = "\pi"
+else:
+	result = match.group(1) + " \pi"
+snip.rv = result`
+endsnippet
+
+snippet 'iff' "Mathjax if and only if sign" i
+\iff
+endsnippet
+
+snippet '(\+-|-\+)' "Mathjax plus minus sign" irA
+\pm
+endsnippet
+
+snippet ang "Mathjax theta symbol" i
+\angle{$1}$0
+endsnippet
+
+snippet the "Mathjax theta symbol" i
+\theta
+endsnippet
+
+snippet alp "Mathjax alpha symbol" i
+\alpha
+endsnippet
+
+snippet bet "Mathjax beta symbol" i
+\beta
+endsnippet
+
+snippet gam "Mathjax gamma symbol" i
+\gamma
+endsnippet
+
+snippet del "Mathjax delta symbol" i
+\delta
+endsnippet
+
+snippet Del "Mathjax triangle delta symbol" i
+\Delta{$1}$0
+endsnippet
+
+snippet mu "Mathjax mu greek symbol" i
+\mu
+endsnippet
+
+snippet eps "Mathjax epsilon symbol" i
+\epsilon
+endsnippet
+
+snippet vep "Mathjax varepsilon symbol" i
+\varepsilon
+endsnippet
+
+snippet phi "Mathjax phi symbol" i
+\phi
+endsnippet
+
+snippet zeta "Mathjax zeta symbol" i
+\zeta
+endsnippet
+
+snippet lamb "Mathjax lambda symbol" i
+\lambda
+endsnippet
+
+snippet '....' "Mathjax ldots" wA
+\ldots
+endsnippet
+
+snippet tf "Mathjax therefore dots" w
+\therefore
+endsnippet
+
+snippet bc "Mathjax because dots" w
+\because
+endsnippet
+
+snippet <= "Mathjax less than or equals to" w
+\le
+endsnippet
+
+snippet >= "Mathjax greater than or equals to" w
+\ge
+endsnippet
+
+snippet appr "Mathjax approximation symbol" w
+\approx
+endsnippet
+
+snippet => "Mathjax implies" w
+\implies
+endsnippet
+
+snippet =< "Mathjax implied by" w
+\impliedby
+endsnippet
+
+snippet != "Mathjax not equals to" w
+\neq
+endsnippet
+
+
+snippet '(\\|!)!' "Matjax small negative space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\!\\!'
+elif prefix == '!':
+	snip.rv = '\\!'
+`
+endsnippet
+
+snippet '(\\|,),' "Matjax small space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\,\\,'
+elif prefix == ',':
+	snip.rv = '\\,'
+`
+endsnippet
+
+snippet '(\\|:):' "Matjax medium space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\:\\:'
+elif prefix == ':':
+	snip.rv = '\\:'
+`
+endsnippet
+
+snippet '(\\|;);' "Matjax large space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\;\\;'
+elif prefix == ';':
+	snip.rv = '\\;'
+`
+endsnippet
+
+snippet ubr "Mathjax underbrace" i
+\underbrace{${1:${VISUAL}}}$0
+endsnippet
+
+snippet obr "Mathjax overbrace" i
+\overbrace{$1}$0
+endsnippet
+
+snippet inf "Mathjax infinity" i
+\infty
+endsnippet
+
+snippet PP "Mathjax prime numbers" wA
+\mathbb{P}
+endsnippet
+
+snippet NN "Mathjax natural numbers" wA
+\mathbb{N}
+endsnippet
+
+snippet ZZ "Mathjax integer numbers" wA
+\mathbb{Z}
+endsnippet
+
+snippet II "Mathjax irrational numbers" wA
+\mathbb{I}
+endsnippet
+
+snippet QQ "Mathjax rational numbers" wA
+\mathbb{Q}
+endsnippet
+
+snippet RR "Mathjax real numbers" wA
+\mathbb{R}
+endsnippet
+
+snippet CC "Mathjax complex numbers" wA
+\mathbb{C}
+endsnippet
+
+snippet SS "Mathjax section" wA
+\S
+endsnippet
+
+snippet EE "Mathjax exists" wA
+\exists
+endsnippet
+
+snippet AA "forall" wA
+\forall
+endsnippet
+
+snippet nabl "nabla" wA
+\nabla
+endsnippet
+
+snippet xx "cross" wA
+\times
+endsnippet
+
+snippet * "Mathjax cdot" w
+\cdot
+endsnippet
+
+snippet c** "Mathjax center dots" wA
+\cdots
+endsnippet
+
+snippet 'v**' "Mathjax vertical dots" wA
+\vdots
+endsnippet
+
+snippet 'd**' "Mathjax diagonal dots" wA
+\ddots
+endsnippet
+
+snippet -> "to" i
+\to
+endsnippet
+
+snippet !> "mapsto" iA
+\mapsto
+endsnippet
+
+snippet '\\\' "setminus" i
+\setminus
+endsnippet
+
+snippet >> ">>" i
+\gg
+endsnippet
+
+snippet << "<<" i
+\ll
+endsnippet
+
+snippet Ua "Mathjax double lined uparrow" w
+\Uparrow
+endsnippet
+
+snippet Da "Mathjax double lined downarrow" w
+\Downarrow
+endsnippet
+
+snippet Uda "Mathjax double lined updownarrow" w
+\Updownarrow
+endsnippet
+
+snippet La "Mathjax double lined leftarrow" w
+\Leftarrow
+endsnippet
+
+snippet Ra "Mathjax double lined rightarrow" w
+\Rightarrow
+endsnippet
+
+snippet Lra "Mathjax double lined leftrightarrow" w
+\Leftrightarrow
+endsnippet
+
+snippet Lal "Mathjax double lined long leftarrow" w
+\Longleftarrow
+endsnippet
+
+snippet Ral "Mathjax double lined long rightarrow" w
+\Longrightarrow
+endsnippet
+
+snippet Lral "Mathjax double lined long leftrightarrow" w
+\Longleftrightarrow
+endsnippet
+
+snippet da "Mathjax single lined downarrow" w
+\downarrow
+endsnippet
+
+snippet uda "Mathjax single lined updownarrow" w
+\updownarrow
+endsnippet
+
+snippet la "Mathjax single lined leftarrow" w
+\leftarrow
+endsnippet
+
+snippet ra "Mathjax single lined rightarrow" w
+\rightarrow
+endsnippet
+
+snippet lra "Mathjax single lined leftrightarrow" w
+\leftrightarrow
+endsnippet
+
+snippet lal "Mathjax long single lined leftarrow" w
+\longleftarrow
+endsnippet
+
+snippet ral "Mathjax long single lined rightarrow" w
+\longrightarrow
+endsnippet
+
+snippet lral "Mathjax long single lined leftrightarrow" w
+\Longleftrightarrow
+endsnippet
+
+snippet ovla "Mathjax overset left" w
+\overset{$1}\leftarrow$0
+endsnippet
+
+snippet unlar "Mathjax underset rightarrow" w
+\underset{$1}\leftarrow$0
+endsnippet
+
+snippet ovrar "Mathjax overset rightarrow" w
+\overset{$1}\rightarrow$0
+endsnippet
+
+snippet unrar "Mathjax underset rightarrow" w
+\underset{$1}\rightarrow$0
+endsnippet
+
+snippet ' "Mathjax prime" i
+^{\prime}
+endsnippet
+
+snippet '' "Mathjax double prime" i
+^{\prime \prime}
+endsnippet
+
+snippet " "Mathjax tripple prime" i
+^{\prime \prime \prime}
+endsnippet
+
+snippet ~ "Mathjax ~" w
+\sim
+endsnippet
+
+snippet ~~ "Mathjax Approximation" wA
+\approx
+endsnippet
+
+snippet vec "Mathjax vector" i
+\vec{${1:${VISUAL}}}$0
+endsnippet
+
+snippet mag "Mathjax vector's magnitude" i
+\\|${1:${VISUAL}}\\|$0
+endsnippet
+
+snippet <> "Mathjax angled bracets" i
+\langle ${1:${VISUAL}} \rangle$0
+endsnippet
+
+snippet || "Mathjax parallel sign" i
+\parallel
+endsnippet
+
+snippet | "Mathjax mid sign" i
+\mid
+endsnippet
+
+snippet subs "subset" i
+\subset
+endsnippet
+
+snippet notin "not in " iA
+\not\in
+endsnippet
+
+snippet in "in" w
+\in
+endsnippet
+
+snippet Nn "cap" iA
+\cap
+endsnippet
+
+snippet UU "cup" i
+\cup
+endsnippet
+
+snippet uuu "bigcup" iA
+\bigcup_{${1:i \in ${2: I}}} $0
+endsnippet
+
+snippet nnn "bigcap" iA
+\bigcap_{${1:i \in ${2: I}}} $0
+endsnippet
+
+snippet OO "emptyset" i
+\emptyset
+endsnippet
+
+snippet <! "normal" iA
+\triangleleft
+endsnippet
+
+snippet <> "hokje" iA
+\diamond
+endsnippet
+
+snippet dint "integral" wA
+\int_{${1:-\infty}}^{${2:\infty}} ${3:${VISUAL}} $0
+endsnippet
+
+snippet sum "Mathjax sum symbol" w
+\sum_{n=${1:1}}^{${2:\infty}} ${3:a_n z^n}
+endsnippet
+
+snippet taylor "taylor" w
+\sum_{${1:k}=${2:0}}^{${3:\infty}} ${4:c_$1} (x-a)^$1 $0
+endsnippet
+
+snippet lim "limit" i
+\lim_{${1:n} \to ${2:\infty}}
+endsnippet
+
+snippet limsup "limsup" w
+\limsup_{${1:n} \to ${2:\infty}}
+endsnippet
+
+snippet prod "product" w
+\prod_{${1:n=${2:1}}}^{${3:\infty}} ${4:${VISUAL}} $0
+endsnippet
+
+snippet part "d/dx" w
+\frac{\partial ${1:V}}{\partial ${2:x}} $0
+endsnippet
+
+snippet norm "norm" i
+\|$1\|$0
+endsnippet
+
+snippet mcal "mathcal" iA
+\mathcal{$1}$0
+endsnippet
+
+snippet invs "inverse" iA
+^{-1}
+endsnippet
+
+snippet comp "Mathjax complement" i
+^{c}
+endsnippet
+
+snippet 'det' "Mathjax determinant" w
+\det $0
+endsnippet
+
+snippet phan "Mathjax phantom placeholder" w
+\phantom{$1}$0
+endsnippet
+
+snippet nphan "Mathjax negative phantom placeholder" wA
+\phantom{-}$0
+endsnippet
+
+snippet col# "Mathjax text color" iA
+{\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
+endsnippet
+
+snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "Mathjax trig functions" r
+`!p
+# Constants
+mult = "" if match.group(1) == None else match.group(1)
+# Arc functions
+if match.group(2) == 'a':
+	arc = "arc"
+else:
+	arc = ""
+# Apply sech and csch workaround to trig function
+if (match.group(3) == "sech" or match.group(3) == "csch"):
+	trig = "operatorname{" + match.group(3) + "}"
+else:
+	trig = match.group(3)
+# Negative functions
+if match.group(5) == None:
+	expo = ""
+elif match.group(5) == "-":
+	expo = "^{-1}"
+else:
+	expo = "^{" + match.group(5) + "}"
+
+snip.rv = mult + "\\" + arc + trig + expo
+`{$1}$0
+endsnippet
+
+
+# Matrices, absolute value and parenthises
+# ============================================================
+snippet bigp "Mathjax big ()" i
+\bigl( ${1:${VISUAL}} \bigr)$0
+endsnippet
+
+snippet Bigp "Mathjax very big ()" i
+\Bigl( ${1:${VISUAL}} \Bigr)$0
+endsnippet
+
+snippet bigb "Mathjax big {}" i
+\bigl\\{ ${1:${VISUAL}} \bigr\\}$0
+endsnippet
+
+snippet Bigb "Mathjax very big {}" i
+\Bigl\\{ ${1:${VISUAL}} \Bigr\\}$0
+endsnippet
+
+snippet bigs "Mathjax big []" i
+\bigl[ ${1:${VISUAL}} \bigr]$0
+endsnippet
+
+snippet Bigs "Mathjax Big []" i
+\Bigl[ ${1:${VISUAL}} \Bigr]$0
+endsnippet
+
+snippet biga "Mathjax big |" i
+\bigl\\| ${1:${VISUAL}} \bigr\\|$0
+endsnippet
+
+snippet Biga "Mathjax very big |" i
+\Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
+endsnippet
+
+snippet lrp "Mathjax left right ()" i
+\left ( ${1:${VISUAL}} \right )$0
+endsnippet
+
+snippet lrb "Mathjax left right ()" i
+\left \\{ ${1:${VISUAL}} \right \\}$0
+endsnippet
+
+snippet lrs "Mathjax left right []" i
+\left [ ${1:${VISUAL}} \right ]$0
+endsnippet
+
+snippet lrabs "Mathjax absolute value" i
+\left | ${1:${VISUAL}} \right |$0
+endsnippet
+
+snippet lrdabs "Mathjax double absolute value" i
+\left \| ${1:${VISUAL}} \right \|$0
+endsnippet
+
+snippet bmat "Mathjax in-line brackets matrix" wbA
+\begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
+endsnippet
+
+snippet Bmat "Mathjax in-line curly braces matrix" wbA
+\begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
+endsnippet
+
+snippet pmat "Mathjax in-line parenthesis matrix" wbA
+\begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
+endsnippet
+
+snippet vmat "Mathjax in-line determinant matrix" wbA
+\begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
+endsnippet
+
+snippet Vmat "Mathjax in-line double absolute values matrix" wbA
+\begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
+endsnippet
+
+# Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
+# either `l or r` (optional) as separators, `b` (optional) as the boundary type
+# , and `n,n` as the matrix size (rows, column). No spaces and ignore
+# parenthesis, and can't have both separators and boundary together.
+post_jump "post_jump_expand_ph(snip)"
+snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+,\d+)m' "Mathjax matrix" wrA
+`!p
+inline = match.group(1)
+left = match.group(4) # left matrix separator
+right = match.group(5) # right matrix separator
+boundary = match.group(6) # boundary type
+
+# Determine if in-line or block
+indent = ""
+if inline:
+	inline = " "
+else:
+	inline = "\n"
+	indent = "\t"
+
+if left or right:
+	# Left boundary with right separator. Default boundary is "|"
+	if left and right == None:
+		if boundary:
+			left = "\\left" + boundaries[f"{boundary}"][0]
+			right = "\\right|"
+		else:
+			left = "\\left|"
+			right = "\\right|"
+	# Right boundary only
+	elif left == None and right:
+		if boundary:
+			left = "\\left."
+			right = "\\right" + boundaries[f"{boundary}"][1]
+		else:
+			left = "\\left."
+			right = "\\right|"
+	# Left and right separator
+	elif left and right:
+		if boundary:
+			left = "\\left" + boundaries[f"{boundary}"][0]
+			right = "\\right" + boundaries[f"{boundary}"][1]
+		else:
+			left = "\\left|"
+			right = "\\right|"
+	# Remove boundary
+	boundary = ""
+elif boundary:
+	# No separator
+	left = ""
+	right = ""
+else:
+	# No boundary and separator
+	left = ""
+	right = ""
+	boundary = ""
+# Matrix size
+size = match.group(7).split(",")
+# LaTeX matrix wrapper
+begin = left + "\\begin{" + boundary + "matrix}" + inline
+end = inline + "\\end{" + boundary + "matrix}" + right + "$0"
+result = "" # result value
+placeholder = 1 # placeholder number for snippet jumps
+
+# Matrix entries
+for column in range(0, int(size[0])):
+	# Indent (if block) every column and add snippet placeholder each matrix entries
+	result = result + indent + "${" + f"{placeholder}:{placeholder}" + "}"
+	placeholder = placeholder + 1
+	for row in range(1, int(size[1])):
+		result = result + " & ${" f"{placeholder}:{placeholder}" + "}"
+		placeholder = placeholder + 1
+	# Append \\ and new line (if block) at the end of each row
+	result = result + " \\\\\\\\" + inline
+
+# removes unnecessary backslashes and wraps with LaTeX matrix wrapper
+snip.rv = begin + result[:-6] + end
+`
+endsnippet
+
