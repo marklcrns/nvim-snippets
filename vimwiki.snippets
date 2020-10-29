@@ -243,7 +243,7 @@ snippet l "Simple link"
 endsnippet
 
 snippet w "Web link"
-[🌎 ${1:${VISUAL}}]($2)$0
+[📄 ${1:${VISUAL}}]($2)$0
 endsnippet
 
 snippet m "Markdown file link" w
@@ -251,7 +251,11 @@ snippet m "Markdown file link" w
 endsnippet
 
 snippet v "Video link" w
-[🎬 ${1:${VISUAL}}]($2)$0
+[📺 ${1:${VISUAL}}]($2)$0
+endsnippet
+
+snippet p "Video playlist link" w
+[💽 ${1:${VISUAL}}]($2)$0
 endsnippet
 
 snippet f "File Link" w
@@ -267,7 +271,7 @@ snippet i "Image link" w
 endsnippet
 
 snippet a "Markdown anchor link" w
-[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2-\E/g})$0
+[📑 ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2-\E/g})$0
 endsnippet
 
 snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
