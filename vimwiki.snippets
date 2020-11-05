@@ -504,7 +504,7 @@ t_body = t_cell + (t_cell * (t_column_ct - 1)) + "|"
 result = t_header + "\n" + t_sep + "\n" + t_body
 
 if 'c' in flags:
-	result = "<center>\n\n" + result + "\n\n</center>"
+	result = "<center>\n\n" + result + "\n\n</center>\n"
 
 snip.rv = result
 `
@@ -560,7 +560,7 @@ for line in lines[:-1]: # Loop over lines
 	line_count += 1
 
 if 'c' in flags:
-	result = "<center>\n\n" + result + "\n</center>"
+	result = "<center>\n\n" + result + "\n</center>\n"
 
 snip.rv = result
 `
@@ -829,7 +829,7 @@ snippet $$ "Mathjax in-line" wA
 \$${1:${VISUAL}}\$$0
 endsnippet
 
-snippet '(?<!\\)\$([0-9,]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
+snippet '(?<!\\|\))\$([0-9,]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
 `!p snip.rv = "\$" + match.group(1) + " "`
 endsnippet
 
