@@ -1015,24 +1015,16 @@ snippet lamb "Mathjax lambda symbol" i
 \lambda
 endsnippet
 
-snippet '....' "Mathjax ldots" wA
-\ldots
-endsnippet
-
-snippet tf "Mathjax therefore dots" w
-\therefore
-endsnippet
-
-snippet bc "Mathjax because dots" w
-\because
-endsnippet
-
-snippet <= "Mathjax less than or equals to" w
+snippet le "Mathjax less than or equals to" w
 \le
 endsnippet
 
-snippet >= "Mathjax greater than or equals to" w
+snippet ge "Mathjax greater than or equals to" w
 \ge
+endsnippet
+
+snippet ne "Mathjax not equals to" w
+\neq
 endsnippet
 
 snippet appr "Mathjax approximation symbol" w
@@ -1046,11 +1038,6 @@ endsnippet
 snippet =< "Mathjax implied by" w
 \impliedby
 endsnippet
-
-snippet != "Mathjax not equals to" w
-\neq
-endsnippet
-
 
 snippet '(\\|!)!' "Matjax small negative space" rw
 `!p
@@ -1152,27 +1139,39 @@ snippet xx "cross" wA
 \times
 endsnippet
 
+snippet tf "Mathjax therefore dots" w
+\therefore
+endsnippet
+
+snippet bc "Mathjax because dots" w
+\because
+endsnippet
+
 snippet * "Mathjax cdot" w
 \cdot
 endsnippet
 
-snippet c** "Mathjax center dots" wA
+snippet l.. "Mathjax lower dots" iA
+\ldots
+endsnippet
+
+snippet c.. "Mathjax center dots" iA
 \cdots
 endsnippet
 
-snippet 'v**' "Mathjax vertical dots" wA
+snippet v.. "Mathjax vertical dots" iA
 \vdots
 endsnippet
 
-snippet 'd**' "Mathjax diagonal dots" wA
+snippet d.. "Mathjax diagonal dots" iA
 \ddots
 endsnippet
 
-snippet -> "to" i
+snippet to "to" i
 \to
 endsnippet
 
-snippet !> "mapsto" iA
+snippet mto "mapsto" i
 \mapsto
 endsnippet
 
@@ -1356,16 +1355,16 @@ snippet dint "integral" wA
 \int_{${1:-\infty}}^{${2:\infty}} ${3:${VISUAL}} $0
 endsnippet
 
-snippet sum "Mathjax sum symbol" w
-\sum_{n=${1:1}}^{${2:\infty}} ${3:a_n z^n}
+snippet sig "Mathjax sigma symbol" w
+\sum_{${1:i = m}}^{${2:n}} ${3:f(x_{i})\Delta{x}}
 endsnippet
 
-snippet taylor "taylor" w
+snippet taylor "Mathjax taylor sigma symbol" w
 \sum_{${1:k}=${2:0}}^{${3:\infty}} ${4:c_$1} (x-a)^$1 $0
 endsnippet
 
 snippet lim "limit" i
-\lim_{${1:n} \to ${2:\infty}}
+\lim_{${1:n} \to ${2:\infty}} ${3:f(x) = x}
 endsnippet
 
 snippet limsup "limsup" w
