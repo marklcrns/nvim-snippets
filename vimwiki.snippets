@@ -904,7 +904,7 @@ snippet '(\d+)==' "Mathjax block align equations" brA
 \begin{aligned}
 `!p
 snip.rv = create_matrix(
-	match.group(1), 2, "&","\t", "\\\\\\\\\n")
+	2, match.group(1), "&=","\t", "\\\\\\\\\n")
 `
 \end{aligned}$0
 endsnippet
