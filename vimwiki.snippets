@@ -54,27 +54,28 @@ def get_wiki_files_dir():
 
 from datetime import datetime, timedelta, date
 
-# Make all multi-line jump placeholder strings jumpable. Used with `post_jump`
-def post_jump_expand_ph(snip):
-	# Create annonymous snippet body
+# Make all multi-line placeholder strings jumpable.
+def create_matrix_placeholders(snip):
+	# Create anonymous snippet body
 	anon_snippet_body = ""
+
 	# Get start and end line number of expanded snippet
 	start = snip.snippet_start[0]
 	end = snip.snippet_end[0]
+
+  # Append current line into anonymous snippet
 	for i in range(start, end + 1):
-		# Append current line into annonymous snippet
 		anon_snippet_body += snip.buffer[i]
-		# Append new line if still not the end of snippet line
 		anon_snippet_body += "" if i == end else "\n"
 
-	# Delete old expanded snippet line till second to last snippet line
+	# Delete expanded snippet line till second to last line
 	for i in range(start, end):
 		del snip.buffer[start]
 
-	# Empty last old expanded snippet line while preserving line
+	# Empty last expanded snippet line while preserving the line
 	snip.buffer[start] = ''
 
-	# Expand new annonymous snippet
+	# Expand anonymous snippet
 	snip.expand_anon(anon_snippet_body)
 
 def create_matrix(cols, rows, sep, start, end):
@@ -372,7 +373,7 @@ endsnippet
 # Prepend "@" to include overdue todos
 # Prepend "&" to generate nested side todo templates
 # Prepend "&&" to generate nested todo ONLY
-post_jump "post_jump_expand_ph(snip)"
+post_jump "create_matrix_placeholders(snip)"
 snippet '([!@&0-9]+)?td' "To-do list template" rbA
 `!p
 # parse date filename
@@ -499,7 +500,7 @@ snippet task "Todo/Task checkbox" bA
 * [ ] $0
 endsnippet
 
-post_jump "post_jump_expand_ph(snip)"
+post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)([cC]{1,2})?t' "Markdown table (n)t" brA
 `!p
 t_column_ct = int(match.group(1))
@@ -645,10 +646,37 @@ snippet ttime "Video lecture timestamp item" iA
 - ${1:title} ${2:1:00}
 endsnippet
 
-# TODO: Truncate regex match to fix "maxmempattern" error
-# VERSION 2
-# Usage: (00:00:00 or 00:00)<youtube-url>&y
-snippet '((\d{1,2}:)?(\d{1,2}):(\d{2}))((https:\/\/)?(www\.)?(youtube.com))((\/embed\/)?(.*))&y' "Youtube video lecture time stamp with link" wrA
+# Usage: <youtube-url>&e
+post_jump "create_matrix_placeholders(snip)"
+snippet '((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&e' "YouTube pseudo embedded video" wrA
+`!p
+home_url = match.group(1)
+http_url = match.group(2)
+www_url = match.group(3)
+domain_url = match.group(4)
+video_url = match.group(5)
+video_mode = match.group(6)
+video_id = match.group(7)
+link = "https://www.youtube.com"
+
+# check if video_url is embedded
+if 'embed' in video_mode:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+snip.rv = "[![${1:Alt text}](https://img.youtube.com/vi/" + video_id + "/0.jpg)](" + link + "${1/.*/ \"$0\"/})$0"
+`
+endsnippet
+
+# Usage: (00:00:00 or 00:00)<youtube-url>&t
+snippet '((\d{1,2}:)?(\d{1,2}):(\d{2}))((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&t' "YouTube url with time stamp" wrA
 [(`!p snip.rv = match.group(1)`)](`!p
 # check if hours exist
 hours = match.group(2)
@@ -664,24 +692,12 @@ http_url = match.group(6)
 www_url = match.group(7)
 domain_url = match.group(8)
 video_url = match.group(9)
-embed = match.group(10)
+video_mode = match.group(10)
 video_id = match.group(11)
-link = ""
-
-# check if valid home url
-#if not http_url or not www_url:
-#  if not http_url and not www_url:
-#    link = "https://www." + domain_url
-#  if not http_url:
-#    link = "https://" + www_url + domain_url
-#  if not www_url:
-#    link = http_url + "www." + domain_url
-#else:
-#	link = http_url + www_url + domain_url
 link = "https://www.youtube.com"
 
 # check if video_url is embedded
-if embed:
+if 'embed' in video_mode:
 	# exclude embed and replace with the standard "watch?v="
 	video_url = "/watch?v=" + video_id
 
@@ -698,31 +714,20 @@ snip.rv = link + "&t=" + str((hours * 60) + (minutes * 60) + seconds)
 endsnippet
 
 # Usage: <youtube-url>&y
-snippet '(\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/)?(.*))&y' "Clean and create Youtube link" wrA
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&y' "Clean and create Youtube link" wrA
 `!p
 home_url = match.group(2)
 http_url = match.group(3)
 www_url = match.group(4)
 domain_url = match.group(5)
 video_url = match.group(6)
-embed = match.group(7)
+video_mode = match.group(7)
 video_id = match.group(8)
-link = ""
-
-# check if valid home url
-#if not http_url or not www_url:
-#  if not http_url and not www_url:
-#    link = "https://www." + domain_url
-#  if not http_url:
-#    link = "https://" + www_url + domain_url
-#  if not www_url:
-#    link = http_url + "www." + domain_url
-#else:
-#	link = http_url + www_url + domain_url
 link = "https://www.youtube.com"
 
 # check if video_url is embedded
-if embed:
+if 'embed' in video_mode:
 	# exclude embed and replace with the standard "watch?v="
 	video_url = "/watch?v=" + video_id
 
@@ -737,7 +742,7 @@ for i in range(0, len(video_url)):
 if match.group(1):
   snip.rv = match.group(1) + link
 else:
-  snip.rv = "[VIDEO $1: $2](" + link + ")$0"
+	snip.rv = "[📺 $1](" + link + ")$0"
 `
 endsnippet
 
@@ -771,7 +776,7 @@ endsnippet
 # terminology name&iaterm -- same line definition with abbrev
 # terminology name&iacterm -- capitalized same line definition with abbrev
 # a, i, c or t flags are interchangeable
-post_jump "post_jump_expand_ph(snip)"
+post_jump "create_matrix_placeholders(snip)"
 snippet '(&)?(\*\*)?([^.*\[\]#&]+)(\*\*)?&([ia(t|c)]{1,3})?term$' "Word or phrase definition auto" wrA
 `!p
 orig_term = match.group(3).lstrip().rstrip()
@@ -841,7 +846,7 @@ snippet $$ "Mathjax in-line" wA
 \$${1:${VISUAL}}\$$0
 endsnippet
 
-snippet '(?<!\\|\)|\])\$([0-9,]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
+snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
 `!p snip.rv = "\$" + match.group(1) + " "`
 endsnippet
 
@@ -884,22 +889,20 @@ ${1:${VISUAL}}
 $0
 endsnippet
 
-post_jump "post_jump_expand_ph(snip)"
+post_jump "create_matrix_placeholders(snip)"
 snippet 'arr(\d+),(\d+)' "Mathjax array" rb
 \begin{array}{`!p
-l = ""
-for _ in range(0, int(match.group(2))): l += "l"
-snip.rv = l
-`}
+orient = ""
+for _ in range(0, int(match.group(1))): orient += "l"
+snip.rv = orient`}
 `!p
-snip.rv = create_matrix(
-	match.group(1), match.group(2), "&", "\t", "\\\\\\\\\n")
+snip.rv = create_matrix(match.group(1), match.group(2), "&", "\t", "\\\\\\\\\n")
 `$0
 \end{array}
 endsnippet
 
 # Usage: n==, where n is the number of equations stack
-post_jump "post_jump_expand_ph(snip)"
+post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)==' "Mathjax block align equations" brA
 \begin{aligned}
 `!p
@@ -1386,11 +1389,11 @@ snippet <> "hokje" iA
 endsnippet
 
 snippet int "integral" w
-\int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:f(x)dx}$0
+\int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
 endsnippet
 
 snippet sig "Mathjax sigma symbol" w
-\sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}${8:\Delta{x}}}$0
+\sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}\;${8:\Delta{x}}}$0
 endsnippet
 
 snippet lim "limit" i
@@ -1562,7 +1565,7 @@ endsnippet
 # either `l or r` (optional) as separators, `b` (optional) as the boundary type
 # , and `n,n` as the matrix size (rows, column). No spaces and ignore
 # parenthesis, and can't have both separators and boundary together.
-post_jump "post_jump_expand_ph(snip)"
+post_jump "create_matrix_placeholders(snip)"
 snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+),(\d+)(m)?' "Mathjax matrix" wr
 `!p
 inline = match.group(1)
