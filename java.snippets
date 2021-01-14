@@ -173,7 +173,7 @@ public class `!p snip.rv = fn.rstrip('.java')` extends Object {
 }
 endsnippet
 
-snippet head "Java javadoc header" bA
+snippet head "Java javadoc header" b
 /**
  * TODO Class Description.
  *
@@ -182,19 +182,19 @@ snippet head "Java javadoc header" bA
  */
 endsnippet
 
-snippet jdoc "Java javadoc" bA
+snippet jdoc "Java javadoc" b
 /**
  * $0
  */
 endsnippet
 
-snippet bcom "Java block comment" bA
+snippet bcom "Java block comment" b
 /*
 	${0:${VISUAL}}
  */
 endsnippet
 
-snippet 'for(i|j|x|y)' "Java generic for loop" rA
+snippet 'for(i|j|x|y)' "Java generic for loop" r
 `!p
 var = match.group(1)
 snip.rv = f"for (int {var} = 0; {var} < $1; {var}++) " + "{\n\t$0\n}"
