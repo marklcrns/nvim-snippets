@@ -413,7 +413,7 @@ meta = f"---\n{title}\n{subtitle}\n{author}\n{date}\n---\n\n\n"
 
 # Task warrior filters
 proj = "proj:Todo"
-sched = f"sched:{today}"
+# sched = f"sched:{today}"
 due = f"due:{end_of_day}"
 
 result = ""
@@ -432,7 +432,8 @@ if "&&" not in flags:
 		result += overdue_task_filter + "\n\n"
 
 	daily_task_header = "## Daily"
-	daily_task_filter = " | +daily -OVERDUE " + sched + " " + due
+	# daily_task_filter = " | +daily -OVERDUE " + sched + " " + due
+	daily_task_filter = " | +daily -OVERDUE " + due
 	result += daily_task_header
 	result += daily_task_filter + "\n"
 	result += task_checkbox + "$0" + "\n"
