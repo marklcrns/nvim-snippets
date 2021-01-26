@@ -194,13 +194,6 @@ snippet bcom "Java block comment" b
  */
 endsnippet
 
-snippet 'for(i|j|x|y)' "Java generic for loop" r
-`!p
-var = match.group(1)
-snip.rv = f"for (int {var} = 0; {var} < $1; {var}++) " + "{\n\t$0\n}"
-`
-endsnippet
-
 snippet pln "Java System.out.println" b
 System.out.println(${1:${VISUAL}});$0
 endsnippet

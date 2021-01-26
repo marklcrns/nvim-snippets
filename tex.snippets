@@ -1,0 +1,56 @@
+global !p
+import os, re
+
+# Make all multi-line placeholder strings jumpable.
+def create_matrix_placeholders(snip):
+	# Create anonymous snippet body
+	anon_snippet_body = ""
+
+	# Get start and end line number of expanded snippet
+	start = snip.snippet_start[0]
+	end = snip.snippet_end[0]
+
+  # Append current line into anonymous snippet
+	for i in range(start, end + 1):
+		anon_snippet_body += snip.buffer[i]
+		anon_snippet_body += "" if i == end else "\n"
+
+	# Delete expanded snippet line till second to last line
+	for i in range(start, end):
+		del snip.buffer[start]
+
+	# Empty last expanded snippet line while preserving the line
+	snip.buffer[start] = ''
+
+	# Expand anonymous snippet
+	snip.expand_anon(anon_snippet_body)
+
+def create_matrix(cols, rows, sep, start, end):
+	res = ""
+	placeholder = 1
+	for _ in range(0, int(rows)):
+		res += start + f"${placeholder}"
+		placeholder += 1
+		for _ in range(0, int(cols) - 1):
+			res += sep + f"${placeholder}"
+			placeholder += 1
+		res += end
+	return res[:-1]
+endglobal
+
+snippet '(?<=\\item)(.+)' "item" r
+`!p snip.rv = match.group(1)`
+\\item $0
+endsnippet
+
+post_jump "create_matrix_placeholders(snip)"
+snippet 'item(\d+)?' "LaTeX Itemize" br
+\begin{itemize}
+`!p
+res = "\t\\item $1"
+if match.group(1):
+	res = create_matrix(1, match.group(1), "", "\t\\item ", "\n")
+	snip.rv = res
+`
+\end{itemize}$0
+endsnippet

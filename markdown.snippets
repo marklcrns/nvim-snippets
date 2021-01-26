@@ -84,6 +84,14 @@ snippet i "Image tag for urls" w
 ![${1:${VISUAL}}]($2)
 endsnippet
 
+snippet ie "Clickable Image link" w
+[![${1:${VISUAL}}](${2:path/to/image})](${3:redirect-link} "${4:Alt}")
+endsnippet
+
+snippet ih "HTML Image link" w
+<img src="${1:path/to/image}" width="${2:500px}" alt="${3:alt}">
+endsnippet
+
 snippet a "Markdown anchor link" w
 [#${1:${VISUAL}}]($0#$1)
 endsnippet
