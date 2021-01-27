@@ -447,12 +447,12 @@ if "&&" not in flags:
 
 # Overdue
 if "@" in flags:
-	overdue_task_header = "## Overdue"
+	overdue_task_header = "## 💀 Overdue"
 	overdue_task_filter = " | +OVERDUE"
 	result += overdue_task_header
 	result += overdue_task_filter + "\n\n"
 
-today_task_header = "## Today"
+today_task_header = "## 🏃 Today"
 today_task_filter = " | +daily -OVERDUE " + due_today
 result += today_task_header
 result += today_task_filter + "\n"
@@ -479,9 +479,9 @@ if "&" in flags:
 
 # weekly and monthly tasks
 if "!" in flags and "&&" not in flags:
-	end_of_week_header = "## Weekly"
+	end_of_week_header = "## 🚶 Weekly"
 	end_of_week_filter = " | +weekly -OVERDUE " + f"due:{end_of_week}"
-	end_of_month_header = "## Monthly"
+	end_of_month_header = "## 📆 Monthly"
 	end_of_month_filter = " | +monthly -OVERDUE " + f"due:{end_of_month}"
 	# Append weekly todo
 	result += "\n"
@@ -496,21 +496,21 @@ result += '\n---\n\n'
 
 # Reminders task header
 if "&&" not in flags:
-	reminders_task_header = "## Reminders"
-	reminders_task_filter = " | +remind -OVERDUE due:later" 
+	reminders_task_header = "## 🔔 Reminders"
+	reminders_task_filter = " | +remind -OVERDUE due:later"
 	result += reminders_task_header
 	result += reminders_task_filter + "\n\n"
 
 # Tomorrow task header
 if "&&" not in flags:
-	tomorrow_task_header = "## Tomorrow"
+	tomorrow_task_header = "## 🌛 Tomorrow"
 	tomorrow_task_filter = " | +daily -OVERDUE " + due_tomorrow
 	result += tomorrow_task_header
 	result += tomorrow_task_filter + "\n\n"
 
 # Yesterday task header
 if "&&" not in flags:
-	yesterday_task_header = "## Yesterday"
+	yesterday_task_header = "## 🌜 Yesterday"
 	yesterday_task_filter = " | +daily -OVERDUE " + due_yesterday
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n"
