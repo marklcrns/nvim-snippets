@@ -452,11 +452,12 @@ if "@" in flags:
 	result += overdue_task_header
 	result += overdue_task_filter + "\n\n"
 
-today_task_header = "## 🏃 Today"
-today_task_filter = " | +daily -OVERDUE " + due_today
-result += today_task_header
-result += today_task_filter + "\n"
-result += task_checkbox + '$0' + "\n"
+if "&&" not in flags:
+	today_task_header = "## 🏃 Today"
+	today_task_filter = " | +daily -OVERDUE " + due_today
+	result += today_task_header
+	result += today_task_filter + "\n"
+	result += task_checkbox + '$0' + "\n"
 
 # Append side task snippet into result if '&' flag was given
 if "&" in flags:
@@ -492,10 +493,11 @@ if "!" in flags and "&&" not in flags:
 	result += end_of_month_header
 	result += end_of_month_filter + "\n"
 
-result += '\n---\n\n'
 
 # Reminders task header
 if "&&" not in flags:
+	result += '\n---\n\n'
+
 	reminders_task_header = "## 🔔 Reminders"
 	reminders_task_filter = " | +remind -OVERDUE due:later"
 	result += reminders_task_header
