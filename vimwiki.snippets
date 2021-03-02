@@ -307,23 +307,26 @@ snippet a "Markdown anchor link" w
 [📑 ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2-\E/g})$0
 endsnippet
 
-snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
-`!p
-ref = match.group(1)
-
-# Transform special chars into uniformed separators
-ref = ref.replace(' ', '-')
-ref = ref.replace('_', '-')
-ref = ref.replace('\`', '-')
-ref = ref.replace('.', '-')
-ref = ref.replace(',', '')
-
-conv_ref = ref
-
-# Remove all prepending digits (including '-' separators) until non-digit
-if ref[:1].isdigit():
-	</a>
-endsnippet
+# FIXME
+# snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
+# `!p
+# ref = match.group(1)
+# 
+# # Transform special chars into uniformed separators
+# ref = ref.replace(' ', '-')
+# ref = ref.replace('_', '-')
+# ref = ref.replace('\`', '-')
+# ref = ref.replace('.', '-')
+# ref = ref.replace(',', '')
+# 
+# conv_ref = ref
+# 
+# # Remove all prepending digits (including '-' separators) until non-digit
+# if ref[:1].isdigit():
+# 
+# snip.rv = conv_ref
+# `
+# endsnippet
 
 snippet pre "Html code block tag" w
 <pre>
@@ -372,7 +375,9 @@ date: `date +'%b %d, %Y'`
 ---
 
 
-# $0
+# $1: $2
+
+$0
 
 
 <br>
@@ -1012,7 +1017,7 @@ snippet sqrt "Mathjax square root" i
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet 'sqrt(\d+|n|x|y|z)' "Mathjax root of n" ir
+snippet 'root(\d+|n|x|y|z)' "Mathjax root of n" ir
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
@@ -1452,6 +1457,10 @@ endsnippet
 
 snippet int "integral" w
 \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
+endsnippet
+
+snippet dint "Display mode integral" w
+{\displaystyle \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}}$0
 endsnippet
 
 snippet sig "Mathjax sigma symbol" w
