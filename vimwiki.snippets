@@ -1531,6 +1531,10 @@ snippet col "Mathjax text color" iA
 {\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
 endsnippet
 
+snippet coc "Cancel out with color" w
+{\color{#${1:ff0000}}{\cancel{{\color{#${1:000000}}{${3:${VISUAL}}}}}}}$0
+endsnippet
+
 snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "Mathjax trig functions" r
 `!p
 # Constants
