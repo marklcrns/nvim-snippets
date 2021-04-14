@@ -1455,6 +1455,10 @@ snippet <> "hokje" iA
 \diamond
 endsnippet
 
+snippet disp "Displaystyle" w
+{\displaystyle ${1:${VISUAL}}}$0
+endsnippet
+
 snippet int "integral" w
 \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
 endsnippet
@@ -1519,7 +1523,11 @@ snippet ol "Mathjax overline" i
 \overline{$1}$0
 endsnippet
 
-snippet col# "Mathjax text color" iA
+snippet co "Cancel out" w
+\cancel{${1:${VISUAL}}}$0
+endsnippet
+
+snippet col "Mathjax text color" iA
 {\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
 endsnippet
 
