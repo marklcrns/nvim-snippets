@@ -338,12 +338,16 @@ snippet kbd "Markdown key bindings tag" wA
 <kbd>${1:${VISUAL}}</kbd>$0
 endsnippet
 
-snippet ** "Markdown Bold tag" iA
+snippet ** "Markdown Bold" iA
 **${1:${VISUAL}}**$0
 endsnippet
 
-snippet __ "Markdown Italic tag" iA
+snippet __ "Markdown Italic" iA
 _${1:${VISUAL}}_$0
+endsnippet
+
+snippet ~~ "Markdown Strikethrough" iA
+~~${1:${VISUAL}}~~$0
 endsnippet
 
 snippet hbo "Html bold tag" wA
@@ -1127,7 +1131,7 @@ snippet ne "Mathjax not equals to" w
 \neq
 endsnippet
 
-snippet appr "Mathjax approximation symbol" w
+snippet ~= "Mathjax approximation symbol" w
 \approx
 endsnippet
 
@@ -1385,10 +1389,6 @@ endsnippet
 
 snippet ~ "Mathjax ~" w
 \sim
-endsnippet
-
-snippet ~~ "Mathjax Approximation" wA
-\approx
 endsnippet
 
 snippet vec "Mathjax vector" i
