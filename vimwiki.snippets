@@ -129,7 +129,7 @@ weekdays = {
 	"6": "Sunday"
 }
 
-# Todo meds taskk
+# Todo meds task
 def create_meds_task_head(desc, time):
 	time = int(time)
 	str_date_time = ""
@@ -505,10 +505,10 @@ if "!" in flags and "&&" not in flags:
 
 # Reminders task header
 if "&&" not in flags:
-	result += '\n---\n\n'
+	result += '\n--------------------------------------------------------------------------------\n\n'
 
 	reminders_task_header = "## 🔔 Reminders"
-	reminders_task_filter = " | +remind -OVERDUE due:later"
+	reminders_task_filter = " | +remind -OVERDUE -COMPLETED due:later"
 	result += reminders_task_header
 	result += reminders_task_filter + "\n\n"
 
