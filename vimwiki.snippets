@@ -522,7 +522,7 @@ if "&&" not in flags:
 # Yesterday task header
 if "&&" not in flags:
 	yesterday_task_header = "## 🌜 Yesterday"
-	yesterday_task_filter = " | +daily -OVERDUE " + due_yesterday
+	yesterday_task_filter = " | -OVERDUE " + due_yesterday
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n"
 
