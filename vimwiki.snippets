@@ -449,9 +449,9 @@ due_yesterday = f"due:{end_of_yesterday}"
 result = ""
 task_checkbox = "* [ ] "
 
-# Today task header
+# Main header
 if "&&" not in flags:
-	main_header = meta + "# TODOs || " + proj + "\n"
+	main_header = meta + "# Todo List || " + proj + "\n"
 	result += main_header + "\n"
 
 # Overdue
@@ -461,8 +461,9 @@ if "@" in flags:
 	result += overdue_task_header
 	result += overdue_task_filter + "\n\n"
 
+# Daily
 if "&&" not in flags:
-	today_task_header = "## 🏃 Today"
+	today_task_header = "## 🏃 Daily"
 	today_task_filter = " | +daily -OVERDUE " + due_today
 	result += today_task_header
 	result += today_task_filter + "\n"
