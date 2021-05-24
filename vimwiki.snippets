@@ -456,7 +456,7 @@ if "&&" not in flags:
 
 # Overdue
 if "@" in flags:
-	overdue_task_header = "## 💀 Overdue"
+	overdue_task_header = "## 🔥 Overdue"
 	overdue_task_filter = " | +OVERDUE"
 	result += overdue_task_header
 	result += overdue_task_filter + "\n\n"
@@ -512,6 +512,13 @@ if "&&" not in flags:
 	reminders_task_filter = " | +remind -OVERDUE -COMPLETED due:later"
 	result += reminders_task_header
 	result += reminders_task_filter + "\n\n"
+
+# Someday task header
+if "&&" not in flags:
+	someday_task_header = "## 🔜 Someday"
+	someday_task_filter = " | +someday -OVERDUE -COMPLETED due:later"
+	result += someday_task_header
+	result += someday_task_filter + "\n\n"
 
 # Tomorrow task header
 if "&&" not in flags:
