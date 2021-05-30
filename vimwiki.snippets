@@ -509,16 +509,9 @@ if "&&" not in flags:
 	result += '\n--------------------------------------------------------------------------------\n\n'
 
 	reminders_task_header = "## 🔔 Reminders"
-	reminders_task_filter = " | +remind -OVERDUE -COMPLETED due:later"
+	reminders_task_filter = " | +remind -COMPLETED"
 	result += reminders_task_header
 	result += reminders_task_filter + "\n\n"
-
-# Someday task header
-if "&&" not in flags:
-	someday_task_header = "## 🔜 Someday"
-	someday_task_filter = " | +someday -OVERDUE -COMPLETED due:later"
-	result += someday_task_header
-	result += someday_task_filter + "\n\n"
 
 # Tomorrow task header
 if "&&" not in flags:
@@ -532,7 +525,14 @@ if "&&" not in flags:
 	yesterday_task_header = "## 🌜 Yesterday"
 	yesterday_task_filter = " | -OVERDUE " + due_yesterday
 	result += yesterday_task_header
-	result += yesterday_task_filter + "\n"
+	result += yesterday_task_filter + "\n\n"
+
+# Someday task header
+if "&&" not in flags:
+	someday_task_header = "## 🔜 Someday"
+	someday_task_filter = " | +someday -COMPLETED"
+	result += someday_task_header
+	result += someday_task_filter + "\n\n"
 
 # Output
 snip.rv = result`
