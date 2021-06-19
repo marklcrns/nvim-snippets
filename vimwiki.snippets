@@ -270,14 +270,8 @@ endsnippet
 snippet ve "YouTube Video link with embedded image" w
 [📺 ${1:${VISUAL}}]($2)$0
 
-[![$1](https://img.youtube.com/vi/${2/watch?v=(\w+)(\/)?/$1/g}/0.jpg)]($2 "$1")
+[![$1](https://img.youtube.com/vi/${2/.*watch\?v=(\w+)/$1/}/0.jpg)]($2 "$1")
 endsnippet
-
-# snippet test "description" w
-# [${1:${VISUAL}}]
-# 
-# ${1/([0-9.,]+)?(\w+)\s*/\L$2-\E/g
-# endsnippet
 
 snippet p "Video playlist link" w
 [💽 ${1:${VISUAL}}]($2)$0
