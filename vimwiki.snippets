@@ -884,9 +884,9 @@ if flags:
 	if match.group(1):	# In-line definition. If term sandwhiched by '&'
 		end = "$0"
 	elif 'i' in flags:				# Same line definition
-		end = " - $0<br>"
+		end = ": $0<br>"
 	else:
-		end = "\n\n- $0"				# Multi-line definition
+		end = "\n\n:   $0"				# Multi-line definition
 	# Capitalizations
 	if 'c' in flags:					# Capitalize term
 		term = orig_term.capitalize()
@@ -899,7 +899,7 @@ else:
 	if match.group(1):	# In-line definition. If term sandwhiched by '&'
 		end = "$0"
 	else:
-		end = "\n\n- $0"
+		end = "\n\n:   $0"
 	term = orig_term
 
 snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
