@@ -270,7 +270,7 @@ endsnippet
 snippet ve "YouTube Video link with embedded image" w
 [📺 ${1:${VISUAL}}]($2)$0
 
-[![$1](https://img.youtube.com/vi/${2/.*watch\?v=(\w+)/$1/}/0.jpg)]($2 "$1")
+[![$1](https://img.youtube.com/vi/${2/.*watch\?v=(\w+)/$1/}/2.jpg)]($2 "$1")
 endsnippet
 
 snippet p "Video playlist link" w
@@ -741,7 +741,7 @@ for i in range(0, len(video_url)):
 	else:
 		break
 
-snip.rv = "[![${1:Alt text}](https://img.youtube.com/vi/" + video_id + "/0.jpg)](" + link + "${1/.*/ \"$0\"/})$0"
+snip.rv = "[![${1:Alt text}](https://img.youtube.com/vi/" + video_id + "/2.jpg)](" + link + "${1/.*/ \"$0\"/})$0"
 `
 endsnippet
 
