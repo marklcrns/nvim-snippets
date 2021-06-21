@@ -503,7 +503,7 @@ if "&&" not in flags:
 	result += '\n--------------------------------------------------------------------------------\n\n'
 
 	reminders_task_header = "## 🔔 Reminders"
-	reminders_task_filter = " | +remind -COMPLETED priority:M"
+	reminders_task_filter = " | +remind -COMPLETED priority:L"
 	result += reminders_task_header
 	result += reminders_task_filter + "\n\n"
 
@@ -524,7 +524,7 @@ if "&&" not in flags:
 # Someday task header
 if "&&" not in flags:
 	someday_task_header = "## 🔜 Someday"
-	someday_task_filter = " | +someday -COMPLETED"
+	someday_task_filter = " | +someday wait:later -COMPLETED"
 	result += someday_task_header
 	result += someday_task_filter + "\n\n"
 
