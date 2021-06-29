@@ -270,7 +270,7 @@ endsnippet
 snippet ve "YouTube Video link with embedded image" w
 [📺 ${1:${VISUAL}}]($2)$0
 
-[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)(\w+)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="200"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)(\w+)((&|\/|)?.*)?/$2//$1/} "$1")
+[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="200"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
 endsnippet
 
 snippet p "Video playlist link" w
