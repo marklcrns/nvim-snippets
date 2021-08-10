@@ -104,6 +104,10 @@ def get_next_week_date(week_date, next_date):
 			i += 1
 	return day
 
+def get_date_from_now(next_date):
+	day = date.today() + timedelta(next_date)
+	return day
+
 # https://stackoverflow.com/a/13565185/11850077
 def get_last_day_of_month(ref_date):
 	end = ref_date.replace(day=28) + timedelta(days=4)  # this will never fail
@@ -123,6 +127,7 @@ boundaries = {
 	"v": ["|", "|"],
 	"V": ["||", "||"]
 }
+
 weekdays = {
 	"0": "Monday",
 	"1": "Tuesday",
@@ -422,9 +427,9 @@ yesterday = datetime.strftime(base_yesterday, date_format)
 
 today_verbose = datetime.strftime(base, date_format_verbose)
 
-end_of_today = datetime.strftime(base, date_format) + "T23:59:59"
-end_of_tomorrow = datetime.strftime(base_tomorrow, date_format) + "T23:59:59"
-end_of_yesterday = datetime.strftime(base_yesterday, date_format) + "T23:59:59"
+end_of_today = today + "T23:59:59"
+end_of_tomorrow = tomorrow + "T23:59:59"
+end_of_yesterday = yesterday + "T23:59:59"
 end_of_week = (get_next_week_date(6, 1)).strftime(date_format) + "T23:59:59"
 end_of_next_week = (get_next_week_date(6, 2)).strftime(date_format) + "T23:59:59"
 end_of_month = get_last_day_of_month(base).strftime(date_format) + "T23:59:59"
@@ -448,6 +453,7 @@ due_end_of_month = f"due:{end_of_month}"
 
 result = ""
 task_checkbox = "* [ ] "
+separator = "--------------------------------------------------------------------------------\n\n"
 
 # Main header
 if "&&" not in flags:
@@ -461,17 +467,8 @@ if "@" in flags:
 	result += overdue_task_header
 	result += overdue_task_filter + "\n\n"
 
-# Daily
-if "&&" not in flags:
-	today_task_header = "## 🏃 Daily"
-	today_task_filter = " | +daily -OVERDUE " + due_today
-	result += today_task_header
-	result += today_task_filter + "\n"
-	result += task_checkbox + '$0' + "\n"
-
 # Append side task snippet into result if '&' flag was given
 if "&" in flags:
-	result += "\n" if "&&" not in flags else ""
 	# Extract multiplier from flag if any
 	mult = [int(c) for c in flags if c.isdigit()]
 	mult = mult[0] if mult else 1
@@ -488,54 +485,62 @@ if "&" in flags:
 		elif "&&" not in flags or "!" in flags or '@' in flags:
 			result += "\n"
 
-# weekly and monthly tasks
-if "!" in flags and "&&" not in flags:
-	end_of_week_header = "## 🚶 Weekly"
-	end_of_week_filter = " | +weekly -OVERDUE " + due_end_of_week
-	end_of_month_header = "## 📆 Monthly"
-	end_of_month_filter = " | +monthly -OVERDUE " + due_end_of_month
-	# Append weekly todo
 	result += "\n"
-	result += end_of_week_header
-	result += end_of_week_filter + "\n"
-	result += "\n"
-	# Append monthly todo
-	result += end_of_month_header
-	result += end_of_month_filter + "\n"
 
-
-# Reminders task header
 if "&&" not in flags:
-	result += '\n--------------------------------------------------------------------------------\n\n'
+	# Today
+	today_task_header = "## 🏃 Today"
+	today_task_filter = " | +daily -OVERDUE " + due_today
+	result += today_task_header
+	result += today_task_filter + "\n"
+	result += task_checkbox + '$0' + "\n\n"
+
+	# Next 6 days
+	for i in range(1, 7):
+		next_date = base + timedelta(i)
+		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
+		next_day_task_filter = " | +daily -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
+		result += next_day_task_header
+		result += next_day_task_filter + "\n"
+
+	# weekly and monthly tasks
+	if "!" in flags:
+		result += separator
+
+		end_of_week_header = "## 🚶 Weekly"
+		end_of_week_filter = " | +weekly -OVERDUE " + due_end_of_week
+		end_of_month_header = "## 📆 Monthly"
+		end_of_month_filter = " | +monthly -OVERDUE " + due_end_of_month
+		# Append weekly todo
+		result += end_of_week_header
+		result += end_of_week_filter + "\n"
+		result += "\n"
+		# Append monthly todo
+		result += end_of_month_header
+		result += end_of_month_filter + "\n\n"
+
+	result += separator
 
 	reminders_task_header = "## 🔔 Reminders"
 	reminders_task_filter = " | +remind -COMPLETED priority:L"
 	result += reminders_task_header
 	result += reminders_task_filter + "\n\n"
 
-# Tomorrow task header
-if "&&" not in flags:
-	tomorrow_task_header = "## 🌛 Tomorrow"
-	tomorrow_task_filter = " | +daily -OVERDUE " + due_tomorrow
-	result += tomorrow_task_header
-	result += tomorrow_task_filter + "\n\n"
+	result += separator
 
-# Yesterday task header
-if "&&" not in flags:
+	# Yesterday task header
 	yesterday_task_header = "## 🌜 Yesterday"
 	yesterday_task_filter = " | -OVERDUE " + due_yesterday
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n\n"
 
-# Next week task header
-if "&&" not in flags:
+	# Next week task header
 	end_of_next_week_header = "## 🚶 Next Week"
 	end_of_next_week_filter = " | +weekly -OVERDUE " + due_end_of_next_week
 	result += end_of_next_week_header
 	result += end_of_next_week_filter + "\n\n"
 
-# Someday task header
-if "&&" not in flags:
+	# Someday task header
 	someday_task_header = "## 🔜 Someday"
 	someday_task_filter = " | +someday wait:later -COMPLETED"
 	result += someday_task_header
