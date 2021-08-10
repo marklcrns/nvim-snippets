@@ -573,6 +573,7 @@ endsnippet
 # 16:30:30-16:40:30-10tt
 # 16:30:30-16:40:30tt
 # 16:59tt
+post_jump "create_matrix_placeholders(snip)"
 snippet '(([0-2]?[0-9]):([0-6][0-9])(:([0-5][0-9]))?)(-([0-2]?[0-9]):([0-5][0-9])(:([0-5][0-9]))?)?(-([0-9]+))?(h)?tt' "To-do list time template generator" rb
 `!p
 from_hrs = match.group(2) if match.group(2) != None else "00"
@@ -617,6 +618,7 @@ else:
 if to_total_time_secs == 0:
 	time = str(timedelta(seconds=from_total_time_secs))
 	result += f"{header_hash}{header_name} {time} {filters} sched:{date}T{time}\n"
+	result += "* [ ] $0"
 else:
 	while (from_total_time_secs <= to_total_time_secs):
 		time = str(timedelta(seconds=from_total_time_secs))
