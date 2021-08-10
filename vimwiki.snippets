@@ -92,12 +92,16 @@ def create_matrix(cols, rows, sep, start, end):
 
 # Gets next day of the week. Returns today's date if, say '6' was passed in, and
 # today is sunday.
-# Sample usage: get_next_week_date(6), will return the date of next "Sunday"
+# Sample usage: get_next_week_date(6, 1), will return the date of next "Sunday"
+# Sample usage: get_next_week_date(0, 2), will return the date of next next "Monday"
 # https://stackoverflow.com/a/8801197/11850077
-def get_next_week_date(week_date):
+def get_next_week_date(week_date, next_date):
 	day = date.today()
-	while day.weekday() != week_date:
+	i = 0
+	while i != next_date:
 		day += timedelta(1)
+		if day.weekday() == week_date:
+			i += 1
 	return day
 
 # https://stackoverflow.com/a/13565185/11850077
@@ -421,7 +425,8 @@ today_verbose = datetime.strftime(base, date_format_verbose)
 end_of_today = datetime.strftime(base, date_format) + "T23:59:59"
 end_of_tomorrow = datetime.strftime(base_tomorrow, date_format) + "T23:59:59"
 end_of_yesterday = datetime.strftime(base_yesterday, date_format) + "T23:59:59"
-end_of_week = (get_next_week_date(6)).strftime(date_format) + "T23:59:59"
+end_of_week = (get_next_week_date(6, 1)).strftime(date_format) + "T23:59:59"
+end_of_next_week = (get_next_week_date(6, 2)).strftime(date_format) + "T23:59:59"
 end_of_month = get_last_day_of_month(base).strftime(date_format) + "T23:59:59"
 
 # Meta
@@ -437,8 +442,9 @@ proj = "proj:Todo"
 due_today = f"due:{end_of_today}"
 due_tomorrow = f"due:{end_of_tomorrow}"
 due_yesterday = f"due:{end_of_yesterday}"
-due_next_week = f"due:{end_of_week}"
-due_next_month = f"due:{end_of_month}"
+due_end_of_week = f"due:{end_of_week}"
+due_end_of_next_week = f"due:{end_of_next_week}"
+due_end_of_month = f"due:{end_of_month}"
 
 result = ""
 task_checkbox = "* [ ] "
@@ -485,9 +491,9 @@ if "&" in flags:
 # weekly and monthly tasks
 if "!" in flags and "&&" not in flags:
 	end_of_week_header = "## 🚶 Weekly"
-	end_of_week_filter = " | +weekly -OVERDUE " + due_next_week
+	end_of_week_filter = " | +weekly -OVERDUE " + due_end_of_week
 	end_of_month_header = "## 📆 Monthly"
-	end_of_month_filter = " | +monthly -OVERDUE " + due_next_month
+	end_of_month_filter = " | +monthly -OVERDUE " + due_end_of_month
 	# Append weekly todo
 	result += "\n"
 	result += end_of_week_header
@@ -520,6 +526,13 @@ if "&&" not in flags:
 	yesterday_task_filter = " | -OVERDUE " + due_yesterday
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n\n"
+
+# Next week task header
+if "&&" not in flags:
+	end_of_next_week_header = "## 🚶 Next Week"
+	end_of_next_week_filter = " | +weekly -OVERDUE " + due_end_of_next_week
+	result += end_of_next_week_header
+	result += end_of_next_week_filter + "\n\n"
 
 # Someday task header
 if "&&" not in flags:
