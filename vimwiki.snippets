@@ -29,6 +29,7 @@
 
 global !p
 import os, re
+from datetime import datetime, timedelta, date
 
 def get_wiki_files_dir():
 	root = os.getcwd()
@@ -52,7 +53,6 @@ def get_wiki_files_dir():
 	# return path to 'files/' dir relative to current buffer dir
 	return "../" * subdir_count + "files/" + wiki_path
 
-from datetime import datetime, timedelta, date
 
 # Make all multi-line placeholder strings jumpable.
 def create_matrix_placeholders(snip):
@@ -78,6 +78,7 @@ def create_matrix_placeholders(snip):
 	# Expand anonymous snippet
 	snip.expand_anon(anon_snippet_body)
 
+
 def create_matrix(cols, rows, sep, start, end):
 	res = ""
 	placeholder = 1
@@ -89,6 +90,21 @@ def create_matrix(cols, rows, sep, start, end):
 			placeholder += 1
 		res += end
 	return res[:-1]
+
+
+def get_parent_header(snip):
+	# Create anonymous snippet body
+	anon_snippet_body = ""
+	# Get start of snippet as the end of line
+	end = snip.snippet_start[0]
+
+	# Append current line into anonymous snippet
+	for i in reversed(range(0, end)):
+		if (snip.buffer[i].find('#') == 0):
+			return snip.buffer[i]
+	
+	return ""
+
 
 # Gets next day of the week. Returns today's date if, say '6' was passed in, and
 # today is sunday.
@@ -104,15 +120,18 @@ def get_next_week_date(week_date, next_date):
 			i += 1
 	return day
 
+
 def get_date_from_now(next_date):
 	day = date.today() + timedelta(next_date)
 	return day
+
 
 # https://stackoverflow.com/a/13565185/11850077
 def get_last_day_of_month(ref_date):
 	end = ref_date.replace(day=28) + timedelta(days=4)  # this will never fail
 	end = end - timedelta(days=end.day)
 	return end
+
 
 # https://stackoverflow.com/a/59199379/11850077
 def get_start_of_next_month(ref_date):
@@ -406,7 +425,7 @@ endsnippet
 # Prepend "&" to generate nested side todo templates
 # Prepend "&&" to generate nested todo ONLY
 post_jump "create_matrix_placeholders(snip)"
-snippet '([!@&0-9]+)?td' "To-do list template" rbA
+snippet '([!@&0-9]+)?td' "To-do list template" rb
 `!p
 # parse date filename
 fn_date = fn.rstrip('.md')
@@ -490,7 +509,7 @@ if "&" in flags:
 if "&&" not in flags:
 	# Today
 	today_task_header = "## 🏃 Today"
-	today_task_filter = " | +daily -OVERDUE " + due_today
+	today_task_filter = " | +daily -SCHEDULED -OVERDUE " + due_today
 	result += today_task_header
 	result += today_task_filter + "\n"
 	result += task_checkbox + '$0' + "\n\n"
@@ -507,15 +526,21 @@ if "&&" not in flags:
 	if "!" in flags:
 		result += separator
 
-		end_of_week_header = "## 🚶 Weekly"
+		# This week
+		end_of_week_header = "## 🚶 This Week"
 		end_of_week_filter = " | +weekly -OVERDUE " + due_end_of_week
+		result += end_of_week_header
+		result += end_of_week_filter + "\n\n"
+
+		# Next week
+		end_of_next_week_header = "## 🚶 Next Week"
+		end_of_next_week_filter = " | +weekly -OVERDUE " + due_end_of_next_week
+		result += end_of_next_week_header
+		result += end_of_next_week_filter + "\n\n"
+
+		# This month
 		end_of_month_header = "## 📆 Monthly"
 		end_of_month_filter = " | +monthly -OVERDUE " + due_end_of_month
-		# Append weekly todo
-		result += end_of_week_header
-		result += end_of_week_filter + "\n"
-		result += "\n"
-		# Append monthly todo
 		result += end_of_month_header
 		result += end_of_month_filter + "\n\n"
 
@@ -534,12 +559,6 @@ if "&&" not in flags:
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n\n"
 
-	# Next week task header
-	end_of_next_week_header = "## 🚶 Next Week"
-	end_of_next_week_filter = " | +weekly -OVERDUE " + due_end_of_next_week
-	result += end_of_next_week_header
-	result += end_of_next_week_filter + "\n\n"
-
 	# Someday task header
 	someday_task_header = "## 🔜 Someday"
 	someday_task_filter = " | +someday wait:later -COMPLETED"
@@ -548,6 +567,64 @@ if "&&" not in flags:
 
 # Output
 snip.rv = result`
+endsnippet
+
+# Usage
+# 16:30:30-16:40:30-10tt
+# 16:30:30-16:40:30tt
+# 16:59tt
+snippet '(([0-2]?[0-9]):([0-6][0-9])(:([0-5][0-9]))?)(-([0-2]?[0-9]):([0-5][0-9])(:([0-5][0-9]))?)?(-([0-9]+))?(h)?tt' "To-do list time template generator" rb
+`!p
+from_hrs = match.group(2) if match.group(2) != None else "00"
+from_mins = match.group(3) if match.group(3) != None else "00"
+from_secs = match.group(5) if match.group(5) != None else "00"
+to_hrs = match.group(7) if match.group(7) != None else "00"
+to_mins = match.group(8) if match.group(8) != None else "00"
+to_secs = match.group(10) if match.group(10) != None else "00"
+steps = int(match.group(12)) * 60 if match.group(12) != None else 1800
+inherit_header = True if match.group(13) != None else False
+
+time_format = "%H:%M:%S"
+from_time = datetime.strptime(f"{from_hrs}:{from_mins}:{from_secs}", time_format)
+to_time = datetime.strptime(f"{to_hrs}:{to_mins}:{to_secs}", time_format)
+from_total_time_secs = sum(x * int(t) for x, t in zip([3600, 60, 1], f"{from_hrs}:{from_mins}:{from_secs}".split(":"))) 
+to_total_time_secs = sum(x * int(t) for x, t in zip([3600, 60, 1], f"{to_hrs}:{to_mins}:{to_secs}".split(":"))) 
+
+header_hash = "#"
+header_name = ""
+date = ""
+result = ""
+
+# Get parent header infos
+parent_header = get_parent_header(snip)
+filter_idx = parent_header.find('|') if parent_header.find('||') == -1 else -1
+filters = parent_header[filter_idx:] if filter_idx != -1 else "|"
+filters = filters.replace(' -SCHEDULED', '')
+
+if parent_header != None:
+	header_hash += parent_header[parent_header.find('#'):parent_header.find(' ')]
+	if inherit_header:
+		header_name = parent_header[parent_header.find(' '):parent_header.find('|') - 1]
+
+# Get header due date, else filename
+if parent_header.find('due:') != -1:
+	idx = parent_header.find('due:')
+	date = parent_header[idx + 4:parent_header.find('T', idx)]
+else:
+	fn_date = fn.rstrip('.md')
+	date = fn_date.replace('-', ':')
+
+if to_total_time_secs == 0:
+	time = str(timedelta(seconds=from_total_time_secs))
+	result += f"{header_hash}{header_name} {time} {filters} sched:{date}T{time}\n"
+else:
+	while (from_total_time_secs <= to_total_time_secs):
+		time = str(timedelta(seconds=from_total_time_secs))
+		result += f"{header_hash}{header_name} {time} {filters} sched:{date}T{time}\n"
+		from_total_time_secs += steps
+
+# Output
+snip.rv =  result`
 endsnippet
 
 snippet '(\d+)meds' "Description" rbA
