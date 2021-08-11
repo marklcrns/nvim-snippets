@@ -619,13 +619,17 @@ else:
 	date = fn_date.replace('-', ':')
 
 if to_total_time_secs == 0:
-	time = str(timedelta(seconds=from_total_time_secs))
-	result += f"{header_hash}{header_name} {time} {filters} sched:{date}T{time}\n"
+	time_on = str(timedelta(seconds=from_total_time_secs))
+	time_before = str(timedelta(seconds=from_total_time_secs + 60))
+	time_after = str(timedelta(seconds=from_total_time_secs - 60))
+	result += f"{header_hash}{header_name} {time_on} {filters} sched.before:{date}T{time_before} sched.after:{date}T{time_after}\n"
 	result += "* [ ] $0"
 else:
 	while (from_total_time_secs <= to_total_time_secs):
-		time = str(timedelta(seconds=from_total_time_secs))
-		result += f"{header_hash}{header_name} {time} {filters} sched:{date}T{time}\n"
+		time_on = str(timedelta(seconds=from_total_time_secs))
+		time_before = str(timedelta(seconds=from_total_time_secs + 60))
+		time_after = str(timedelta(seconds=from_total_time_secs - 60))
+		result += f"{header_hash}{header_name} {time_on} {filters} sched.before:{date}T{time_before} sched.after:{date}T{time_after}\n"
 		from_total_time_secs += steps
 
 # Output
