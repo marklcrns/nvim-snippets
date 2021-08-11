@@ -472,7 +472,7 @@ due_end_of_month = f"due:{end_of_month}"
 
 result = ""
 task_checkbox = "* [ ] "
-separator = "--------------------------------------------------------------------------------\n\n"
+separator = "--------------------------------------------------------------------------------\n"
 
 # Main header
 if "&&" not in flags:
@@ -529,6 +529,7 @@ if "&&" not in flags:
 		next_date = base + timedelta(i)
 		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
 		next_day_task_filter = " | +daily -SCHEDULED -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
+		result += "\n-----\n"
 		result += next_day_task_header
 		result += next_day_task_filter + "\n"
 
@@ -622,14 +623,14 @@ if to_total_time_secs == 0:
 	time_on = str(timedelta(seconds=from_total_time_secs))
 	time_before = str(timedelta(seconds=from_total_time_secs + 60))
 	time_after = str(timedelta(seconds=from_total_time_secs - 60))
-	result += f"{header_hash}{header_name} {time_on} {filters} sched.before:{date}T{time_before} sched.after:{date}T{time_after}\n"
+	result += f"{header_hash}{header_name} {time_on} {filters} sched:{date}T{time_on} sched.before:{date}T{time_before} sched.after:{date}T{time_after}\n"
 	result += "* [ ] $0"
 else:
 	while (from_total_time_secs <= to_total_time_secs):
 		time_on = str(timedelta(seconds=from_total_time_secs))
 		time_before = str(timedelta(seconds=from_total_time_secs + 60))
 		time_after = str(timedelta(seconds=from_total_time_secs - 60))
-		result += f"{header_hash}{header_name} {time_on} {filters} sched.before:{date}T{time_before} sched.after:{date}T{time_after}\n"
+		result += f"{header_hash}{header_name} {time_on} {filters} sched:{date}T{time_on} sched.before:{date}T{time_before} sched.after:{date}T{time_after}\n"
 		from_total_time_secs += steps
 
 # Output
