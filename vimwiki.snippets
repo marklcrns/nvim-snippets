@@ -507,6 +507,16 @@ if "&" in flags:
 	result += "\n"
 
 if "&&" not in flags:
+
+	result += separator
+
+	reminders_task_header = "## 🔔 Reminders"
+	reminders_task_filter = " | +remind -COMPLETED priority:L"
+	result += reminders_task_header
+	result += reminders_task_filter + "\n\n"
+
+	result += separator
+
 	# Today
 	today_task_header = "## 🏃 Today"
 	today_task_filter = " | +daily -SCHEDULED -OVERDUE " + due_today
@@ -518,14 +528,14 @@ if "&&" not in flags:
 	for i in range(1, 7):
 		next_date = base + timedelta(i)
 		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
-		next_day_task_filter = " | +daily -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
+		next_day_task_filter = " | +daily -SCHEDULED -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
 		result += next_day_task_header
 		result += next_day_task_filter + "\n"
 
+	result += separator
+
 	# weekly and monthly tasks
 	if "!" in flags:
-		result += separator
-
 		# This week
 		end_of_week_header = "## 🚶 This Week"
 		end_of_week_filter = " | +weekly -OVERDUE " + due_end_of_week
@@ -544,14 +554,7 @@ if "&&" not in flags:
 		result += end_of_month_header
 		result += end_of_month_filter + "\n\n"
 
-	result += separator
-
-	reminders_task_header = "## 🔔 Reminders"
-	reminders_task_filter = " | +remind -COMPLETED priority:L"
-	result += reminders_task_header
-	result += reminders_task_filter + "\n\n"
-
-	result += separator
+		result += separator
 
 	# Yesterday task header
 	yesterday_task_header = "## 🌜 Yesterday"
