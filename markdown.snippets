@@ -126,7 +126,7 @@ snippet hit "Html italic tag" wA
 <i>${1:${VISUAL}}</i>$0
 endsnippet
 
-snippet meta "Meta deta template" b
+snippet meta "Metadata template" b
 ---
 title: ${1:(Insert Title Here)}
 author: ${2:Mark Lucernas}
@@ -138,7 +138,17 @@ summary: $3
 $0
 endsnippet
 
+
 snippet cbox "Markdown checkbox" wA
 - [ ] $0
+endsnippet
+
+
+snippet ntemp "Neuron metadata template" b
+slug: $1
+title: ${1/([a-zA-Z0-9]+)?-([a-zA-Z0-9]+)?/\u$1 \u$2/g}
+tags: $1
+	- $1
+	- $0
 endsnippet
 
