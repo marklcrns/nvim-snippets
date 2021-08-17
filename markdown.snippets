@@ -146,8 +146,8 @@ endsnippet
 
 snippet ntemp "Neuron metadata template" b
 slug: $1
-title: ${1/([a-zA-Z0-9]+)?-([a-zA-Z0-9]+)?/\u$1 \u$2/g}
-tags: $1
+title: ${1/(-)?([a-zA-Z0-9]+)/(?1: )\u$2/g}
+tags:
 	- $1
 	- $0
 endsnippet
