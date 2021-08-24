@@ -24,6 +24,58 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
+global !p
+import os, re
+from datetime import datetime, timedelta, date
+
+# Make all multi-line placeholder strings jumpable.
+def create_matrix_placeholders(snip):
+	# Create anonymous snippet body
+	anon_snippet_body = ""
+
+	# Get start and end line number of expanded snippet
+	start = snip.snippet_start[0]
+	end = snip.snippet_end[0]
+
+  # Append current line into anonymous snippet
+	for i in range(start, end + 1):
+		anon_snippet_body += snip.buffer[i]
+		anon_snippet_body += "" if i == end else "\n"
+
+	# Delete expanded snippet line till second to last line
+	for i in range(start, end):
+		del snip.buffer[start]
+
+	# Empty last expanded snippet line while preserving the line
+	snip.buffer[start] = ''
+
+	# Expand anonymous snippet
+	snip.expand_anon(anon_snippet_body)
+
+
+def get_last_header_idx(snip):
+	# Get start of snippet line number
+	start = snip.snippet_start[0]
+
+	# Append current line into anonymous snippet
+	for i in reversed(range(start, len(snip.buffer))):
+		if (snip.buffer[i].find('#') == 0):
+			return (snip.buffer[i], i)
+	
+	return ("", 0)
+
+def get_last_footnote_link(header_idx):
+	for i in range(header_idx, len(snip.buffer)):
+		footnote = re.match("(^\[\^(\d|\w+)\])", snip.buffer[i])
+		if (footnote):
+			return footnote.group(1)
+	
+	return ""
+	
+
+endglobal
+
+
 snippet h1 "Header 1" bA
 # $1
 $0
@@ -94,6 +146,34 @@ endsnippet
 
 snippet a "Markdown anchor link" w
 [#${1:${VISUAL}}]($0#$1)
+endsnippet
+
+snippet ve "YouTube Video link with embedded image" w
+[📺 ${1:${VISUAL}}]($2)$0
+
+[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="200"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
+endsnippet
+
+post_jump "create_matrix_placeholders(snip)"
+snippet vef "YouTube Video link with embedded image for html" w
+`!p
+head, idx = get_last_header_idx(snip)
+
+res = ""
+last_footnote_idx = 0
+if head != "" and idx != 0:
+	footnote = get_last_footnote_link(idx)
+	if footnote != "":
+		match = re.match("(^\[\^(\d+)\])", str(footnote))
+		last_footnote_idx = int(match.group(2)) if match else 0
+
+last_footnote_idx += 1
+
+res = "$1 [^" + str(last_footnote_idx) + "] $0\n"
+res += '<iframe width="420" height="315" src="https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}"></iframe>'
+res += "\n\n[^" + str(last_footnote_idx) + "]: $2 ($1)\n"
+snip.rv = res
+`
 endsnippet
 
 snippet anc "Html anchor" bA
