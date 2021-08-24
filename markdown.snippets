@@ -143,13 +143,22 @@ snippet cbox "Markdown checkbox" wA
 - [ ] $0
 endsnippet
 
+# DEPRECATED
+# snippet ntemp "Neuron metadata template" b
+# slug: $1
+# title: ${1/(-)?([a-zA-Z0-9]+)/(?1: )\u$2/g}
+# tags:
+# 	- wip
+# 	- $1
+# 	- $0
+# endsnippet
 
 snippet ntemp "Neuron metadata template" b
-title: ${1/(-)?([a-zA-Z0-9]+)/(?1: )\u$2/g}
-slug: $1
+title: $1
+slug: ${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}
 tags:
 	- wip
-	- $1
+	- ${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}
 	- $0
 endsnippet
 
