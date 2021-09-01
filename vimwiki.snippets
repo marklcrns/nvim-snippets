@@ -466,6 +466,8 @@ proj = "proj:Todo"
 due_today = f"due:{end_of_today}"
 due_tomorrow = f"due:{end_of_tomorrow}"
 due_yesterday = f"due:{end_of_yesterday}"
+due_weekly = f"due:{end_of_week}"
+due_monthly = f"due:{end_of_month}"
 due_this_week = f"due.after:{end_of_yesterday} due.before:{end_of_week}"
 due_next_week = f"due.after:{end_of_week} due.before:{end_of_next_week}"
 due_this_month = f"due.after:{end_of_yesterday} due.before:{end_of_month}"
@@ -529,28 +531,41 @@ if "&&" not in flags:
 		next_date = base + timedelta(i)
 		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
 		next_day_task_filter = " | +PENDING -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
-		result += "-----\n"
 		result += next_day_task_header
 		result += next_day_task_filter + "\n"
+
+	result += separator
+
+	# Weekly
+	end_of_week_header = "## 🚶 Weekly"
+	end_of_week_filter = " | -OVERDUE +weekly " + due_weekly
+	result += end_of_week_header
+	result += end_of_week_filter + "\n\n"
+
+	# This month
+	end_of_month_header = "## 📆 Monthly"
+	end_of_month_filter = " | -OVERDUE +monthly " + due_monthly
+	result += end_of_month_header
+	result += end_of_month_filter + "\n\n"
 
 	result += separator
 
 	# weekly and monthly tasks
 	if "!" in flags:
 		# This week
-		end_of_week_header = "## 🚶 This Week"
+		end_of_week_header = "## This Week"
 		end_of_week_filter = " | -OVERDUE " + due_this_week
 		result += end_of_week_header
 		result += end_of_week_filter + "\n\n"
 
 		# Next week
-		end_of_next_week_header = "## 🚶 Next Week"
+		end_of_next_week_header = "## Next Week"
 		end_of_next_week_filter = " | -OVERDUE " + due_next_week
 		result += end_of_next_week_header
 		result += end_of_next_week_filter + "\n\n"
 
 		# This month
-		end_of_month_header = "## 📆 This Month"
+		end_of_month_header = "## This Month"
 		end_of_month_filter = " | -OVERDUE " + due_this_month
 		result += end_of_month_header
 		result += end_of_month_filter + "\n\n"
