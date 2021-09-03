@@ -496,7 +496,7 @@ if "&" in flags:
 
 	for i in range(1, (mult * 3) + 1, 3):
 		side_task_header = "## ${" + str(i) + ":Side}"
-		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} -OVERDUE priority:${" + str(i + 1) + ":H}" + " " + due_today
+		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} +PENDING -OVERDUE priority:${" + str(i + 1) + ":H}" + " " + due_today
 		result += side_task_header
 		result += side_task_filter + "\n"
 		result += task_checkbox + "$" + str(i + 2)
@@ -526,8 +526,8 @@ if "&&" not in flags:
 	result += today_task_filter + "\n"
 	result += task_checkbox + '$0' + "\n\n"
 
-	# Next 6 days
-	for i in range(1, 7):
+	# Next 3 days
+	for i in range(1, 4):
 		next_date = base + timedelta(i)
 		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
 		next_day_task_filter = " | +PENDING -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
