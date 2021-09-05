@@ -219,32 +219,32 @@ endglobal
 
 # ====================Vimwiki/Markdown Snippets====================
 
-snippet h1 "Header 1" bA
+snippet h1 "Header 1" b
 # $1
 $0
 endsnippet
 
-snippet h2 "Header 2" bA
+snippet h2 "Header 2" b
 ## $1
 $0
 endsnippet
 
-snippet h3 "Header 3" bA
+snippet h3 "Header 3" b
 ### $1
 $0
 endsnippet
 
-snippet h4 "Header 4" bA
+snippet h4 "Header 4" b
 #### $1
 $0
 endsnippet
 
-snippet h5 "Header 5" bA
+snippet h5 "Header 5" b
 ##### $1
 $0
 endsnippet
 
-snippet h6 "Header 6" bA
+snippet h6 "Header 6" b
 ###### $1
 $0
 endsnippet
@@ -257,21 +257,21 @@ ${0:${VISUAL}}
 </$1>
 endsnippet
 
-snippet itag "In-line HTML tag <>" wA
+snippet itag "In-line HTML tag <>" w
 <$1>${0:${VISUAL}}</$1>
 endsnippet
 
-snippet '(.+)?fen' "Fenced code block" rbA
+snippet '(.+)?fen' "Fenced code block" rb
 \`\`\``!p snip.rv = "" if match.group(1) == None else match.group(1)`
 ${0:${VISUAL}}
 \`\`\`
 endsnippet
 
-snippet mcom "Markdown comment" bA
+snippet mcom "Markdown comment" b
 [$1]: # $0
 endsnippet
 
-snippet hcom "Markdown comment" bA
+snippet hcom "Markdown comment" b
 <!--- $1 --->$0
 endsnippet
 
@@ -330,7 +330,7 @@ snippet a "Markdown anchor link" w
 endsnippet
 
 # FIXME
-# snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
+# snippet '#(.*)&a' "Convert anchor name ref into valid html id" ir
 # `!p
 # ref = match.group(1)
 # 
@@ -356,27 +356,27 @@ $0
 </pre>
 endsnippet
 
-snippet kbd "Markdown key bindings tag" wA
+snippet kbd "Markdown key bindings tag" w
 <kbd>${1:${VISUAL}}</kbd>$0
 endsnippet
 
-snippet ** "Markdown Bold" iA
+snippet ** "Markdown Bold" i
 **${1:${VISUAL}}**$0
 endsnippet
 
-snippet __ "Markdown Italic" iA
+snippet __ "Markdown Italic" i
 _${1:${VISUAL}}_$0
 endsnippet
 
-snippet ~~ "Markdown Strikethrough" iA
+snippet ~~ "Markdown Strikethrough" i
 ~~${1:${VISUAL}}~~$0
 endsnippet
 
-snippet hbo "Html bold tag" wA
+snippet hbo "Html bold tag" w
 <b>${1:${VISUAL}}</b>$0
 endsnippet
 
-snippet hit "Html italic tag" wA
+snippet hit "Html italic tag" w
 <i>${1:${VISUAL}}</i>$0
 endsnippet
 
@@ -652,7 +652,7 @@ else:
 snip.rv =  result`
 endsnippet
 
-snippet '(\d+)meds' "Description" rbA
+snippet '(\d+)meds' "Description" rb
 `!p
 # parse date filename
 fn_date = fn.rstrip('.md')
@@ -691,7 +691,7 @@ snippet task "Todo/Task checkbox" bA
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)([cC]{1,2})?t' "Markdown table (n)t" brA
+snippet '(\d+)([cC]{1,2})?t' "Markdown table (n)t" br
 `!p
 t_column_ct = int(match.group(1))
 flags = match.group(2) if match.group(2) != None else ""
@@ -716,7 +716,7 @@ endsnippet
 # Usage: [wrap]?table, optional wrapper char for each table cell
 # Note: Lines should trail '&' char for splitting. Only until second to last.
 # Ref: http://vimcasts.org/episodes/ultisnips-visual-placeholder/
-snippet '([`$_*])?([cC]{1,2})?atab' "Markdown Table Builder" rbA
+snippet '([`$_*])?([cC]{1,2})?atab' "Markdown Table Builder" rb
 `!p
 # Fetch visual selected text
 wrap_char =  match.group(1) if match.group(1) != None else "" # Wraper char to wrap table cell items
@@ -769,7 +769,7 @@ snip.rv = result
 `
 endsnippet
 
-snippet tab2 "Two tables side by side" bA
+snippet tab2 "Two tables side by side" b
 <center>
 
 <table>
@@ -789,7 +789,7 @@ snippet tab2 "Two tables side by side" bA
 </center>
 endsnippet
 
-snippet tab3 "Three tables side by side" bA
+snippet tab3 "Three tables side by side" b
 <center>
 
 <table>
@@ -826,19 +826,19 @@ snippet C "Markdown copyright symbol" i
 endsnippet
 
 # ==========Note taking snippets========== #
-snippet tstamp "Video lecture timestamps" bA
+snippet tstamp "Video lecture timestamps" b
 Timestamps
 
 	$0
 endsnippet
 
-snippet ttime "Video lecture timestamp item" iA
+snippet ttime "Video lecture timestamp item" i
 - ${1:title} ${2:1:00}
 endsnippet
 
 # Usage: <youtube-url>&e
 post_jump "create_matrix_placeholders(snip)"
-snippet '((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&e' "YouTube pseudo embedded video" wrA
+snippet '((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&e' "YouTube pseudo embedded video" wr
 `!p
 home_url = match.group(1)
 http_url = match.group(2)
@@ -906,7 +906,7 @@ endsnippet
 
 # Usage: <youtube-url>&y
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&y' "Clean and create Youtube link" wrA
+snippet '(\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&y' "Clean and create Youtube link" wr
 `!p
 home_url = match.group(2)
 http_url = match.group(3)
@@ -938,7 +938,7 @@ else:
 endsnippet
 
 # Usage: &name-of-link&alink
-snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wrA
+snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wr
 [`!p
 snip.rv = match.group(1).replace("-", " ")
 `]($1#${2:`!p
@@ -968,7 +968,7 @@ endsnippet
 # terminology name&iacterm -- capitalized same line definition with abbrev
 # a, i, c or t flags are interchangeable
 post_jump "create_matrix_placeholders(snip)"
-snippet '(&)?(\*\*)?([^.*\[\]#&]+)(\*\*)?&([ia(t|c)]{1,3})?term$' "Word or phrase definition auto" wrA
+snippet '(&)?(\*\*)?([^.*\[\]#&]+)(\*\*)?&([ia(t|c)]{1,3})?term$' "Word or phrase definition auto" wr
 `!p
 orig_term = match.group(3).lstrip().rstrip()
 flags = match.group(5)
@@ -1104,7 +1104,7 @@ endsnippet
 
 # Fractions
 # ============================================================
-snippet '(d|t)?f/' "Mathjax normal/display/textstyle fraction" riA
+snippet '(d|t)?f/' "Mathjax normal/display/textstyle fraction" ri
 `!p
 snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
 `frac{${1:${VISUAL}}}{$2}$0
@@ -1318,51 +1318,51 @@ snippet inf "Mathjax infinity" i
 \infty
 endsnippet
 
-snippet PP "Mathjax prime numbers" wA
+snippet PP "Mathjax prime numbers" w
 \mathbb{P}
 endsnippet
 
-snippet NN "Mathjax natural numbers" wA
+snippet NN "Mathjax natural numbers" w
 \mathbb{N}
 endsnippet
 
-snippet ZZ "Mathjax integer numbers" wA
+snippet ZZ "Mathjax integer numbers" w
 \mathbb{Z}
 endsnippet
 
-snippet II "Mathjax irrational numbers" wA
+snippet II "Mathjax irrational numbers" w
 \mathbb{I}
 endsnippet
 
-snippet QQ "Mathjax rational numbers" wA
+snippet QQ "Mathjax rational numbers" w
 \mathbb{Q}
 endsnippet
 
-snippet RR "Mathjax real numbers" wA
+snippet RR "Mathjax real numbers" w
 \mathbb{R}
 endsnippet
 
-snippet CC "Mathjax complex numbers" wA
+snippet CC "Mathjax complex numbers" w
 \mathbb{C}
 endsnippet
 
-snippet SS "Mathjax section" wA
+snippet SS "Mathjax section" w
 \S
 endsnippet
 
-snippet EE "Mathjax exists" wA
+snippet EE "Mathjax exists" w
 \exists
 endsnippet
 
-snippet AA "forall" wA
+snippet AA "forall" w
 \forall
 endsnippet
 
-snippet nabl "nabla" wA
+snippet nabl "nabla" w
 \nabla
 endsnippet
 
-snippet xx "cross" wA
+snippet xx "cross" w
 \times
 endsnippet
 
@@ -1374,23 +1374,23 @@ snippet bc "Mathjax because dots" w
 \because
 endsnippet
 
-snippet * "Mathjax cdot" w
+snippet c. "Mathjax cdot" w
 \cdot
 endsnippet
 
-snippet l.. "Mathjax lower dots" iA
+snippet l.. "Mathjax lower dots" i
 \ldots
 endsnippet
 
-snippet c.. "Mathjax center dots" iA
+snippet c.. "Mathjax center dots" i
 \cdots
 endsnippet
 
-snippet v.. "Mathjax vertical dots" iA
+snippet v.. "Mathjax vertical dots" i
 \vdots
 endsnippet
 
-snippet d.. "Mathjax diagonal dots" iA
+snippet d.. "Mathjax diagonal dots" i
 \ddots
 endsnippet
 
@@ -1542,7 +1542,7 @@ snippet subs "subset" i
 \subset
 endsnippet
 
-snippet notin "not in " iA
+snippet ni "not in" i
 \not\in
 endsnippet
 
@@ -1550,7 +1550,7 @@ snippet in "in" w
 \in
 endsnippet
 
-snippet Nn "cap" iA
+snippet Nn "cap" i
 \cap
 endsnippet
 
@@ -1558,11 +1558,11 @@ snippet UU "cup" i
 \cup
 endsnippet
 
-snippet uuu "bigcup" iA
+snippet uuu "bigcup" i
 \bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
-snippet nnn "bigcap" iA
+snippet nnn "bigcap" i
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
@@ -1570,11 +1570,11 @@ snippet OO "emptyset" i
 \emptyset
 endsnippet
 
-snippet <! "normal" iA
+snippet <! "normal" i
 \triangleleft
 endsnippet
 
-snippet <> "hokje" iA
+snippet <> "hokje" i
 \diamond
 endsnippet
 
@@ -1618,11 +1618,11 @@ snippet norm "norm" i
 \|$1\|$0
 endsnippet
 
-snippet mcal "mathcal" iA
+snippet mcal "mathcal" i
 \mathcal{$1}$0
 endsnippet
 
-snippet invs "inverse" iA
+snippet invs "inverse" i
 ^{-1}
 endsnippet
 
@@ -1638,7 +1638,7 @@ snippet phan "Mathjax phantom placeholder" w
 \phantom{$1}$0
 endsnippet
 
-snippet nphan "Mathjax negative phantom placeholder" wA
+snippet nphan "Mathjax negative phantom placeholder" w
 \phantom{-}$0
 endsnippet
 
@@ -1747,23 +1747,23 @@ snippet lrV "Mathjax left right double pipe" i
 \left \| ${1:${VISUAL}} \right \|$0
 endsnippet
 
-snippet bmat "Mathjax in-line brackets matrix" wbA
+snippet bmat "Mathjax in-line brackets matrix" wb
 \begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
 endsnippet
 
-snippet Bmat "Mathjax in-line curly braces matrix" wbA
+snippet Bmat "Mathjax in-line curly braces matrix" wb
 \begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
 endsnippet
 
-snippet pmat "Mathjax in-line parenthesis matrix" wbA
+snippet pmat "Mathjax in-line parenthesis matrix" wb
 \begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
 endsnippet
 
-snippet vmat "Mathjax in-line determinant matrix" wbA
+snippet vmat "Mathjax in-line determinant matrix" wb
 \begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
 endsnippet
 
-snippet Vmat "Mathjax in-line double absolute values matrix" wbA
+snippet Vmat "Mathjax in-line double absolute values matrix" wb
 \begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
 endsnippet
 
