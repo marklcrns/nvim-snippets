@@ -435,6 +435,7 @@ flags = match.group(1) if match.group(1) != None else ""
 # Format date string
 date_format = '%Y-%m-%d'
 date_format_verbose = '%b %d, %Y'
+default_due_time = 'T23:59:00'
 
 base = datetime(int(fn_date[0]), int(fn_date[1]), int(fn_date[2]))
 base_tomorrow = datetime(int(fn_date[0]), int(fn_date[1]), int(fn_date[2])) + timedelta(1)
@@ -446,12 +447,12 @@ yesterday = datetime.strftime(base_yesterday, date_format)
 
 today_verbose = datetime.strftime(base, date_format_verbose)
 
-end_of_today = today + "T23:59:59"
-end_of_tomorrow = tomorrow + "T23:59:59"
-end_of_yesterday = yesterday + "T23:59:59"
-end_of_week = (get_next_week_date(6, 1)).strftime(date_format) + "T23:59:59"
-end_of_next_week = (get_next_week_date(6, 2)).strftime(date_format) + "T23:59:59"
-end_of_month = get_last_day_of_month(base).strftime(date_format) + "T23:59:59"
+end_of_today = today + default_due_time
+end_of_tomorrow = tomorrow + default_due_time
+end_of_yesterday = yesterday + default_due_time
+end_of_week = (get_next_week_date(6, 1)).strftime(date_format) + default_due_time
+end_of_next_week = (get_next_week_date(6, 2)).strftime(date_format) + default_due_time
+end_of_month = get_last_day_of_month(base).strftime(date_format) + default_due_time
 
 # Meta
 title = f"title: TODO list"
@@ -526,11 +527,11 @@ if "&&" not in flags:
 	result += today_task_filter + "\n"
 	result += task_checkbox + '$0' + "\n\n"
 
-	# Next 3 days
-	for i in range(1, 4):
+	# Next 4 days
+	for i in range(1, 5):
 		next_date = base + timedelta(i)
 		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
-		next_day_task_filter = " | +PENDING -OVERDUE due:" + datetime.strftime(next_date, date_format) + "T23:59:59\n"
+		next_day_task_filter = " | +PENDING -OVERDUE due:" + datetime.strftime(next_date, date_format) + default_due_time + "\n"
 		result += next_day_task_header
 		result += next_day_task_filter + "\n"
 
@@ -1113,7 +1114,7 @@ endsnippet
 # snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "Mathjax tab auto fraction" wr
 # \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 # endsnippet
-snippet '^.*\)/' "Mathjax () auto fraction" wrA
+snippet '^.*\)/' "Mathjax () auto fraction" wr
 `!p
 stripped = match.string[:-1]
 depth = 0
@@ -1132,11 +1133,11 @@ endsnippet
 
 # Auto exponent/superscript
 # Matches ^ followed by pattern of characters using negative lookbehind
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" irA
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" ir
 ^{$1}$0
 endsnippet
 
-snippet _ "Mathjax subscript" i
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "Mathjax auto subscript" ir
 _{$1}$0
 endsnippet
 
@@ -1144,7 +1145,7 @@ snippet sqrt "Mathjax square root" i
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet 'root(\d+|n|x|y|z)' "Mathjax root of n" ir
+snippet '(\d+|n|x|y|z)rt' "Mathjax root of n" ir
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
