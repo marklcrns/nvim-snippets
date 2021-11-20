@@ -155,7 +155,7 @@ snippet ve "YouTube Video link with embedded image" w
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
-snippet vef "YouTube Video link with embedded image for html" w
+snippet nve "Neuron YouTube Video link with embedded image for html" w
 `!p
 head, idx = get_last_header_idx(snip)
 
@@ -170,8 +170,8 @@ if head != "" and idx != 0:
 last_footnote_idx += 1
 
 res = "**${1:TITLE}**[^" + str(last_footnote_idx) + "]$0\n"
-res += '<iframe width="420" height="315" src="https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}"></iframe>'
-res += "\n\n[^" + str(last_footnote_idx) + "]: ${2:VIDEO_URL} ($1)\n"
+res += '\n\\\`\\\`\\\` {=html}\n<iframe width="420" height="315" src="https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}"></iframe>\n\\\`\\\`\\\`\n'
+res += "\n[^" + str(last_footnote_idx) + "]: ${2:VIDEO_URL} ($1)\n"
 snip.rv = res
 `
 endsnippet
@@ -240,6 +240,15 @@ tags:
 	- wip
 	- ${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}
 	- $0
+endsnippet
+
+snippet ntldr "Neuron tldr section" b
+<div class="tldr">
+	<h2>TL;DR</h2>
+	<p>
+		$1
+	</p>
+</div>$0
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
