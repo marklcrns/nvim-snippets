@@ -532,6 +532,12 @@ if "&&" not in flags:
 		result += next_day_task_header
 		result += next_day_task_filter + "\n"
 
+	# Someday task header
+	someday_task_header = "## 🔜 Someday"
+	someday_task_filter = " | +someday wait:later -COMPLETED"
+	result += someday_task_header
+	result += someday_task_filter + "\n\n"
+
 	result += separator
 
 	# Weekly
@@ -575,12 +581,6 @@ if "&&" not in flags:
 	yesterday_task_filter = " | -OVERDUE " + due_yesterday
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n\n"
-
-	# Someday task header
-	someday_task_header = "## 🔜 Someday"
-	someday_task_filter = " | +someday wait:later -COMPLETED"
-	result += someday_task_header
-	result += someday_task_filter + "\n\n"
 
 # Output
 snip.rv = result`
