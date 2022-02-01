@@ -1023,6 +1023,11 @@ else:
 snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
 endsnippet
 
+
+snippet aterm "Markdown term anchor link" w
+[${1:${VISUAL}}](${2:file}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
+endsnippet
+
 # ====================Mathjax Snippets==================== #
 
 snippet b$$ "Mathjax block" bA
