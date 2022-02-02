@@ -322,7 +322,9 @@ snippet ie "Clickable Image link" w
 endsnippet
 
 snippet ih "HTML Image link" w
-<img src="${1:path/to/image}" width="${2:500px}" alt="${3:alt}">
+<a name="$1">
+	<img src="`!p snip.rv = get_wiki_files_dir()`$2" width="${3:500px}" alt="${4:alt}">
+</a>
 endsnippet
 
 snippet a "Markdown anchor link" w
@@ -1022,7 +1024,6 @@ else:
 
 snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
 endsnippet
-
 
 snippet aterm "Markdown term anchor link" w
 [${1:${VISUAL}}](${2:file}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
