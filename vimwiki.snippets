@@ -34,7 +34,7 @@ from datetime import datetime, timedelta, date
 def get_wiki_files_dir():
 	root = os.getcwd()
 	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
-	dir_path = os.path.dirname(rel_path) # remove current buffer file from path
+	dir_path = re.sub(fn, '', rel_path) # remove current buffer file from path
 	subdir_count = 0
 	wiki_path = ''
 
