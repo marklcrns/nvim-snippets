@@ -34,15 +34,15 @@ from datetime import datetime, timedelta, date
 def get_wiki_files_dir():
 	root = os.getcwd()
 	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
-	files_path = re.sub(fn, '', rel_path) # remove current buffer file from path
+	dir_path = os.path.dirname(rel_path) # remove current buffer file from path
 	subdir_count = 0
 	wiki_path = ''
 
 	try:
-		if 'md/' in files_path:
-			file_index_end =  files_path.index('md/') + 2 # Get the end index of 'md' dir
-			stripped_path = files_path[file_index_end:]		# Strip trailing path from after 'md' dir
-			wiki_path = files_path[file_index_end + 1:]
+		if '/md/' in dir_path:
+			file_index_end =  dir_path.index('/md/') + 2 # Get the end index of 'md' dir
+			stripped_path = dir_path[file_index_end:]		# Strip trailing path from after 'md' dir
+			wiki_path = dir_path[file_index_end + 1:]
 			# Count how deep current buffer dir relative to 'md' dir or stripped path
 			for i in stripped_path:
 				if i == '/':
@@ -52,6 +52,20 @@ def get_wiki_files_dir():
 
 	# return path to 'files/' dir relative to current buffer dir
 	return "../" * subdir_count + "files/" + wiki_path
+
+
+def get_nearest_bibliography():
+	abs_path = os.path.abspath(path)
+	dir_path = os.path.dirname(abs_path) # remove current file from path
+	subdir_count = 0
+	wiki_path = ''
+
+	while '/md/' in dir_path:
+		if os.path.exists(dir_path + '/bibliography.md'): break
+		dir_path = os.path.dirname(dir_path)
+		subdir_count += 1
+
+	return "../" * subdir_count + 'bibliography.md'
 
 
 # Make all multi-line placeholder strings jumpable.
@@ -325,6 +339,8 @@ snippet ih "HTML Image link" w
 <a name="$1">
 	<img src="`!p snip.rv = get_wiki_files_dir()`$2" width="${3:500px}" alt="${4:alt}">
 </a>
+
+> $4
 endsnippet
 
 snippet a "Markdown anchor link" w
@@ -526,8 +542,8 @@ if "&&" not in flags:
 	result += today_task_filter + "\n"
 	result += task_checkbox + '$0' + "\n\n"
 
-	# Next 4 days
-	for i in range(1, 5):
+	# Next 14 days
+	for i in range(1, 15):
 		next_date = base + timedelta(i)
 		next_day_task_header = "## 🌛 " + weekdays[str(next_date.weekday())]
 		next_day_task_filter = " | +PENDING -OVERDUE due:" + datetime.strftime(next_date, date_format) + default_due_time + "\n"
@@ -1026,7 +1042,7 @@ snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
 endsnippet
 
 snippet aterm "Markdown term anchor link" w
-[${1:${VISUAL}}](${2:file}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
+[${1:${VISUAL}}](${2:`!p snip.rv = get_nearest_bibliography()`}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
 endsnippet
 
 # ====================Mathjax Snippets==================== #
@@ -1264,6 +1280,10 @@ endsnippet
 
 snippet ne "Mathjax not equals to" w
 \neq
+endsnippet
+
+snippet prop "Mathjax proportional to symbol" w
+\propto
 endsnippet
 
 snippet ~= "Mathjax approximation symbol" w
