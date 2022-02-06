@@ -39,8 +39,8 @@ def get_wiki_files_dir():
 	wiki_path = ''
 
 	try:
-		if '/md/' in dir_path:
-			file_index_end =  dir_path.index('/md/') + 2 # Get the end index of 'md' dir
+		if 'md/' in dir_path:
+			file_index_end =  dir_path.index('md/') + 2 # Get the end index of 'md' dir
 			stripped_path = dir_path[file_index_end:]		# Strip trailing path from after 'md' dir
 			wiki_path = dir_path[file_index_end + 1:]
 			# Count how deep current buffer dir relative to 'md' dir or stripped path
