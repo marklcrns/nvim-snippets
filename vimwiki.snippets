@@ -54,8 +54,8 @@ def get_wiki_files_dir():
 	return "../" * subdir_count + "files/" + wiki_path
 
 
-def get_nearest_bibliography():
-	bib='bibliography.md'
+def get_nearest_glossary():
+	bib='glossary.md'
 
 	if fn in bib: return ''
 
@@ -341,7 +341,7 @@ endsnippet
 
 snippet ih "HTML Image link" w
 <a name="$1">
-	<img src="`!p snip.rv = get_wiki_files_dir()`$2" width="${3:500px}" alt="${4:alt}">
+	<img data-enlargeable style="cursor: zoom-in" src="`!p snip.rv = get_wiki_files_dir()`$2" width="${3:500px}" alt="${4:alt}">
 </a>
 
 > $4
@@ -1046,7 +1046,7 @@ snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
 endsnippet
 
 snippet aterm "Markdown term anchor link" w
-[${1:${VISUAL}}](${2:`!p snip.rv = get_nearest_bibliography()`}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
+[${1:${VISUAL}}](${2:`!p snip.rv = get_nearest_glossary()`}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
 endsnippet
 
 # ====================Mathjax Snippets==================== #
