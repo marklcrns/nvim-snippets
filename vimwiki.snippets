@@ -340,7 +340,7 @@ snippet ie "Clickable Image link" w
 endsnippet
 
 snippet ih "HTML Image link" w
-<a name="$1">
+<a id="$1">
 	<img data-enlargeable style="cursor: zoom-in" src="`!p snip.rv = get_wiki_files_dir()`$2" width="${3:500px}" alt="${4:alt}">
 </a>
 
@@ -1011,7 +1011,7 @@ else:
   text = orig_term
 
 # Anchor link with '-term' appended to name
-anchor = "<a name=\"" + text.replace("'", "").replace(" ", "-").lower() + "-term\">"
+anchor = "<a id=\"" + text.replace("'", "").replace(" ", "-").lower() + "-term\">"
 # Flags
 if flags:
 	# Abbreviation
