@@ -139,6 +139,17 @@ def get_next_week_date(week_date, next_date):
 	return day
 
 
+# Same as get_next_week_date() but for last week instead.
+def get_last_week_date(week_date, last_date):
+	day = date.today()
+	i = 0
+	while i != last_date:
+		day -= timedelta(1)
+		if day.weekday() == week_date:
+			i += 1
+	return day
+
+
 def get_date_from_now(next_date):
 	day = date.today() + timedelta(next_date)
 	return day
@@ -471,6 +482,7 @@ end_of_tomorrow = tomorrow + default_due_time
 end_of_yesterday = yesterday + default_due_time
 end_of_week = (get_next_week_date(6, 1)).strftime(date_format) + default_due_time
 end_of_next_week = (get_next_week_date(6, 2)).strftime(date_format) + default_due_time
+end_of_last_week = (get_last_week_date(6, 2)).strftime(date_format) + default_due_time
 end_of_month = get_last_day_of_month(base).strftime(date_format) + default_due_time
 
 # Meta
@@ -490,6 +502,7 @@ due_weekly = f"due:{end_of_week}"
 due_monthly = f"due:{end_of_month}"
 due_this_week = f"due.after:{end_of_yesterday} due.before:{end_of_week}"
 due_next_week = f"due.after:{end_of_week} due.before:{end_of_next_week}"
+due_last_week = f"due.after:{end_of_last_week} due.before:{end_of_yesterday}"
 due_this_month = f"due.after:{end_of_yesterday} due.before:{end_of_month}"
 
 result = ""
@@ -603,6 +616,12 @@ if "&&" not in flags:
 	yesterday_task_filter = " | -OVERDUE " + due_yesterday
 	result += yesterday_task_header
 	result += yesterday_task_filter + "\n\n"
+
+	# Last week task header
+	last_week_task_header = "## 🌜 Last Week"
+	last_week_task_filter = " | -OVERDUE " + due_last_week
+	result += last_week_task_header
+	result += last_week_task_filter + "\n\n"
 
 # Output
 snip.rv = result`
