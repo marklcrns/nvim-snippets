@@ -352,7 +352,9 @@ endsnippet
 
 snippet ih "HTML Image link" w
 <a id="$1">
-	<img data-enlargeable style="cursor: zoom-in" src="`!p snip.rv = get_wiki_files_dir()`$1.${2:png}" width="${3:500px}" alt="${4:alt}">
+	<img data-enlargeable style="cursor: zoom-in"
+	src="`!p snip.rv = get_wiki_files_dir()`$1.${2:png}"
+	width="${3:500px}" alt="${4:alt}">
 </a>
 
 > $4
