@@ -36,9 +36,832 @@ def create_matrix(cols, rows, sep, start, end):
 			placeholder += 1
 		res += end
 	return res[:-1]
+
+# LaTeX matrix dictionary
+boundaries = {
+	"b": ["[", "]"],
+	"B": ["\\\{", "\\\}"],
+	"p": ["(", ")"],
+	"v": ["|", "|"],
+	"V": ["||", "||"]
+}
 endglobal
 
-snippet '(?<=\\item)(.+)' "item" r
+snippet @@ "LaTeX text" iA
+\text{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xsbo "LaTeX symbol bold" wA
+\boldsymbol{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmbo "LaTeX math bold" wA
+\mathbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmit "LaTeX math italic" wA
+\mathit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtbo "LaTeX text bold" wA
+\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtit "LaTeX text italic" wA
+\textit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet __ "LaTeX underline" w
+\underline{${1:${VISUAL}}}$0
+endsnippet
+
+snippet nl "LaTeX empty line" bA
+~\\\\
+endsnippet
+
+snippet align "LaTeX aligned" w
+\begin{aligned}
+${1:${VISUAL}}
+\end{aligned}
+$0
+endsnippet
+
+post_jump "create_matrix_placeholders(snip)"
+snippet 'arr(\d+),(\d+)' "LaTeX array" rb
+\begin{array}{`!p
+orient = ""
+for _ in range(0, int(match.group(1))): orient += "l"
+snip.rv = orient`}
+`!p
+snip.rv = create_matrix(match.group(1), match.group(2), " & ", "\t", " \\\\\\\\\n")
+`$0
+\end{array}
+endsnippet
+
+# Usage: n==, where n is the number of equations stack
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\d+)==' "LaTeX block align equations" brA
+\begin{aligned}
+`!p
+snip.rv = create_matrix(2, match.group(1), " &= ","\t", " \\\\\\\\\n")
+`
+\end{aligned}$0
+endsnippet
+
+# Fractions
+# ============================================================
+snippet '(d|t)?f/' "LaTeX normal/display/textstyle fraction" ri
+`!p
+snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
+`frac{${1:${VISUAL}}}{$2}$0
+endsnippet
+
+# snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "LaTeX tab auto fraction" wr
+# \\frac{`!p snip.rv = match.group(1)`}{$1}$0
+# endsnippet
+snippet '^.*\)/' "LaTeX () auto fraction" wr
+`!p
+stripped = match.string[:-1]
+depth = 0
+i = len(stripped) - 1
+while True:
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i-=1
+snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
+# Exponents, Superscript, Subscript
+# ============================================================
+
+# Auto exponent/superscript
+# Matches ^ followed by pattern of characters using negative lookbehind
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" ir
+^{$1}$0
+endsnippet
+
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" ir
+_{$1}$0
+endsnippet
+
+snippet sqrt "LaTeX square root" i
+\sqrt{${1:${VISUAL}}}$0
+endsnippet
+
+snippet '(\d+|n|x|y|z)rt' "LaTeX root of n" ir
+\sqrt[`!p snip.rv = match.group(1)`]{$1}$0
+endsnippet
+
+# Logarthmic function
+snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "LaTeX Logarithmic function" rw
+`!p
+log = match.group(1)
+base = "_{" + match.group(2) + "}" if match.group(2) else ""
+snip.rv = "\\" + log + base`($1)$0
+endsnippet
+
+# Symbols
+# ============================================================
+
+snippet '(?<=[a-zA-Z0-9])deg' "LaTeX auto degrees symbol" irA
+^{\circ}
+endsnippet
+
+snippet oo "LaTeX degrees symbol" w
+\circ
+endsnippet
+
+snippet '([a-zA-Z0-9]+|)pi' "LaTeX auto pi symbol" r
+`!p
+if match.group(1) == " ":
+	result = "\pi"
+elif match.group(1) == "":
+	result = "\pi"
+else:
+	result = match.group(1) + " \pi"
+snip.rv = result`
+endsnippet
+
+snippet 'iff' "LaTeX if and only if sign" i
+\iff
+endsnippet
+
+snippet '(\+-|-\+)' "LaTeX plus minus sign" irA
+\pm
+endsnippet
+
+snippet ang "LaTeX theta symbol" i
+\angle{$1}$0
+endsnippet
+
+snippet the "LaTeX theta symbol" i
+\theta
+endsnippet
+
+snippet alp "LaTeX alpha symbol" i
+\alpha
+endsnippet
+
+snippet bet "LaTeX beta symbol" i
+\beta
+endsnippet
+
+snippet ome "LaTeX omega symbol" i
+\omega
+endsnippet
+
+snippet tau "LaTeX tau symbol" i
+\tau
+endsnippet
+
+snippet gam "LaTeX gamma symbol" i
+\gamma
+endsnippet
+
+snippet del "LaTeX delta symbol" i
+\delta
+endsnippet
+
+snippet Del "LaTeX triangle delta symbol" i
+\Delta{$1}$0
+endsnippet
+
+snippet mu "LaTeX mu greek symbol" i
+\mu
+endsnippet
+
+snippet eps "LaTeX epsilon symbol" i
+\epsilon
+endsnippet
+
+snippet vep "LaTeX varepsilon symbol" i
+\varepsilon
+endsnippet
+
+snippet phi "LaTeX phi symbol" i
+\phi
+endsnippet
+
+snippet rho "LaTeX phi symbol" i
+\rho
+endsnippet
+
+snippet zeta "LaTeX zeta symbol" i
+\zeta
+endsnippet
+
+snippet lamb "LaTeX lambda symbol" i
+\lambda
+endsnippet
+
+snippet le "LaTeX less than or equals to" w
+\le
+endsnippet
+
+snippet ge "LaTeX greater than or equals to" w
+\ge
+endsnippet
+
+snippet ne "LaTeX not equals to" w
+\neq
+endsnippet
+
+snippet prop "LaTeX proportional to symbol" w
+\propto
+endsnippet
+
+snippet ~= "LaTeX approximation symbol" w
+\approx
+endsnippet
+
+snippet => "LaTeX implies" w
+\implies
+endsnippet
+
+snippet =< "LaTeX implied by" w
+\impliedby
+endsnippet
+
+snippet '(\\|!)!' "Matjax small negative space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\!\\!'
+elif prefix == '!':
+	snip.rv = '\\!'
+`
+endsnippet
+
+snippet '(\\|,),' "Matjax small space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\,\\,'
+elif prefix == ',':
+	snip.rv = '\\,'
+`
+endsnippet
+
+snippet '(\\|:):' "Matjax medium space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\:\\:'
+elif prefix == ':':
+	snip.rv = '\\:'
+`
+endsnippet
+
+snippet '(\\|;);' "Matjax large space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\;\\;'
+elif prefix == ';':
+	snip.rv = '\\;'
+`
+endsnippet
+
+snippet ubr "LaTeX underbrace" i
+\underbrace{${1:${VISUAL}}}$0
+endsnippet
+
+snippet obr "LaTeX overbrace" i
+\overbrace{$1}$0
+endsnippet
+
+snippet inf "LaTeX infinity" i
+\infty
+endsnippet
+
+snippet PP "LaTeX prime numbers" w
+\mathbb{P}
+endsnippet
+
+snippet NN "LaTeX natural numbers" w
+\mathbb{N}
+endsnippet
+
+snippet ZZ "LaTeX integer numbers" w
+\mathbb{Z}
+endsnippet
+
+snippet II "LaTeX irrational numbers" w
+\mathbb{I}
+endsnippet
+
+snippet QQ "LaTeX rational numbers" w
+\mathbb{Q}
+endsnippet
+
+snippet RR "LaTeX real numbers" w
+\mathbb{R}
+endsnippet
+
+snippet CC "LaTeX complex numbers" w
+\mathbb{C}
+endsnippet
+
+snippet SS "LaTeX section" w
+\S
+endsnippet
+
+snippet EE "LaTeX exists" w
+\exists
+endsnippet
+
+snippet AA "forall" w
+\forall
+endsnippet
+
+snippet nabl "nabla" w
+\nabla
+endsnippet
+
+snippet xx "cross" w
+\times
+endsnippet
+
+snippet tf "LaTeX therefore dots" w
+\therefore
+endsnippet
+
+snippet bc "LaTeX because dots" w
+\because
+endsnippet
+
+snippet c. "LaTeX cdot" w
+\cdot
+endsnippet
+
+snippet l.. "LaTeX lower dots" i
+\ldots
+endsnippet
+
+snippet c.. "LaTeX center dots" i
+\cdots
+endsnippet
+
+snippet v.. "LaTeX vertical dots" i
+\vdots
+endsnippet
+
+snippet d.. "LaTeX diagonal dots" i
+\ddots
+endsnippet
+
+snippet to "to" i
+\to
+endsnippet
+
+snippet mto "mapsto" i
+\mapsto
+endsnippet
+
+snippet '\\\' "setminus" i
+\setminus
+endsnippet
+
+snippet >> ">>" i
+\gg
+endsnippet
+
+snippet << "<<" i
+\ll
+endsnippet
+
+snippet Ua "LaTeX double lined uparrow" w
+\Uparrow
+endsnippet
+
+snippet Da "LaTeX double lined downarrow" w
+\Downarrow
+endsnippet
+
+snippet Uda "LaTeX double lined updownarrow" w
+\Updownarrow
+endsnippet
+
+snippet La "LaTeX double lined leftarrow" w
+\Leftarrow
+endsnippet
+
+snippet Ra "LaTeX double lined rightarrow" w
+\Rightarrow
+endsnippet
+
+snippet Lra "LaTeX double lined leftrightarrow" w
+\Leftrightarrow
+endsnippet
+
+snippet Lal "LaTeX double lined long leftarrow" w
+\Longleftarrow
+endsnippet
+
+snippet Ral "LaTeX double lined long rightarrow" w
+\Longrightarrow
+endsnippet
+
+snippet Lral "LaTeX double lined long leftrightarrow" w
+\Longleftrightarrow
+endsnippet
+
+snippet da "LaTeX single lined downarrow" w
+\downarrow
+endsnippet
+
+snippet uda "LaTeX single lined updownarrow" w
+\updownarrow
+endsnippet
+
+snippet la "LaTeX single lined leftarrow" w
+\leftarrow
+endsnippet
+
+snippet ra "LaTeX single lined rightarrow" w
+\rightarrow
+endsnippet
+
+snippet lra "LaTeX single lined leftrightarrow" w
+\leftrightarrow
+endsnippet
+
+snippet lal "LaTeX long single lined leftarrow" w
+\longleftarrow
+endsnippet
+
+snippet ral "LaTeX long single lined rightarrow" w
+\longrightarrow
+endsnippet
+
+snippet lral "LaTeX long single lined leftrightarrow" w
+\Longleftrightarrow
+endsnippet
+
+snippet ovla "LaTeX overset left" w
+\overset{$1}\leftarrow$0
+endsnippet
+
+snippet unlar "LaTeX underset rightarrow" w
+\underset{$1}\leftarrow$0
+endsnippet
+
+snippet ovrar "LaTeX overset rightarrow" w
+\overset{$1}\rightarrow$0
+endsnippet
+
+snippet unrar "LaTeX underset rightarrow" w
+\underset{$1}\rightarrow$0
+endsnippet
+
+snippet ' "LaTeX prime" i
+^{\prime}
+endsnippet
+
+snippet '' "LaTeX double prime" i
+^{\prime \prime}
+endsnippet
+
+snippet " "LaTeX tripple prime" i
+^{\prime \prime \prime}
+endsnippet
+
+snippet ~ "LaTeX ~" w
+\sim
+endsnippet
+
+snippet vec "LaTeX vector" i
+\vec{${1:${VISUAL}}}$0
+endsnippet
+
+snippet hat "LaTeX vector" i
+\hat{${1:${VISUAL}}}$0
+endsnippet
+
+snippet mag "LaTeX vector's magnitude" i
+\\|${1:${VISUAL}}\\|$0
+endsnippet
+
+snippet <> "LaTeX angled bracets" i
+\langle ${1:${VISUAL}} \rangle$0
+endsnippet
+
+snippet || "LaTeX parallel sign" i
+\parallel
+endsnippet
+
+snippet | "LaTeX mid sign" i
+\mid
+endsnippet
+
+snippet |/ "LaTeX mid sign" i
+\nmid
+endsnippet
+
+snippet subs "subset" i
+\subset
+endsnippet
+
+snippet ni "not in" i
+\not\in
+endsnippet
+
+snippet in "in" w
+\in
+endsnippet
+
+snippet Nn "cap" i
+\cap
+endsnippet
+
+snippet UU "cup" i
+\cup
+endsnippet
+
+snippet uuu "bigcup" i
+\bigcup_{${1:i \in ${2: I}}} $0
+endsnippet
+
+snippet nnn "bigcap" i
+\bigcap_{${1:i \in ${2: I}}} $0
+endsnippet
+
+snippet OO "emptyset" i
+\emptyset
+endsnippet
+
+snippet <! "normal" i
+\triangleleft
+endsnippet
+
+snippet <> "hokje" i
+\diamond
+endsnippet
+
+snippet disp "Displaystyle" w
+{\displaystyle ${1:${VISUAL}}}$0
+endsnippet
+
+snippet int "integral" w
+\int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
+endsnippet
+
+snippet dint "Display mode integral" w
+{\displaystyle \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}}$0
+endsnippet
+
+snippet sig "LaTeX sigma symbol" w
+\sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}\;${8:\Delta{x}}}$0
+endsnippet
+
+snippet lim "limit" i
+\lim${1:_{${2:n} \to ${3:\infty}}} ${4:${5:f(x)} = ${6:x}}$0
+endsnippet
+
+snippet reimann "LaTeX Reiman\sum_{${1:i} = ${2:1}}^{${3:n}}n sum symbol" w
+\lim_{${1:n} \to ${2:\infty}} \sum_{${3:i} = ${3:1}}^{${4:n}} ${5:${6:f(${7:x_{i}})}${8:\Delta{x}}}$0
+endsnippet
+
+snippet limsup "limsup" w
+\limsup_{${1:n} \to ${2:\infty}}
+endsnippet
+
+snippet prod "product" w
+\prod${1:_{${2:n=${3:1}}}^{${4:\infty}}} ${5:${VISUAL}}$0
+endsnippet
+
+snippet part "d/dx" w
+\frac{\partial ${1:V}}{\partial ${2:x}} $0
+endsnippet
+
+snippet norm "norm" i
+\|$1\|$0
+endsnippet
+
+snippet mcal "mathcal" i
+\mathcal{$1}$0
+endsnippet
+
+snippet invs "inverse" i
+^{-1}
+endsnippet
+
+snippet comp "LaTeX complement" i
+^{c}
+endsnippet
+
+snippet 'det' "LaTeX determinant" w
+\det $0
+endsnippet
+
+snippet phan "LaTeX phantom placeholder" w
+\phantom{$1}$0
+endsnippet
+
+snippet nphan "LaTeX negative phantom placeholder" w
+\phantom{-}$0
+endsnippet
+
+snippet ol "LaTeX overline" i
+\overline{$1}$0
+endsnippet
+
+snippet co "Cancel out" w
+\cancel{${1:${VISUAL}}}$0
+endsnippet
+
+snippet col "LaTeX text color" i
+{\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
+endsnippet
+
+snippet coc "Cancel out with color" w
+{\color{#${1:ff0000}}{\cancel{{\color{#${1:000000}}{${3:${VISUAL}}}}}}}$0
+endsnippet
+
+snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "LaTeX trig functions" r
+`!p
+# Constants
+mult = "" if match.group(1) == None else match.group(1)
+# Arc functions
+if match.group(2) == 'a':
+	arc = "arc"
+else:
+	arc = ""
+# Apply sech and csch workaround to trig function
+if (match.group(3) == "sech" or match.group(3) == "csch"):
+	trig = "operatorname{" + match.group(3) + "}"
+else:
+	trig = match.group(3)
+# Negative functions
+if match.group(5) == None:
+	expo = ""
+elif match.group(5) == "-":
+	expo = "^{-1}"
+else:
+	expo = "^{" + match.group(5) + "}"
+
+snip.rv = mult + "\\" + arc + trig + expo
+`($1)$0
+endsnippet
+
+
+# Matrices, absolute value and parenthises
+# ============================================================
+snippet bigp "LaTeX big ()" i
+\bigl( ${1:${VISUAL}} \bigr)$0
+endsnippet
+
+snippet Bigp "LaTeX very big parenthesis" i
+\Bigl( ${1:${VISUAL}} \Bigr)$0
+endsnippet
+
+snippet bigb "LaTeX big brackets" i
+\bigl[ ${1:${VISUAL}} \bigr]$0
+endsnippet
+
+snippet Bigb "LaTeX big brackets" i
+\Bigl[ ${1:${VISUAL}} \Bigr]$0
+endsnippet
+
+snippet bigB "LaTeX very big braces" i
+\bigl\\{ ${1:${VISUAL}} \bigr\\}$0
+endsnippet
+
+snippet BigB "LaTeX very big braces" i
+\Bigl\\{ ${1:${VISUAL}} \Bigr\\}$0
+endsnippet
+
+snippet bigv "LaTeX big pipe" i
+\bigl| ${1:${VISUAL}} \bigr|$0
+endsnippet
+
+snippet Bigv "LaTeX very big pipe" i
+\Bigl| ${1:${VISUAL}} \Bigr|$0
+endsnippet
+
+snippet bigV "LaTeX big double pipe" i
+\bigl\\| ${1:${VISUAL}} \bigr\\|$0
+endsnippet
+
+snippet BigV "LaTeX very big double pipe" i
+\Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
+endsnippet
+
+snippet lrp "LaTeX left right parenthesis" i
+\left ( ${1:${VISUAL}} \right )$0
+endsnippet
+
+snippet lrb "LaTeX left right brackets" i
+\left [ ${1:${VISUAL}} \right ]$0
+endsnippet
+
+snippet lrB "LaTeX left right braces" i
+\left \\{ ${1:${VISUAL}} \right \\}$0
+endsnippet
+
+snippet lrv "LaTeX left right pipe" i
+\left | ${1:${VISUAL}} \right |$0
+endsnippet
+
+snippet lrV "LaTeX left right double pipe" i
+\left \| ${1:${VISUAL}} \right \|$0
+endsnippet
+
+snippet bmat "LaTeX in-line brackets matrix" wb
+\begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
+endsnippet
+
+snippet Bmat "LaTeX in-line curly braces matrix" wb
+\begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
+endsnippet
+
+snippet pmat "LaTeX in-line parenthesis matrix" wb
+\begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
+endsnippet
+
+snippet vmat "LaTeX in-line determinant matrix" wb
+\begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
+endsnippet
+
+snippet Vmat "LaTeX in-line double absolute values matrix" wb
+\begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
+endsnippet
+
+# Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
+# either `l or r` (optional) as separators, `b` (optional) as the boundary type
+# , and `n,n` as the matrix size (rows, column). No spaces and ignore
+# parenthesis, and can't have both separators and boundary together.
+post_jump "create_matrix_placeholders(snip)"
+snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+),(\d+)(m)?' "LaTeX matrix" wr
+`!p
+inline = match.group(1)
+left = match.group(4) # left matrix separator
+right = match.group(5) # right matrix separator
+boundary = match.group(6) # boundary type
+
+# Determine if in-line or block
+indent = ""
+if inline:
+	inline = " "
+else:
+	inline = "\n"
+	indent = "\t"
+
+right_bound = "|" if match.group(9) == "m" else "."
+if left or right:
+	# Left boundary with right separator. Default boundary is "|"
+	if left and right == None:
+		if boundary:
+			left = "\\left" + boundaries[f"{boundary}"][0]
+			right = "\\right" + right_bound
+		else:
+			left = "\\left|"
+			right = "\\right" + right_bound
+	# Right boundary only
+	elif left == None and right:
+		if boundary:
+			left = "\\left."
+			right = "\\right" + boundaries[f"{boundary}"][1]
+		else:
+			left = "\\left."
+			right = "\\right" + right_bound
+	# Left and right separator
+	elif left and right:
+		if boundary:
+			left = "\\left" + boundaries[f"{boundary}"][0]
+			right = "\\right" + boundaries[f"{boundary}"][1]
+		else:
+			left = "\\left|"
+			right = "\\right" + right_bound
+	# Remove boundary
+	boundary = ""
+elif boundary:
+	# No separator
+	left = ""
+	right = ""
+else:
+	# No boundary and separator
+	left = ""
+	right = ""
+	boundary = ""
+# Matrix size
+rows = match.group(7)
+cols = match.group(8)
+# LaTeX matrix wrapper
+begin = left + "\\begin{" + boundary + "matrix}" + inline
+end = inline + "\\end{" + boundary + "matrix}" + right
+result = "" # result value
+placeholder = 1 # placeholder number for snippet jumps
+
+# Matrix entries
+result += create_matrix(rows, cols, " & ", indent, " \\\\\\\\" + inline)
+snip.rv = begin + result + end
+`$0
+endsnippet
+
+snippet '(?<=\\item)(.+)' "LaTeX item" r
 `!p snip.rv = match.group(1)`
 \\item $0
 endsnippet
