@@ -1070,96 +1070,109 @@ snippet aterm "Markdown term anchor link" w
 [${1:${VISUAL}}](${2:`!p snip.rv = get_nearest_glossary()`}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
 endsnippet
 
-# ====================Mathjax Snippets==================== #
+# ====================LaTeX/Mathjax Snippets==================== #
 
-snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
+snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "LaTeX auto currency" rwA
 `!p snip.rv = "\$" + match.group(1) + " "`
 endsnippet
 
-snippet @@ "Mathjax text" iA
-\text{${1:${VISUAL}}}$0
-endsnippet
-
-snippet xsbo "Mathjax symbol bold" wA
-\boldsymbol{${1:${VISUAL}}}$0
-endsnippet
-
-snippet xmbo "Mathjax math bold" wA
-\mathbf{${1:${VISUAL}}}$0
-endsnippet
-
-snippet xmit "Mathjax math italic" wA
-\mathit{${1:${VISUAL}}}$0
-endsnippet
-
-snippet xtbo "Mathjax text bold" wA
-\textbf{${1:${VISUAL}}}$0
-endsnippet
-
-snippet xtit "Mathjax text italic" wA
-\textit{${1:${VISUAL}}}$0
-endsnippet
-
-snippet __ "Mathjax underline" w
-\underline{${1:${VISUAL}}}$0
-endsnippet
-
-snippet nl "Mathjax empty line" bA
-~\\\\
-endsnippet
-
-snippet align "Mathjax aligned" w
-\begin{aligned}
-${1:${VISUAL}}
-\end{aligned}
-$0
-endsnippet
-
-post_jump "create_matrix_placeholders(snip)"
-snippet 'arr(\d+),(\d+)' "Mathjax array" rb
-\begin{array}{`!p
-orient = ""
-for _ in range(0, int(match.group(1))): orient += "l"
-snip.rv = orient`}
-`!p
-snip.rv = create_matrix(match.group(1), match.group(2), " & ", "\t", " \\\\\\\\\n")
-`$0
-\end{array}
-endsnippet
-
-# Usage: n==, where n is the number of equations stack
-post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)==' "Mathjax block align equations" brA
-\begin{aligned}
-`!p
-snip.rv = create_matrix(2, match.group(1), " &= ","\t", " \\\\\\\\\n")
-`
-\end{aligned}$0
-endsnippet
-
-# Fractions
+# Symbols (Relations)
 # ============================================================
-snippet '(d|t)?f/' "Mathjax normal/display/textstyle fraction" ri
-`!p
-snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
-`frac{${1:${VISUAL}}}{$2}$0
+
+snippet <= "LaTeX less than or equals to" iA
+\leq
 endsnippet
 
-# snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "Mathjax tab auto fraction" wr
-# \\frac{`!p snip.rv = match.group(1)`}{$1}$0
-# endsnippet
-snippet '^.*\)/' "Mathjax () auto fraction" wr
-`!p
-stripped = match.string[:-1]
-depth = 0
-i = len(stripped) - 1
-while True:
-	if stripped[i] == ')': depth += 1
-	if stripped[i] == '(': depth -= 1
-	if depth == 0: break;
-	i-=1
-snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-`{$1}$0
+snippet >= "LaTeX greater than or equals to" iA
+\geq
+endsnippet
+
+snippet >> "LaTeX much greater than" iA
+\gg
+endsnippet
+
+snippet << "LaTeX muchn less than" iA
+\ll
+endsnippet
+
+snippet != "LaTeX not equals to" iA
+\neq
+endsnippet
+
+snippet ~~ "LaTeX approximation symbol" iA
+\approx
+endsnippet
+
+snippet ~= "LaTeX congruent symbol" iA
+\cong
+endsnippet
+
+snippet -= "LaTeX equivalent symbol" iA
+\equiv
+endsnippet
+
+snippet => "LaTeX implies symbol" iA
+\implies
+endsnippet
+
+snippet =< "LaTeX implied by symbol" iA
+\impliedby
+endsnippet
+
+snippet def= "Latex define equal symbol" iA
+\overset{\underset{\mathrm{def}}{}}{=}
+endsnippet
+
+snippet oc "LaTeX proportional to symbol" i
+\propto
+endsnippet
+
+snippet 'iff' "LaTeX if and only if symbol" i
+\iff
+endsnippet
+
+snippet psub "Latex proper subset symbol" i
+\subset
+endsnippet
+
+snippet npsub "Latex not a proper subset symbol" i
+\not\subset
+endsnippet
+
+snippet sub "Latex subset symbol" i
+\subseteq
+endsnippet
+
+snippet nsub "Latex not a subset symbol" i
+\not\subseteq
+endsnippet
+
+snippet sup "Latex superset symbol" i
+\superset
+endsnippet
+
+snippet nsup "Latex not a superset symbol" i
+\not\superset
+endsnippet
+
+snippet !0 "Latex emptyset symbol" i
+\emptyset
+endsnippet
+
+snippet in "Latex in symbol" w
+\in
+endsnippet
+
+snippet nin "Latex not in symbol" i
+\not\in
+endsnippet
+
+snippet ni "Latex in reverse symbol" w
+\ni
+endsnippet
+
+snippet nin "Latex not in reverse symbol" i
+\not\ni
 endsnippet
 
 # Exponents, Superscript, Subscript
@@ -1167,278 +1180,189 @@ endsnippet
 
 # Auto exponent/superscript
 # Matches ^ followed by pattern of characters using negative lookbehind
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" ir
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" irA
 ^{$1}$0
 endsnippet
 
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "Mathjax auto subscript" ir
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" irA
 _{$1}$0
 endsnippet
 
-snippet sqrt "Mathjax square root" i
+# Math
+# ============================================================
+
+# Usage:
+# f// -> \frac{$1}{$2}$0
+# df// -> \dfrac{$1}{$2}$0
+# tf// -> \tfrac{$1}{$2}$0
+snippet '(d|t)?f//' "LaTeX normal/display/textstyle fraction" riA
+`!p
+snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
+`frac{${1:${VISUAL}}}{$2}$0
+endsnippet
+
+# Usage:
+# b// -> \binom{$1}{$2}$0
+snippet b// "LaTeX symbol binomial coefficient" iA
+\binom{${1:${VISUAL}}}{$2}$0
+endsnippet
+
+# Usage:
+# abc/f/ -> \frac{abc}{$0}
+# (abc)/f/ -> \frac{abc}{$0}
+snippet '(\()?(.*)(\))?/f/' "LaTeX () auto fraction" wrA
+\frac{`!p snip.rv = match.group(2)`}{$0}
+endsnippet
+
+# Usage:
+# abc/b/ -> \binom{abc}{$0}
+# (abc)/b/ -> \binom{abc}{$0}
+snippet '(\()?(.*)(\))?/b/' "LaTeX () auto binomial" wrA
+\binom{`!p snip.rv = match.group(2)`}{$0}
+endsnippet
+
+snippet sqrt "LaTeX square root" iA
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet '(\d+|n|x|y|z)rt' "Mathjax root of n" ir
+snippet '(\d+|n|x|y|z)root' "LaTeX root of n" irA
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
 # Logarthmic function
-snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "Mathjax Logarithmic function" rw
+snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "LaTeX Logarithmic function" rw
 `!p
 log = match.group(1)
 base = "_{" + match.group(2) + "}" if match.group(2) else ""
 snip.rv = "\\" + log + base`($1)$0
 endsnippet
 
-# Symbols
-# ============================================================
-
-snippet '(?<=[a-zA-Z0-9])deg' "Mathjax auto degrees symbol" irA
-^{\circ}
-endsnippet
-
-snippet oo "Mathjax degrees symbol" w
-\circ
-endsnippet
-
-snippet '([a-zA-Z0-9]+|)pi' "Mathjax auto pi symbol" r
-`!p
-if match.group(1) == " ":
-	result = "\pi"
-elif match.group(1) == "":
-	result = "\pi"
-else:
-	result = match.group(1) + " \pi"
-snip.rv = result`
-endsnippet
-
-snippet 'iff' "Mathjax if and only if sign" i
-\iff
-endsnippet
-
-snippet '(\+-|-\+)' "Mathjax plus minus sign" irA
-\pm
-endsnippet
-
-snippet ang "Mathjax theta symbol" i
-\angle{$1}$0
-endsnippet
-
-snippet the "Mathjax theta symbol" i
-\theta
-endsnippet
-
-snippet alp "Mathjax alpha symbol" i
-\alpha
-endsnippet
-
-snippet bet "Mathjax beta symbol" i
-\beta
-endsnippet
-
-snippet ome "Mathjax omega symbol" i
-\omega
-endsnippet
-
-snippet tau "Mathjax tau symbol" i
-\tau
-endsnippet
-
-snippet gam "Mathjax gamma symbol" i
-\gamma
-endsnippet
-
-snippet del "Mathjax delta symbol" i
-\delta
-endsnippet
-
-snippet Del "Mathjax triangle delta symbol" i
-\Delta{$1}$0
-endsnippet
-
-snippet mu "Mathjax mu greek symbol" i
-\mu
-endsnippet
-
-snippet eps "Mathjax epsilon symbol" i
-\epsilon
-endsnippet
-
-snippet vep "Mathjax varepsilon symbol" i
-\varepsilon
-endsnippet
-
-snippet phi "Mathjax phi symbol" i
-\phi
-endsnippet
-
-snippet rho "Mathjax phi symbol" i
-\rho
-endsnippet
-
-snippet zeta "Mathjax zeta symbol" i
-\zeta
-endsnippet
-
-snippet lamb "Mathjax lambda symbol" i
-\lambda
-endsnippet
-
-snippet le "Mathjax less than or equals to" w
-\le
-endsnippet
-
-snippet ge "Mathjax greater than or equals to" w
-\ge
-endsnippet
-
-snippet ne "Mathjax not equals to" w
-\neq
-endsnippet
-
-snippet prop "Mathjax proportional to symbol" w
-\propto
-endsnippet
-
-snippet ~= "Mathjax approximation symbol" w
-\approx
-endsnippet
-
-snippet => "Mathjax implies" w
-\implies
-endsnippet
-
-snippet =< "Mathjax implied by" w
-\impliedby
-endsnippet
-
-snippet '(\\|!)!' "Matjax small negative space" rw
-`!p
-prefix = match.group(1)
-if prefix == '\\':
-	snip.rv = '\\!\\!'
-elif prefix == '!':
-	snip.rv = '\\!'
-`
-endsnippet
-
-snippet '(\\|,),' "Matjax small space" rw
-`!p
-prefix = match.group(1)
-if prefix == '\\':
-	snip.rv = '\\,\\,'
-elif prefix == ',':
-	snip.rv = '\\,'
-`
-endsnippet
-
-snippet '(\\|:):' "Matjax medium space" rw
-`!p
-prefix = match.group(1)
-if prefix == '\\':
-	snip.rv = '\\:\\:'
-elif prefix == ':':
-	snip.rv = '\\:'
-`
-endsnippet
-
-snippet '(\\|;);' "Matjax large space" rw
-`!p
-prefix = match.group(1)
-if prefix == '\\':
-	snip.rv = '\\;\\;'
-elif prefix == ';':
-	snip.rv = '\\;'
-`
-endsnippet
-
-snippet ubr "Mathjax underbrace" i
-\underbrace{${1:${VISUAL}}}$0
-endsnippet
-
-snippet obr "Mathjax overbrace" i
-\overbrace{$1}$0
-endsnippet
-
-snippet inf "Mathjax infinity" i
+snippet oo "LaTeX infinity" i
 \infty
 endsnippet
 
-snippet PP "Mathjax prime numbers" w
+snippet NN "Latex large intersection" i
+\bigcap_{${1:i \in ${2: I}}} $0
+endsnippet
+
+snippet UU "Latex large union" i
+\bigcup_{${1:i \in ${2: I}}} $0
+endsnippet
+
+snippet 'setm' "Latex set minus" i
+\setminus
+endsnippet
+
+snippet comp "LaTeX complement" i
+^{c}
+endsnippet
+
+snippet inv "LaTeX inverse" i
+^{-1}
+endsnippet
+
+snippet ang "LaTeX angle symbol" i
+\angle{$1}$0
+endsnippet
+
+snippet int "Latex integration" w
+\int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
+endsnippet
+
+snippet dint "LaTeX displaystyle integral" w
+{\displaystyle \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}}$0
+endsnippet
+
+snippet sum "LaTeX summation" w
+\sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}\;${8:\Delta{x}}}$0
+endsnippet
+
+snippet lim "Latex limit" i
+\lim${1:_{${2:n} \to ${3:\infty}}} ${4:${5:f(x)} = ${6:x}}$0
+endsnippet
+
+snippet reim "LaTeX Reiman sum" w
+\lim_{${1:n} \to ${2:\infty}} \sum_{${3:i} = ${3:1}}^{${4:n}} ${5:${6:f(${7:x_{i}})}${8:\Delta{x}}}$0
+endsnippet
+
+snippet lims "Latex limit superior" w
+\limsup_{${1:n} \to ${2:\infty}}
+endsnippet
+
+snippet prod "Latex product" w
+\prod${1:_{${2:n=${3:1}}}^{${4:\infty}}} ${5:${VISUAL}}$0
+endsnippet
+
+snippet pder "Latex partial derivative" w
+\frac{\partial ${1:V}}{\partial ${2:x}}$0
+endsnippet
+
+snippet der "Latex derivative" w
+\frac{d${1:V}}{d${2:x}}$0
+endsnippet
+
+snippet _} "LaTeX underbrace" iA
+\underbrace{${1:${VISUAL}}}$0
+endsnippet
+
+snippet ^} "LaTeX overbrace" iA
+\overbrace{${1:${VISUAL}}}$0
+endsnippet
+
+snippet PP "LaTeX prime numbers" i
 \mathbb{P}
 endsnippet
 
-snippet NN "Mathjax natural numbers" w
+snippet NN "LaTeX natural numbers" i
 \mathbb{N}
 endsnippet
 
-snippet ZZ "Mathjax integer numbers" w
+snippet ZZ "LaTeX integer numbers" i
 \mathbb{Z}
 endsnippet
 
-snippet II "Mathjax irrational numbers" w
+snippet WW "LaTeX whole numbers" i
+\mathbb{W}
+endsnippet
+
+snippet II "LaTeX irrational numbers" i
 \mathbb{I}
 endsnippet
 
-snippet QQ "Mathjax rational numbers" w
+snippet QQ "LaTeX rational numbers" i
 \mathbb{Q}
 endsnippet
 
-snippet RR "Mathjax real numbers" w
+snippet RR "LaTeX real numbers" i
 \mathbb{R}
 endsnippet
 
-snippet CC "Mathjax complex numbers" w
+snippet CC "LaTeX complex numbers" i
 \mathbb{C}
 endsnippet
 
-snippet SS "Mathjax section" w
+snippet SS "LaTeX section" i
 \S
 endsnippet
 
-snippet EE "Mathjax exists" w
+snippet iE "LaTeX exists" i
 \exists
 endsnippet
 
-snippet AA "forall" w
+snippet iA "LaTeX forall" i
 \forall
 endsnippet
 
-snippet nabl "nabla" w
-\nabla
-endsnippet
-
-snippet xx "cross" w
+snippet xx "LaTeX cross" i
 \times
 endsnippet
 
-snippet tf "Mathjax therefore dots" w
+snippet tf "LaTeX therefore symbol" i
 \therefore
 endsnippet
 
-snippet bc "Mathjax because dots" w
+snippet bc "LaTeX because symbol" i
 \because
-endsnippet
-
-snippet c. "Mathjax cdot" w
-\cdot
-endsnippet
-
-snippet l.. "Mathjax lower dots" i
-\ldots
-endsnippet
-
-snippet c.. "Mathjax center dots" i
-\cdots
-endsnippet
-
-snippet v.. "Mathjax vertical dots" i
-\vdots
-endsnippet
-
-snippet d.. "Mathjax diagonal dots" i
-\ddots
 endsnippet
 
 snippet to "to" i
@@ -1449,267 +1373,67 @@ snippet mto "mapsto" i
 \mapsto
 endsnippet
 
-snippet '\\\' "setminus" i
-\setminus
+snippet .c "LaTeX cdot" iA
+\cdot
 endsnippet
 
-snippet >> ">>" i
-\gg
+snippet ..c "LaTeX center dots" iA
+\cdots
 endsnippet
 
-snippet << "<<" i
-\ll
+snippet ..l "LaTeX lower dots" iA
+\ldots
 endsnippet
 
-snippet Ua "Mathjax double lined uparrow" w
-\Uparrow
+snippet ..v "LaTeX vertical dots" iA
+\vdots
 endsnippet
 
-snippet Da "Mathjax double lined downarrow" w
-\Downarrow
+snippet ..d "LaTeX diagonal dots" iA
+\ddots
 endsnippet
 
-snippet Uda "Mathjax double lined updownarrow" w
-\Updownarrow
-endsnippet
-
-snippet La "Mathjax double lined leftarrow" w
-\Leftarrow
-endsnippet
-
-snippet Ra "Mathjax double lined rightarrow" w
-\Rightarrow
-endsnippet
-
-snippet Lra "Mathjax double lined leftrightarrow" w
-\Leftrightarrow
-endsnippet
-
-snippet Lal "Mathjax double lined long leftarrow" w
-\Longleftarrow
-endsnippet
-
-snippet Ral "Mathjax double lined long rightarrow" w
-\Longrightarrow
-endsnippet
-
-snippet Lral "Mathjax double lined long leftrightarrow" w
-\Longleftrightarrow
-endsnippet
-
-snippet da "Mathjax single lined downarrow" w
-\downarrow
-endsnippet
-
-snippet uda "Mathjax single lined updownarrow" w
-\updownarrow
-endsnippet
-
-snippet la "Mathjax single lined leftarrow" w
-\leftarrow
-endsnippet
-
-snippet ra "Mathjax single lined rightarrow" w
-\rightarrow
-endsnippet
-
-snippet lra "Mathjax single lined leftrightarrow" w
-\leftrightarrow
-endsnippet
-
-snippet lal "Mathjax long single lined leftarrow" w
-\longleftarrow
-endsnippet
-
-snippet ral "Mathjax long single lined rightarrow" w
-\longrightarrow
-endsnippet
-
-snippet lral "Mathjax long single lined leftrightarrow" w
-\Longleftrightarrow
-endsnippet
-
-snippet ovla "Mathjax overset left" w
-\overset{$1}\leftarrow$0
-endsnippet
-
-snippet unlar "Mathjax underset rightarrow" w
-\underset{$1}\leftarrow$0
-endsnippet
-
-snippet ovrar "Mathjax overset rightarrow" w
-\overset{$1}\rightarrow$0
-endsnippet
-
-snippet unrar "Mathjax underset rightarrow" w
-\underset{$1}\rightarrow$0
-endsnippet
-
-snippet ' "Mathjax prime" i
+snippet ' "LaTeX prime" i
 ^{\prime}
 endsnippet
 
-snippet '' "Mathjax double prime" i
+snippet '' "LaTeX double prime" i
 ^{\prime \prime}
 endsnippet
 
-snippet " "Mathjax tripple prime" i
-^{\prime \prime \prime}
-endsnippet
-
-snippet ~ "Mathjax ~" w
+snippet ~ "LaTeX ~ symbol" i
 \sim
 endsnippet
 
-snippet vec "Mathjax vector" i
+snippet vec "LaTeX vector" i
 \vec{${1:${VISUAL}}}$0
 endsnippet
 
-snippet hat "Mathjax vector" i
-\hat{${1:${VISUAL}}}$0
-endsnippet
-
-snippet mag "Mathjax vector's magnitude" i
-\\|${1:${VISUAL}}\\|$0
-endsnippet
-
-snippet <> "Mathjax angled bracets" i
-\langle ${1:${VISUAL}} \rangle$0
-endsnippet
-
-snippet || "Mathjax parallel sign" i
-\parallel
-endsnippet
-
-snippet | "Mathjax mid sign" i
-\mid
-endsnippet
-
-snippet |/ "Mathjax mid sign" i
-\nmid
-endsnippet
-
-snippet subs "subset" i
-\subset
-endsnippet
-
-snippet ni "not in" i
-\not\in
-endsnippet
-
-snippet in "in" w
-\in
-endsnippet
-
-snippet Nn "cap" i
-\cap
-endsnippet
-
-snippet UU "cup" i
-\cup
-endsnippet
-
-snippet uuu "bigcup" i
-\bigcup_{${1:i \in ${2: I}}} $0
-endsnippet
-
-snippet nnn "bigcap" i
-\bigcap_{${1:i \in ${2: I}}} $0
-endsnippet
-
-snippet OO "emptyset" i
-\emptyset
-endsnippet
-
-snippet <! "normal" i
-\triangleleft
-endsnippet
-
-snippet <> "hokje" i
-\diamond
-endsnippet
-
-snippet disp "Displaystyle" w
-{\displaystyle ${1:${VISUAL}}}$0
-endsnippet
-
-snippet int "integral" w
-\int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
-endsnippet
-
-snippet dint "Display mode integral" w
-{\displaystyle \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}}$0
-endsnippet
-
-snippet sig "Mathjax sigma symbol" w
-\sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}\;${8:\Delta{x}}}$0
-endsnippet
-
-snippet lim "limit" i
-\lim${1:_{${2:n} \to ${3:\infty}}} ${4:${5:f(x)} = ${6:x}}$0
-endsnippet
-
-snippet reimann "Mathjax Reiman\sum_{${1:i} = ${2:1}}^{${3:n}}n sum symbol" w
-\lim_{${1:n} \to ${2:\infty}} \sum_{${3:i} = ${3:1}}^{${4:n}} ${5:${6:f(${7:x_{i}})}${8:\Delta{x}}}$0
-endsnippet
-
-snippet limsup "limsup" w
-\limsup_{${1:n} \to ${2:\infty}}
-endsnippet
-
-snippet prod "product" w
-\prod${1:_{${2:n=${3:1}}}^{${4:\infty}}} ${5:${VISUAL}}$0
-endsnippet
-
-snippet part "d/dx" w
-\frac{\partial ${1:V}}{\partial ${2:x}} $0
-endsnippet
-
-snippet norm "norm" i
-\|$1\|$0
-endsnippet
-
-snippet mcal "mathcal" i
-\mathcal{$1}$0
-endsnippet
-
-snippet invs "inverse" i
-^{-1}
-endsnippet
-
-snippet comp "Mathjax complement" i
-^{c}
-endsnippet
-
-snippet 'det' "Mathjax determinant" w
+snippet 'det' "LaTeX determinant" i
 \det $0
 endsnippet
 
-snippet phan "Mathjax phantom placeholder" w
-\phantom{$1}$0
+snippet mag "LaTeX vector's magnitude" i
+\\|${1:${VISUAL}}\\|$0
 endsnippet
 
-snippet nphan "Mathjax negative phantom placeholder" w
-\phantom{-}$0
+snippet hat "LaTeX hat" i
+\hat{${1:${VISUAL}}}$0
 endsnippet
 
-snippet ol "Mathjax overline" i
-\overline{$1}$0
+snippet || "LaTeX parallel sign" i
+\parallel
 endsnippet
 
-snippet co "Cancel out" w
-\cancel{${1:${VISUAL}}}$0
+snippet | "LaTeX mid sign" i
+\mid
 endsnippet
 
-snippet col "Mathjax text color" i
-{\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
+snippet n| "LaTeX not mid sign" i
+\nmid
 endsnippet
 
-snippet coc "Cancel out with color" w
-{\color{#${1:ff0000}}{\cancel{{\color{#${1:000000}}{${3:${VISUAL}}}}}}}$0
-endsnippet
-
-snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "Mathjax trig functions" r
+snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "LaTeX trig functions" r
 `!p
 # Constants
 mult = "" if match.group(1) == None else match.group(1)
@@ -1735,87 +1459,466 @@ snip.rv = mult + "\\" + arc + trig + expo
 `($1)$0
 endsnippet
 
-
-# Matrices, absolute value and parenthises
+# Symbols (Arrows)
 # ============================================================
-snippet bigp "Mathjax big ()" i
-\bigl( ${1:${VISUAL}} \bigr)$0
+
+snippet Ua "LaTeX double lined uparrow" i
+\Uparrow
 endsnippet
 
-snippet Bigp "Mathjax very big parenthesis" i
-\Bigl( ${1:${VISUAL}} \Bigr)$0
+snippet Da "LaTeX double lined downarrow" i
+\Downarrow
 endsnippet
 
-snippet bigb "Mathjax big brackets" i
-\bigl[ ${1:${VISUAL}} \bigr]$0
+snippet Uda "LaTeX double lined updownarrow" i
+\Updownarrow
 endsnippet
 
-snippet Bigb "Mathjax big brackets" i
-\Bigl[ ${1:${VISUAL}} \Bigr]$0
+snippet La "LaTeX double lined leftarrow" i
+\Leftarrow
 endsnippet
 
-snippet bigB "Mathjax very big braces" i
-\bigl\\{ ${1:${VISUAL}} \bigr\\}$0
+snippet Ra "LaTeX double lined rightarrow" i
+\Rightarrow
 endsnippet
 
-snippet BigB "Mathjax very big braces" i
-\Bigl\\{ ${1:${VISUAL}} \Bigr\\}$0
+snippet Lra "LaTeX double lined leftrightarrow" i
+\Leftrightarrow
 endsnippet
 
-snippet bigv "Mathjax big pipe" i
-\bigl| ${1:${VISUAL}} \bigr|$0
+snippet Lal "LaTeX double lined long leftarrow" i
+\Longleftarrow
 endsnippet
 
-snippet Bigv "Mathjax very big pipe" i
-\Bigl| ${1:${VISUAL}} \Bigr|$0
+snippet Ral "LaTeX double lined long rightarrow" i
+\Longrightarrow
 endsnippet
 
-snippet bigV "Mathjax big double pipe" i
-\bigl\\| ${1:${VISUAL}} \bigr\\|$0
+snippet Lral "LaTeX double lined long leftrightarrow" i
+\Longleftrightarrow
 endsnippet
 
-snippet BigV "Mathjax very big double pipe" i
-\Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
+snippet da "LaTeX single lined downarrow" i
+\downarrow
 endsnippet
 
-snippet lrp "Mathjax left right parenthesis" i
-\left ( ${1:${VISUAL}} \right )$0
+snippet uda "LaTeX single lined updownarrow" i
+\updownarrow
 endsnippet
 
-snippet lrb "Mathjax left right brackets" i
-\left [ ${1:${VISUAL}} \right ]$0
+snippet la "LaTeX single lined leftarrow" i
+\leftarrow
 endsnippet
 
-snippet lrB "Mathjax left right braces" i
-\left \\{ ${1:${VISUAL}} \right \\}$0
+snippet ra "LaTeX single lined rightarrow" i
+\rightarrow
 endsnippet
 
-snippet lrv "Mathjax left right pipe" i
-\left | ${1:${VISUAL}} \right |$0
+snippet lra "LaTeX single lined leftrightarrow" i
+\leftrightarrow
 endsnippet
 
-snippet lrV "Mathjax left right double pipe" i
-\left \| ${1:${VISUAL}} \right \|$0
+snippet lal "LaTeX long single lined leftarrow" i
+\longleftarrow
 endsnippet
 
-snippet bmat "Mathjax in-line brackets matrix" wb
+snippet ral "LaTeX long single lined rightarrow" i
+\longrightarrow
+endsnippet
+
+snippet lral "LaTeX long single lined leftrightarrow" i
+\Longleftrightarrow
+endsnippet
+
+snippet ^la "LaTeX overset left arrow" iA
+\overset{$1}\leftarrow$0
+endsnippet
+
+snippet _la "LaTeX underset left arrow" iA
+\underset{$1}\leftarrow$0
+endsnippet
+
+snippet ^ra "LaTeX overset right arrow" iA
+\overset{$1}\rightarrow$0
+endsnippet
+
+snippet _ra "LaTeX underset right arrow" iA
+\underset{$1}\rightarrow$0
+endsnippet
+
+# Symbols (Logic)
+# ============================================================
+
+snippet '(?<=[a-zA-Z0-9])cir' "LaTeX auto degrees symbol" irA
+^{\circ}
+endsnippet
+
+snippet cir "LaTeX degrees symbol" i
+\circ
+endsnippet
+
+snippet nn "Latex intersection symbol" i
+\cap
+endsnippet
+
+snippet uu "Latex union symbol" i
+\cup
+endsnippet
+
+# Symbols (Misc)
+# ============================================================
+
+snippet '(\+-|-\+)' "LaTeX plus minus sign" irA
+\pm
+endsnippet
+
+snippet nab "Latex inverted delta greek symbol" i
+\nabla
+endsnippet
+
+snippet suitc "LaTeX club suit symbol" i
+\clubsuit
+endsnippet
+
+snippet suith "LaTeX heart suit symbol" i
+\heartsuit
+endsnippet
+
+snippet suits "LaTeX spade suit symbol" i
+\spadesuit
+endsnippet
+
+snippet suitd "LaTeX diamond suit symbol" i
+\diamondsuit
+endsnippet
+
+# Symbols (Greek)
+# ============================================================
+
+snippet alp "LaTeX alpha symbol" i
+\alpha
+endsnippet
+
+snippet bet "LaTeX beta symbol" i
+\beta
+endsnippet
+
+snippet del "LaTeX delta symbol" i
+\delta
+endsnippet
+
+snippet eps "LaTeX epsilon symbol" i
+\epsilon
+endsnippet
+
+snippet veps "LaTeX varepsilon symbol" i
+\varepsilon
+endsnippet
+
+snippet zet "LaTeX zeta symbol" i
+\zeta
+endsnippet
+
+snippet eta "LaTeX eta symbol" i
+\eta
+endsnippet
+
+snippet the "LaTeX theta symbol" i
+\theta
+endsnippet
+
+snippet vthe "LaTeX vartheta symbol" i
+\vartheta
+endsnippet
+
+snippet gam "LaTeX gamma symbol" i
+\gamma
+endsnippet
+
+snippet kap "LaTeX gamma symbol" i
+\kappa
+endsnippet
+
+snippet lam "LaTeX lambda symbol" i
+\lambda
+endsnippet
+
+snippet mu "LaTeX mu greek symbol" i
+\mu
+endsnippet
+
+snippet nu "LaTeX nu greek symbol" i
+\nu
+endsnippet
+
+snippet xi "LaTeX xi greek symbol" i
+\xi
+endsnippet
+
+snippet pi "LaTeX pi greek symbol" i
+\pi
+endsnippet
+
+snippet vpi "LaTeX varpi greek symbol" i
+\varpi
+endsnippet
+
+snippet rho "LaTeX rho greek symbol" i
+\rho
+endsnippet
+
+snippet vrho "LaTeX phi greek symbol" i
+\varrho
+endsnippet
+
+snippet sig "LaTeX sigma greek symbol" i
+\sigma
+endsnippet
+
+snippet vsig "LaTeX varsigma greek symbol" i
+\varsigma
+endsnippet
+
+snippet tau "LaTeX tau greek symbol" i
+\tau
+endsnippet
+
+snippet ups "LaTeX upsilon greek symbol" i
+\upsilon
+endsnippet
+
+snippet phi "LaTeX phi greek symbol" i
+\phi
+endsnippet
+
+snippet vphi "LaTeX varphi greek symbol" i
+\varphi
+endsnippet
+
+snippet chi "LaTeX chi greek symbol" i
+\chi
+endsnippet
+
+snippet psi "LaTeX psi greek symbol" i
+\psi
+endsnippet
+
+snippet ome "LaTeX omega greek symbol" i
+\omega
+endsnippet
+
+snippet Gam "LaTeX Gamma greek symbol" i
+\Gamma
+endsnippet
+
+snippet Del "LaTeX Delta greek symbol" i
+\Delta
+endsnippet
+
+snippet The "LaTeX Theta greek symbol" i
+\Theta
+endsnippet
+
+snippet Lam "LaTeX Lambda greek symbol" i
+\Lambda
+endsnippet
+
+snippet Xi "LaTeX Xi greek symbol" i
+\Xi
+endsnippet
+
+snippet Xi "LaTeX Xi greek symbol" i
+\Xi
+endsnippet
+
+snippet Pi "LaTeX Pi greek symbol" i
+\Pi
+endsnippet
+
+snippet Sig "LaTeX Sigma greek symbol" i
+\Sigma
+endsnippet
+
+snippet Ups "LaTeX Upsilon greek symbol" i
+\Upsilon
+endsnippet
+
+snippet Phi "LaTeX Phi greek symbol" i
+\Phi
+endsnippet
+
+snippet Psi "LaTeX Psi greek symbol" i
+\Psi
+endsnippet
+
+snippet Ome "LaTeX Omega greek symbol" i
+\Omega
+endsnippet
+
+# Syntax
+# ============================================================
+
+snippet '(\\|!)!' "LaTex small negative spacing" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\!\\!'
+elif prefix == '!':
+	snip.rv = '\\!'
+`
+endsnippet
+
+snippet '(\\|,),' "LaTex small spacing" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\,\\,'
+elif prefix == ',':
+	snip.rv = '\\,'
+`
+endsnippet
+
+snippet '(\\|:):' "LaTex medium spacing" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\:\\:'
+elif prefix == ':':
+	snip.rv = '\\:'
+`
+endsnippet
+
+snippet '(\\|;);' "LaTex large spacing" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\;\\;'
+elif prefix == ';':
+	snip.rv = '\\;'
+`
+endsnippet
+
+snippet dis "LaTeX Displaystyle" w
+{\displaystyle ${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtt "LaTeX text" iA
+\text{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtbo "LaTeX text bold" iA
+\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xtit "LaTeX text italic" iA
+\textit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xsbo "LaTeX symbol bold" iA
+\boldsymbol{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmbo "LaTeX math bold" iA
+\mathbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmit "LaTeX math italic" iA
+\mathit{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xmca "LaTeX mathcal" iA
+\mathcal{$1}$0
+endsnippet
+
+snippet xmbb "LaTeX mathbb" iA
+\mathbb{$1}$0
+endsnippet
+
+snippet pha "LaTeX phantom placeholder" i
+\phantom{$1}$0
+endsnippet
+
+snippet npha "LaTeX negative phantom placeholder" i
+\phantom{-}$0
+endsnippet
+
+snippet xsol "LaTeX overline" iA
+\overline{${1:${VISUAL}}}$0
+endsnippet
+
+snippet xsul "LaTeX underline" iA
+\underline{${1:${VISUAL}}}$0
+endsnippet
+
+snippet co "Cancel out" w
+\cancel{${1:${VISUAL}}}$0
+endsnippet
+
+snippet col "LaTeX text color" i
+{\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
+endsnippet
+
+snippet coc "Cancel out with color" w
+{\color{#${1:ff0000}}{\cancel{{\color{#${1:000000}}{${3:${VISUAL}}}}}}}$0
+endsnippet
+
+snippet nl "LaTeX empty line" bA
+~\\\\
+endsnippet
+
+snippet begin "LaTeX begin function" bA
+\begin{$1}
+	${0:${VISUAL}}
+\end{$1}
+endsnippet
+
+snippet bmat "LaTeX in-line brackets matrix" wb
 \begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
 endsnippet
 
-snippet Bmat "Mathjax in-line curly braces matrix" wb
+snippet Bmat "LaTeX in-line curly braces matrix" wb
 \begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
 endsnippet
 
-snippet pmat "Mathjax in-line parenthesis matrix" wb
+snippet pmat "LaTeX in-line parenthesis matrix" wb
 \begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
 endsnippet
 
-snippet vmat "Mathjax in-line determinant matrix" wb
+snippet vmat "LaTeX in-line determinant matrix" wb
 \begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
 endsnippet
 
-snippet Vmat "Mathjax in-line double absolute values matrix" wb
+snippet Vmat "LaTeX in-line double absolute values matrix" wb
 \begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
+endsnippet
+
+# Usage: arr[#column],[#row] ->
+# \begin{array}{#column}
+#   &*[column*row] \\
+# \end{array}
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\d+),(\d+)ar' "LaTeX array" rbA
+\begin{array}{`!p
+orient = ""
+for _ in range(0, int(match.group(1))): orient += "l"
+snip.rv = orient`}
+`!p
+snip.rv = create_matrix(match.group(1), match.group(2), " & ", "\t", " \\\\\\\\\n")
+`$0
+\end{array}
+endsnippet
+
+# Usage: [#column]== ->
+# \begin{aligned}
+#   &=*[#columng] \\
+# \end{array}
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\d+)eq' "LaTeX block align equations" rbA
+\begin{aligned}
+`!p
+snip.rv = create_matrix(2, match.group(1), " &= ","\t", " \\\\\\\\\n")
+`
+\end{aligned}$0
 endsnippet
 
 # Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
@@ -1823,7 +1926,7 @@ endsnippet
 # , and `n,n` as the matrix size (rows, column). No spaces and ignore
 # parenthesis, and can't have both separators and boundary together.
 post_jump "create_matrix_placeholders(snip)"
-snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+),(\d+)(m)?' "Mathjax matrix" wr
+snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+),(\d+)(m)?' "LaTeX matrix" wr
 `!p
 inline = match.group(1)
 left = match.group(4) # left matrix separator
@@ -1890,15 +1993,22 @@ snip.rv = begin + result + end
 `$0
 endsnippet
 
-# ====================LaTeX Snippets==================== #
-
-snippet '(?<=\\item)(.+)' "item" r
+# Usage:
+# item<tab> ->
+# item
+# item
+snippet '(?<=\\item)(.+)' "LaTeX item" r
 `!p snip.rv = match.group(1)`
 \\item $0
 endsnippet
 
+# Usage:
+# [number]item
+# \begin{itemize}
+#   item*[number]
+# \end{itemiz}
 post_jump "create_matrix_placeholders(snip)"
-snippet 'item(\d+)?' "LaTeX Itemize" br
+snippet '(\d+)item' "LaTeX itemize" brA
 \begin{itemize}
 `!p
 res = "\t\\item $1"
@@ -1907,5 +2017,114 @@ if match.group(1):
 	snip.rv = res
 `
 \end{itemize}$0
+endsnippet
+
+# Usage:
+# [number]enum
+# \begin{enumerate}
+#   item*[number]
+# \end{enumerate}
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\d+)enum' "LaTeX enumerate" brA
+\begin{enumerate}
+`!p
+res = "\t\\item $1"
+if match.group(1):
+	res = create_matrix(1, match.group(1), "", "\t\\item ", "\n")
+	snip.rv = res
+`
+\end{enumerate}$0
+endsnippet
+
+# Usage:
+# [number]desc
+# \begin{description}
+#   item*[number]
+# \end{description}
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\d+)desc' "LaTeX description" brA
+\begin{description}
+`!p
+res = "\t\\item $1"
+if match.group(1):
+	res = create_matrix(1, match.group(1), "", "\t\\item ", "\n")
+	snip.rv = res
+`
+\end{description}$0
+endsnippet
+
+
+
+
+
+# Brackets
+# ============================================================
+
+snippet bg) "LaTeX big parenthesis" iA
+\bigl( ${1:${VISUAL}} \bigr)$0
+endsnippet
+
+snippet Bg) "LaTeX very big parenthesis" iA
+\Bigl( ${1:${VISUAL}} \Bigr)$0
+endsnippet
+
+snippet bg] "LaTeX big brackets" iA
+\bigl[ ${1:${VISUAL}} \bigr]$0
+endsnippet
+
+snippet Bg] "LaTeX big brackets" iA
+\Bigl[ ${1:${VISUAL}} \Bigr]$0
+endsnippet
+
+snippet bg} "LaTeX very big braces" iA
+\bigl\\{ ${1:${VISUAL}} \bigr\\}$0
+endsnippet
+
+snippet Bg} "LaTeX very big braces" iA
+\Bigl\\{ ${1:${VISUAL}} \Bigr\\}$0
+endsnippet
+
+snippet bg| "LaTeX big pipe" iA
+\bigl| ${1:${VISUAL}} \bigr|$0
+endsnippet
+
+snippet Bg| "LaTeX very big pipe" iA
+\Bigl| ${1:${VISUAL}} \Bigr|$0
+endsnippet
+
+snippet bg\| "LaTeX big double pipe" iA
+\bigl\\| ${1:${VISUAL}} \bigr\\|$0
+endsnippet
+
+snippet Bg\| "LaTeX very big double pipe" iA
+\Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
+endsnippet
+
+snippet bg> "LaTeX angled bracets" iA
+\langle ${1:${VISUAL}} \rangle$0
+endsnippet
+
+snippet lr) "LaTeX left right parenthesis" iA
+\left ( ${1:${VISUAL}} \right )$0
+endsnippet
+
+snippet lr] "LaTeX left right brackets" iA
+\left [ ${1:${VISUAL}} \right ]$0
+endsnippet
+
+snippet lr} "LaTeX left right braces" iA
+\left \\{ ${1:${VISUAL}} \right \\}$0
+endsnippet
+
+snippet lr| "LaTeX left right pipe" iA
+\left | ${1:${VISUAL}} \right |$0
+endsnippet
+
+snippet lr\| "LaTeX left right double pipe" iA
+\left \| ${1:${VISUAL}} \right \|$0
+endsnippet
+
+snippet lr> "LaTeX left right double pipe" iA
+\left < ${1:${VISUAL}} \right >$0
 endsnippet
 
