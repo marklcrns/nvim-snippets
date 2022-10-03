@@ -821,7 +821,7 @@ snippet xsul "LaTeX underline" iA
 \underline{${1:${VISUAL}}}$0
 endsnippet
 
-snippet co "Cancel out" w
+snippet co "LaTeX Cancel out" w
 \cancel{${1:${VISUAL}}}$0
 endsnippet
 
@@ -1024,10 +1024,6 @@ if match.group(1):
 \end{description}$0
 endsnippet
 
-
-
-
-
 # Brackets
 # ============================================================
 
@@ -1071,10 +1067,6 @@ snippet Bg\| "LaTeX very big double pipe" iA
 \Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
 endsnippet
 
-snippet bg> "LaTeX angled bracets" iA
-\langle ${1:${VISUAL}} \rangle$0
-endsnippet
-
 snippet lr) "LaTeX left right parenthesis" iA
 \left ( ${1:${VISUAL}} \right )$0
 endsnippet
@@ -1095,21 +1087,31 @@ snippet lr\| "LaTeX left right double pipe" iA
 \left \| ${1:${VISUAL}} \right \|$0
 endsnippet
 
-snippet lr> "LaTeX left right double pipe" iA
+snippet lr> "LaTeX left right angled brackets" iA
 \left < ${1:${VISUAL}} \right >$0
+endsnippet
+
+snippet lra "LaTeX angled brackets" iA
+\langle ${1:${VISUAL}} \rangle$0
+endsnippet
+
+snippet lrc "LaTeX left right ceiling" iA
+\lceil ${1:${VISUAL}} \rceil$0
+endsnippet
+
+snippet lrf "LaTeX left right floor" iA
+\lfloor ${1:${VISUAL}} \rfloor$0
 endsnippet
 
 # LaTeX specific
 # ============================================================
 
 snippet temp "LaTeX basic template" bA
-\documentclass[11pt, a4paper]{article}
+\documentclass[10pt, letterpaper]{article}
 
+\usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb}
 \usepackage{graphicx}
-
-\setlength{\parindent}{2em}
-\setlength{\parskip}{0.5em}
 
 \author{$1}
 \title{$2}
@@ -1123,7 +1125,7 @@ $0
 \end{document}
 endsnippet
 
-snippet upac "LaTeX usepackage" bA
+snippet upac "LaTeX \usepackage" bA
 \usepackage[${1:options}]{${2:package}}$0
 endsnippet
 
@@ -1134,5 +1136,13 @@ snippet img "LaTeX figure environment" bA
 	\caption{${4:$3}}
 	\label{fig:${5:${3/\W+/-/g}}}
 \end{figure}
+endsnippet
+
+snippet ncom "LaTeX \newcommand" bA
+\newcommand{${1:${VISUAL:var}}}{${2:command}}$0
+endsnippet
+
+snippet defcol "LaTeX \definecolor" bA
+\definecolor{${1:${VISUAL:var}}}{${2:rgb}}{${3:value}}$0
 endsnippet
 
