@@ -1,6 +1,16 @@
 global !p
 import os, re
 
+def math():
+    return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+
+def comment(): 
+    return vim.eval('vimtex#syntax#in_comment()') == '1'
+
+def env(name):
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+    return x != '0' and x != '0'
+
 # Make all multi-line placeholder strings jumpable.
 def create_matrix_placeholders(snip):
 	# Create anonymous snippet body

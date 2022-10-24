@@ -1072,6 +1072,7 @@ endsnippet
 
 # ====================LaTeX/Mathjax Snippets==================== #
 
+context "math()"
 snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "LaTeX auto currency" rwA
 `!p snip.rv = "\$" + match.group(1) + " "`
 endsnippet
@@ -1079,22 +1080,27 @@ endsnippet
 # Symbols (Relations)
 # ============================================================
 
+context "math()"
 snippet <= "LaTeX less than or equals to" iA
 \leq
 endsnippet
 
+context "math()"
 snippet >= "LaTeX greater than or equals to" iA
 \geq
 endsnippet
 
+context "math()"
 snippet >> "LaTeX much greater than" iA
 \gg
 endsnippet
 
+context "math()"
 snippet << "LaTeX muchn less than" iA
 \ll
 endsnippet
 
+context "math()"
 snippet != "LaTeX not equals to" iA
 \neq
 endsnippet
@@ -1184,12 +1190,20 @@ endsnippet
 
 # Auto exponent/superscript
 # Matches ^ followed by pattern of characters using negative lookbehind
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" irA
-^{$1}$0
+# snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" irA
+# ^{$1}$0
+# endsnippet
+#
+# snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" irA
+# _{$1}$0
+# endsnippet
+
+snippet _ "LaTeX subscript" i
+_{$1}$0
 endsnippet
 
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" irA
-_{$1}$0
+snippet ^ "LaTeX superscript" i
+^{$1}$0
 endsnippet
 
 # Math
@@ -1534,19 +1548,19 @@ snippet lral "LaTeX long single lined leftrightarrow" i
 \Longleftrightarrow
 endsnippet
 
-snippet ^la "LaTeX overset left arrow" iA
+snippet ^la "LaTeX overset left arrow" i
 \overset{$1}\leftarrow$0
 endsnippet
 
-snippet _la "LaTeX underset left arrow" iA
+snippet _la "LaTeX underset left arrow" i
 \underset{$1}\leftarrow$0
 endsnippet
 
-snippet ^ra "LaTeX overset right arrow" iA
+snippet ^ra "LaTeX overset right arrow" i
 \overset{$1}\rightarrow$0
 endsnippet
 
-snippet _ra "LaTeX underset right arrow" iA
+snippet _ra "LaTeX underset right arrow" i
 \underset{$1}\rightarrow$0
 endsnippet
 
