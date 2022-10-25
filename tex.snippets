@@ -978,6 +978,8 @@ endsnippet
 # item<tab> ->
 # item
 # item
+context "env('itemize')"
+context "env('enumerate')"
 snippet '(?<=\\item)(.+)' "LaTeX item" r
 `!p snip.rv = match.group(1)`
 \\item $0
