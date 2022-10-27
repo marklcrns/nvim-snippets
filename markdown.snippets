@@ -38,6 +38,47 @@ def env(name):
     [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
     return x != '0' and x != '0'
 
+def get_wiki_files_dir():
+	root = os.getcwd()
+	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
+	dir_path = re.sub(fn, '', rel_path) # remove current buffer file from path
+	subdir_count = 0
+	wiki_path = ''
+
+	try:
+		if 'md/' in dir_path:
+			file_index_end =  dir_path.index('md/') + 2 # Get the end index of 'md' dir
+			stripped_path = dir_path[file_index_end:]		# Strip trailing path from after 'md' dir
+			wiki_path = dir_path[file_index_end + 1:]
+			# Count how deep current buffer dir relative to 'md' dir or stripped path
+			for i in stripped_path:
+				if i == '/':
+					subdir_count += 1
+	except ValueError:
+		return # Return nothing if no 'md' dir
+
+	# return path to 'files/' dir relative to current buffer dir
+	return "../" * subdir_count + "files/" + wiki_path
+
+
+def get_nearest_glossary():
+	bib='glossary.md'
+
+	if fn in bib: return ''
+
+	abs_path = os.path.abspath(path)
+	dir_path = os.path.dirname(abs_path) # remove current file from path
+	subdir_count = 0
+	wiki_path = ''
+
+	while '/md/' in dir_path:
+		if os.path.exists(dir_path + '/' + bib): break
+		dir_path = os.path.dirname(dir_path)
+		subdir_count += 1
+
+	return "../" * subdir_count + bib
+
+
 # Make all multi-line placeholder strings jumpable.
 def create_matrix_placeholders(snip):
 	# Create anonymous snippet body
@@ -63,6 +104,33 @@ def create_matrix_placeholders(snip):
 	snip.expand_anon(anon_snippet_body)
 
 
+def create_matrix(cols, rows, sep, start, end):
+	res = ""
+	placeholder = 1
+	for _ in range(0, int(rows)):
+		res += start + f"${placeholder}"
+		placeholder += 1
+		for _ in range(0, int(cols) - 1):
+			res += sep + f"${placeholder}"
+			placeholder += 1
+		res += end
+	return res[:-1]
+
+
+def get_parent_header(snip):
+	# Create anonymous snippet body
+	anon_snippet_body = ""
+	# Get start of snippet as the end of line
+	end = snip.snippet_start[0]
+
+	# Append current line into anonymous snippet
+	for i in reversed(range(0, end)):
+		if (snip.buffer[i].find('#') == 0):
+			return snip.buffer[i]
+	
+	return ""
+
+
 def get_last_header_idx(snip):
 	# Get start of snippet line number
 	start = snip.snippet_start[0]
@@ -81,52 +149,65 @@ def get_last_footnote_link(header_idx):
 			return footnote.group(1)
 	
 	return ""
-	
 
 endglobal
 
 
-snippet h1 "Header 1" bA
+# ====================Vimwiki/Markdown Snippets====================
+
+snippet h1 "Header 1" b
 # $1
 $0
 endsnippet
 
-snippet h2 "Header 2" bA
+snippet h2 "Header 2" b
 ## $1
 $0
 endsnippet
 
-snippet h3 "Header 3" bA
+snippet h3 "Header 3" b
 ### $1
 $0
 endsnippet
 
-snippet h4 "Header 4" bA
+snippet h4 "Header 4" b
 #### $1
 $0
 endsnippet
 
-snippet h5 "Header 5" bA
+snippet h5 "Header 5" b
 ##### $1
 $0
 endsnippet
 
-snippet h6 "Header 6" bA
+snippet h6 "Header 6" b
 ###### $1
 $0
 endsnippet
 
-snippet '(.+)?fen' "Fenced code block" rbA
+snippet tag "HTML tag <>" b
+<$1>
+
+${0:${VISUAL}}
+
+</$1>
+endsnippet
+
+snippet itag "In-line HTML tag <>" w
+<$1>${0:${VISUAL}}</$1>
+endsnippet
+
+snippet '(.+)?fen' "Fenced code block" rb
 \`\`\``!p snip.rv = "" if match.group(1) == None else match.group(1)`
 ${0:${VISUAL}}
 \`\`\`
 endsnippet
 
-snippet mcom "Markdown comment" bA
+snippet mcom "Markdown comment" b
 [$1]: # $0
 endsnippet
 
-snippet hcom "Markdown comment" bA
+snippet hcom "Markdown comment" b
 <!--- $1 --->$0
 endsnippet
 
@@ -134,28 +215,20 @@ snippet br "Markdown breakline" w
 <br>
 endsnippet
 
-snippet l "Link tag"
-[${1:${VISUAL}}]($0)
+snippet l "Simple link"
+[${1:${VISUAL}}]($2)$0
 endsnippet
 
-snippet fi "Image tag for files" w
-![${1:${VISUAL}}](../../../$0)
+snippet w "Web link"
+[📄 ${1:${VISUAL}}]($2)$0
 endsnippet
 
-snippet i "Image tag for urls" w
-![${1:${VISUAL}}]($2)
+snippet m "Markdown file link" w
+[↪ ${1:${VISUAL}}]($2)$0
 endsnippet
 
-snippet ie "Clickable Image link" w
-[![${1:${VISUAL}}](${2:path/to/image})](${3:redirect-link} "${4:Alt}")
-endsnippet
-
-snippet ih "HTML Image link" w
-<img src="${1:path/to/image}" width="${2:500px}" alt="${3:alt}">
-endsnippet
-
-snippet a "Markdown anchor link" w
-[#${1:${VISUAL}}]($0#$1)
+snippet v "Video link" w
+[📺 ${1:${VISUAL}}]($2)$0
 endsnippet
 
 snippet ve "YouTube Video link with embedded image" w
@@ -164,30 +237,56 @@ snippet ve "YouTube Video link with embedded image" w
 [<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="200"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
 endsnippet
 
-post_jump "create_matrix_placeholders(snip)"
-snippet nve "Neuron YouTube Video link with embedded image for html" w
-`!p
-head, idx = get_last_header_idx(snip)
-
-res = ""
-last_footnote_idx = 0
-if head != "" and idx != 0:
-	footnote = get_last_footnote_link(idx)
-	if footnote != "":
-		match = re.match("(^\[\^(\d+)\])", str(footnote))
-		last_footnote_idx = int(match.group(2)) if match else 0
-
-last_footnote_idx += 1
-
-res = "**${1:TITLE}**[^" + str(last_footnote_idx) + "]$0\n"
-res += '\n\\\`\\\`\\\` {=html}\n<iframe width="100%" height="315" src="https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}" frameborder="0" allow="autoplay;encrypted-media allowfullscreen></iframe>\n\\\`\\\`\\\`\n'
-res += "\n[^" + str(last_footnote_idx) + "]: ${2:VIDEO_URL} ($1)\n"
-snip.rv = res
-`
+snippet p "Video playlist link" w
+[💽 ${1:${VISUAL}}]($2)$0
 endsnippet
 
-snippet anc "Html anchor" bA
-<a name="${1:${VISUAL}}">$2</a>
+snippet f "File Link" w
+[⬇ ${1:${VISUAL}}](file:`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet vf "vfile link" w
+[⬇ ${1:${VISUAL}}](vfile:`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet i "Image link" w
+![${1:${VISUAL}}](`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet ie "Clickable Image link" w
+[![${1:${VISUAL}}](${2:path/to/image})](${3:redirect-link} "${4:Alt}")
+endsnippet
+
+snippet ih "HTML Image link" w
+<a id="$1">
+	<img data-enlargeable style="cursor: zoom-in"
+	src="`!p snip.rv = get_wiki_files_dir()`$1.${2:png}"
+	width="${3:500px}" alt="${4:alt}">
+</a>
+
+> $4
+endsnippet
+
+snippet a "Markdown anchor link" w
+[📑 ${1:${VISUAL}}](${2:file}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g})$0
+endsnippet
+
+snippet '#(.*)&a' "Convert anchor name ref into valid html id" ir
+`!p
+ref = match.group(1)
+
+ref = re.sub(r'^\d+\.*\s*', '', ref.lower())
+
+# Transform special chars into uniformed separators
+ref = ref.replace(' ', '-')
+ref = ref.replace('_', '-')
+ref = ref.replace('\`', '-')
+ref = ref.replace('.', '-')
+ref = ref.replace(',', '')
+ref = ref.replace('\'', '')
+
+snip.rv = '#' + ref
+`
 endsnippet
 
 snippet pre "Html code block tag" w
@@ -200,12 +299,16 @@ snippet kbd "Markdown key bindings tag" w
 <kbd>${1:${VISUAL}}</kbd>$0
 endsnippet
 
-snippet mbo "Markdown Bold tag" w
+snippet ** "Markdown Bold" i
 **${1:${VISUAL}}**$0
 endsnippet
 
-snippet mit "Markdown Italic tag" w
+snippet __ "Markdown Italic" i
 _${1:${VISUAL}}_$0
+endsnippet
+
+snippet ~~ "Markdown Strikethrough" i
+~~${1:${VISUAL}}~~$0
 endsnippet
 
 snippet hbo "Html bold tag" w
@@ -216,49 +319,47 @@ snippet hit "Html italic tag" w
 <i>${1:${VISUAL}}</i>$0
 endsnippet
 
-snippet meta "Metadata template" b
+snippet meta "Meta deta template" b
 ---
-title: ${1:(Insert Title Here)}
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: $3
+title: ${1:(INSERT TITLE)}
+subtitle: ${2:(INSERT SUBTITLE)}
+author: ${3:Mark Lucernas}
+date: `date +'%b %d, %Y'`
 ---
 
 
 $0
 endsnippet
 
+snippet temp "Vimwiki document template" b
+---
+title: ${1:(INSERT TITLE)}
+subtitle: ${2:(INSERT SUBTITLE)}
+author: ${3:Mark Lucernas}
+date: `date +'%b %d, %Y'`
+---
 
-snippet cbox "Markdown checkbox" w
-- [ ] $0
+
+# $1: $2
+
+$0
+
+
+<br>
+
+# Resources
+
 endsnippet
 
-# DEPRECATED
-# snippet ntemp "Neuron metadata template" b
-# slug: $1
-# title: ${1/(-)?([a-zA-Z0-9]+)/(?1: )\u$2/g}
-# tags:
-# 	- wip
-# 	- $1
-# 	- $0
-# endsnippet
+snippet res "Vimwiki document resources header" b
+<br>
 
-snippet ntemp "Neuron metadata template" b
-title: $1
-slug: ${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}
-tags:
-	- wip
-	- ${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}
-	- $0
+# Resources
+
 endsnippet
 
-snippet ntldr "Neuron tldr section" b
-<div class="tldr">
-	<h2>TL;DR</h2>
-	<p>
-		$1
-	</p>
-</div>$0
+snippet task "Todo/Task checkbox" bA
+* [ ] $0
 endsnippet
 
 post_jump "create_matrix_placeholders(snip)"
@@ -282,6 +383,322 @@ if 'c' in flags:
 
 snip.rv = result
 `
+endsnippet
+
+# Usage: [wrap]?table, optional wrapper char for each table cell
+# Note: Lines should trail '&' char for splitting. Only until second to last.
+# Ref: http://vimcasts.org/episodes/ultisnips-visual-placeholder/
+snippet '([`$_*])?([cC]{1,2})?atab' "Markdown Table Builder" rb
+`!p
+# Fetch visual selected text
+wrap_char =  match.group(1) if match.group(1) != None else "" # Wraper char to wrap table cell items
+flags = match.group(2) if match.group(2) != None else ""
+text = snip.v.text
+
+if match.group(1) != None:
+	if wrap_char == '$': # '\\' to escape '$' wrap char
+		wrap = "\\" + wrap_char
+	elif wrap_char == '*':
+		wrap = "**"
+	else:
+		wrap = wrap_char
+else:
+	wrap = ""
+
+delim = "\t" # Delimeter
+lines = text.split("\n") # Split lines delimited by new line
+result = "" # String container to be returned
+line_count = 0
+for line in lines[:-1]: # Loop over lines
+	line_tmp = ""
+	separator = ""
+	line = line.split(delim) # Split all items in line
+	for item in line: # Loop over items in lines
+		# Strip leading and trailing whitespaces
+		item = item.lstrip().rstrip()
+
+		if line_count == 0:
+			line_tmp += "| " + item + " " # Format without wrap and append item to line
+			if 'C' in flags:
+				separator += "|:" + ("-" * (len(item))) + ":" # Centered table contents
+			else:
+				separator += "|" + ("-" * (len(item) + 2))
+
+		if line_count >= 1:
+			line_tmp += "| " + wrap + item + wrap + " " # Format with wrap and append item to line
+
+	result += line_tmp + "|\n" # Append new line and close table row
+
+	if line_count == 0: # Table header and body separator
+		result += separator + "|\n"
+
+	line_count += 1
+
+if 'c' in flags:
+	result = "<center>\n\n" + result + "\n</center>\n"
+
+snip.rv = result
+`
+endsnippet
+
+snippet tab2 "Two tables side by side" b
+<center>
+
+<table>
+%% Table Headings are OPTIONAL
+<tr><th>${1:Table Heading 1}</th><th>${2:Table Heading 2}</th></tr>
+<tr><td>
+
+%% Insert first table HERE
+
+</td><td>
+
+%% Insert second table HERE
+
+</td></tr>
+</table>
+
+</center>
+endsnippet
+
+snippet tab3 "Three tables side by side" b
+<center>
+
+<table>
+%% Table Headings are OPTIONAL
+<tr><th>${1:Table Heading 1}</th><th>${2:Table Heading 2}</th><th>${3:Table Heading 3}</th></tr>
+<tr><td>
+
+%% Insert first table HERE
+
+</td><td>
+
+%% Insert second table HERE
+
+</td><td>
+
+%% Insert Third table HERE
+
+</td></tr>
+</table>
+
+</center>
+endsnippet
+
+snippet TM "Markdown trademark symbol" i
+&trade;
+endsnippet
+
+snippet R "Markdown registered symbol" i
+&reg;
+endsnippet
+
+snippet C "Markdown copyright symbol" i
+&copy;
+endsnippet
+
+# ==========Note taking snippets========== #
+snippet tstamp "Video lecture timestamps" b
+Timestamps
+
+	$0
+endsnippet
+
+snippet ttime "Video lecture timestamp item" i
+- ${1:title} ${2:1:00}
+endsnippet
+
+# Usage: <youtube-url>&e
+post_jump "create_matrix_placeholders(snip)"
+snippet '((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&e' "YouTube pseudo embedded video" wr
+`!p
+home_url = match.group(1)
+http_url = match.group(2)
+www_url = match.group(3)
+domain_url = match.group(4)
+video_url = match.group(5)
+video_mode = match.group(6)
+video_id = match.group(7)
+link = "https://www.youtube.com"
+
+# check if video_url is embedded
+if 'embed' in video_mode:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+# snip.rv = "[![${1:Alt text}](https://img.youtube.com/vi/" + video_id + "/2.jpg)](" + link + "${1/.*/ \"$0\"/})$0"
+snip.rv = "[<img src=\"https://img.youtube.com/vi/" + video_id + "/0.jpg\" alt=\"${1:Alt text}\" width=\"200\"/>](" + link + "${1/.*/ \"$0\"/})$0"
+`
+endsnippet
+
+# Usage: (00:00:00 or 00:00)<youtube-url>&t
+snippet '((\d{1,2}:)?(\d{1,2}):(\d{2}))((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&t' "YouTube url with time stamp" wrA
+[(`!p snip.rv = match.group(1)`)](`!p
+# check if hours exist
+hours = match.group(2)
+if hours:
+	hours = int(hours).rstrip(":")
+else:
+	hours = 0
+
+minutes = int(match.group(3))
+seconds = int(match.group(4))
+home_url = match.group(5)
+http_url = match.group(6)
+www_url = match.group(7)
+domain_url = match.group(8)
+video_url = match.group(9)
+video_mode = match.group(10)
+video_id = match.group(11)
+link = "https://www.youtube.com"
+
+# check if video_url is embedded
+if 'embed' in video_mode:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+# convert timestamp to seconds then append to link
+snip.rv = link + "&t=" + str((hours * 60) + (minutes * 60) + seconds)
+`)
+endsnippet
+
+# Usage: <youtube-url>&y
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&y' "Clean and create Youtube link" wr
+`!p
+home_url = match.group(2)
+http_url = match.group(3)
+www_url = match.group(4)
+domain_url = match.group(5)
+video_url = match.group(6)
+video_mode = match.group(7)
+video_id = match.group(8)
+link = "https://www.youtube.com"
+
+# check if video_url is embedded
+if 'embed' in video_mode:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+# If inside markdown link wrapper, don't wrap, else, wrap it.
+if match.group(1):
+  snip.rv = match.group(1) + link
+else:
+	snip.rv = "[📺 $1](" + link + ")$0"
+`
+endsnippet
+
+# Usage: &name-of-link&alink
+snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wr
+[`!p
+snip.rv = match.group(1).replace("-", " ")
+`]($1#${2:`!p
+		snip.rv = match.group(1).replace(" ", "-").lower() if match.group(2) == None else match.group(1).replace(" ", "-").lower() + "-term"
+`})$0
+endsnippet
+
+# USAGE
+# Termininology name&iterm
+# **Terminology name**&term
+# **terminology name**&iterm
+#
+# In-line flag:
+# &terminology name&term -- in-line definition
+# terminology name&iterm -- same line definition
+#
+# Abbreviation flag:
+# terminology name&aterm
+# &terminology name&aterm
+#
+# Capitalization flags:
+# terminology name&cterm -- capitalize
+# &terminology name&tterm -- titlelize
+#
+# Mixed flags:
+# terminology name&iaterm -- same line definition with abbrev
+# terminology name&iacterm -- capitalized same line definition with abbrev
+# a, i, c or t flags are interchangeable
+post_jump "create_matrix_placeholders(snip)"
+snippet '(&)?(\*\*)?([^.*\[\]#&]+)(\*\*)?&([ia(t|c)]{1,3})?term$' "Word or phrase definition auto" wr
+`!p
+orig_term = match.group(3).lstrip().rstrip()
+flags = match.group(5)
+text = ""
+copy = True
+# Check if theres parenthesis and exclude its contents from anchor link
+parenthesis = set('()')
+if any((c in parenthesis) for c in orig_term):
+	for i in range(0, len(orig_term) - 1):
+		if ((orig_term[i] == "(" or orig_term[i + 1] == "(") and copy == True):
+			copy = False
+			continue
+		elif (orig_term[i] == ")" and copy == False):
+			copy = True
+			continue
+
+		if copy == True:
+			text += orig_term[i]
+else:
+  text = orig_term
+
+# Anchor link with '-term' appended to name
+anchor = "<a id=\"" + text.replace("'", "").replace(" ", "-").lower() + "-term\">"
+# Flags
+if flags:
+	# Abbreviation
+	if 'a' in flags:
+		# Credits: https://stackoverflow.com/a/41191867/11850077
+		abbrev = (" (" + ''.join([s[0] for s in orig_term.split()]).upper() + ")")
+	else:
+		abbrev = ""
+	# In-line
+	if match.group(1):	# In-line definition. If term sandwhiched by '&'
+		end = "$0"
+	elif 'i' in flags:				# Same line definition
+		end = ": $0<br>"
+	else:
+		end = "\n\n:   $0"				# Multi-line definition
+	# Capitalizations
+	if 'c' in flags:					# Capitalize term
+		term = orig_term.capitalize()
+	elif 't' in flags:				# Titlelize term
+		term = orig_term.title()
+	else:
+		term = orig_term
+else:
+	abbrev = ""
+	if match.group(1):	# In-line definition. If term sandwhiched by '&'
+		end = "$0"
+	else:
+		end = "\n\n:   $0"
+	term = orig_term
+
+snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
+endsnippet
+
+snippet aterm "Markdown term anchor link" w
+[${1:${VISUAL}}](${2:`!p snip.rv = get_nearest_glossary()`}#${1/(^[^a-zA-Z]+)?([a-zA-Z0-9.-]+)(\s*)/\L$2(?3:-)\E/g}-term)$0
 endsnippet
 
 # ====================LaTeX/Mathjax Snippets==================== #
@@ -400,22 +817,22 @@ snippet !0 "Latex emptyset symbol" iA
 endsnippet
 
 context "math()"
-snippet in "Latex in symbol" wA
+snippet in "Latex in symbol" w
 \in
 endsnippet
 
 context "math()"
-snippet !in "Latex not in symbol" wA
+snippet !in "Latex not in symbol" w
 \not\in
 endsnippet
 
 context "math()"
-snippet ni "Latex in reverse symbol" wA
+snippet ni "Latex in reverse symbol" w
 \ni
 endsnippet
 
 context "math()"
-snippet !in "Latex not in reverse symbol" wA
+snippet !in "Latex not in reverse symbol" w
 \not\ni
 endsnippet
 

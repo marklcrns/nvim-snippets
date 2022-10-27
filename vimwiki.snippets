@@ -34,6 +34,13 @@ from datetime import datetime, timedelta, date
 def math():
     return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 
+def comment(): 
+    return vim.eval('vimtex#syntax#in_comment()') == '1'
+
+def env(name):
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+    return x != '0' and x != '0'
+
 def get_wiki_files_dir():
 	root = os.getcwd()
 	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
@@ -1189,22 +1196,22 @@ snippet !0 "Latex emptyset symbol" iA
 endsnippet
 
 context "math()"
-snippet in "Latex in symbol" wA
+snippet in "Latex in symbol" w
 \in
 endsnippet
 
 context "math()"
-snippet !in "Latex not in symbol" wA
+snippet !in "Latex not in symbol" w
 \not\in
 endsnippet
 
 context "math()"
-snippet ni "Latex in reverse symbol" wA
+snippet ni "Latex in reverse symbol" w
 \ni
 endsnippet
 
 context "math()"
-snippet !in "Latex not in reverse symbol" wA
+snippet !in "Latex not in reverse symbol" w
 \not\ni
 endsnippet
 
