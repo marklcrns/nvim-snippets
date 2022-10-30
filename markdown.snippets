@@ -1733,7 +1733,7 @@ endsnippet
 
 # Usage: [#column]== ->
 # \begin{aligned}
-#   &=*[#columng] \\
+#   &= \\ *[#columng]
 # \end{array}
 context "math()"
 post_jump "create_matrix_placeholders(snip)"
@@ -1743,6 +1743,20 @@ snippet '(\d+)eq' "LaTeX block align equations" rbA
 snip.rv = create_matrix(2, match.group(1), " &= ","\t", " \\\\\\\\\n")
 `
 \end{aligned}$0
+endsnippet
+
+# Usage: [#column]pw ->
+# \begin{aligned}
+#   , & , \\ *[#column]
+# \end{array}
+context "math()"
+post_jump "create_matrix_placeholders(snip)"
+snippet '(\d+)pw' "LaTeX piecewise" rbA
+\left\\\\{\begin{matrix}
+`!p
+snip.rv = create_matrix(2, match.group(1), ", & ","\t", ", \\\\\\\\\n")
+`
+\end{matrix}\right.$0
 endsnippet
 
 # Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
