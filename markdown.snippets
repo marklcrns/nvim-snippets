@@ -909,7 +909,7 @@ endsnippet
 
 # Logarthmic function
 context "math()"
-snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "LaTeX Logarithmic function" irA
+snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "LaTeX Logarithmic function" ir
 `!p
 log = match.group(1)
 base = "_{" + match.group(2) + "}" if match.group(2) else ""
