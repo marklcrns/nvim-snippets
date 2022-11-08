@@ -1393,7 +1393,7 @@ snippet upac "LaTeX \usepackage" bA
 \usepackage[${1:options}]{${2:package}}$0
 endsnippet
 
-snippet img "LaTeX figure environment" bA
+snippet fig "LaTeX figure environment" bA
 \begin{figure}[${1:htpb}]
 	\centering
 	${2:\includegraphics[width=0.8\linewidth]{$3}}
@@ -1410,3 +1410,12 @@ snippet defcol "LaTeX \definecolor" bA
 \definecolor{${1:${VISUAL:var}}}{${2:rgb}}{${3:value}}$0
 endsnippet
 
+snippet math "LaTeX displaymath" bA
+\[
+${1:${VISUAL}}
+\]$0
+endsnippet
+
+snippet imath "LaTeX inlinemath" wA
+\(${1:${VISUAL}}\)$0
+endsnippet
