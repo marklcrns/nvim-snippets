@@ -4,11 +4,11 @@ import os, re
 def math():
     return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 
-def comment(): 
+def comment():
     return vim.eval('vimtex#syntax#in_comment()') == '1'
 
 def env(name):
-    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
     return x != '0' and x != '0'
 
 # Make all multi-line placeholder strings jumpable.
@@ -1323,47 +1323,47 @@ endsnippet
 
 context "math()"
 snippet lr) "LaTeX left right parenthesis" iA
-\left ( ${1:${VISUAL}} \right )$0
+\left( ${1:${VISUAL}} \right)$0
 endsnippet
 
 context "math()"
 snippet lr] "LaTeX left right brackets" iA
-\left [ ${1:${VISUAL}} \right ]$0
+\left[ ${1:${VISUAL}} \right]$0
 endsnippet
 
 context "math()"
 snippet lr} "LaTeX left right braces" iA
-\left \\{ ${1:${VISUAL}} \right \\}$0
+\left\\{ ${1:${VISUAL}} \right\\}$0
 endsnippet
 
 context "math()"
 snippet lr| "LaTeX left right pipe" iA
-\left | ${1:${VISUAL}} \right |$0
+\left| ${1:${VISUAL}} \right|$0
 endsnippet
 
 context "math()"
 snippet lr\| "LaTeX left right double pipe" iA
-\left \| ${1:${VISUAL}} \right \|$0
+\left\| ${1:${VISUAL}} \right\|$0
 endsnippet
 
 context "math()"
 snippet lr> "LaTeX left right double pipe" iA
-\left < ${1:${VISUAL}} \right >$0
+\left< ${1:${VISUAL}} \right>$0
 endsnippet
 
 context "math()"
 snippet lra "LaTeX angled brackets" iA
-\langle ${1:${VISUAL}} \rangle$0
+\left\langle ${1:${VISUAL}} \right\rangle$0
 endsnippet
 
 context "math()"
 snippet lrc "LaTeX left right ceiling" iA
-\lceil ${1:${VISUAL}} \rceil$0
+\left\lceil ${1:${VISUAL}} \right\rceil$0
 endsnippet
 
 context "math()"
 snippet lrf "LaTeX left right floor" iA
-\lfloor ${1:${VISUAL}} \rfloor$0
+\left\lfloor ${1:${VISUAL}} \right\rfloor$0
 endsnippet
 
 

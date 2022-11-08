@@ -34,11 +34,11 @@ from datetime import datetime, timedelta, date
 def math():
     return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 
-def comment(): 
+def comment():
     return vim.eval('vimtex#syntax#in_comment()') == '1'
 
 def env(name):
-    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
     return x != '0' and x != '0'
 
 def get_wiki_files_dir():
@@ -130,7 +130,7 @@ def get_parent_header(snip):
 	for i in reversed(range(0, end)):
 		if (snip.buffer[i].find('#') == 0):
 			return snip.buffer[i]
-	
+
 	return ""
 
 
@@ -658,8 +658,8 @@ inherit_header = True if match.group(13) != None else False
 time_format = "%H:%M:%S"
 from_time = datetime.strptime(f"{from_hrs}:{from_mins}:{from_secs}", time_format)
 to_time = datetime.strptime(f"{to_hrs}:{to_mins}:{to_secs}", time_format)
-from_total_time_secs = sum(x * int(t) for x, t in zip([3600, 60, 1], f"{from_hrs}:{from_mins}:{from_secs}".split(":"))) 
-to_total_time_secs = sum(x * int(t) for x, t in zip([3600, 60, 1], f"{to_hrs}:{to_mins}:{to_secs}".split(":"))) 
+from_total_time_secs = sum(x * int(t) for x, t in zip([3600, 60, 1], f"{from_hrs}:{from_mins}:{from_secs}".split(":")))
+to_total_time_secs = sum(x * int(t) for x, t in zip([3600, 60, 1], f"{to_hrs}:{to_mins}:{to_secs}".split(":")))
 
 header_hash = "#"
 header_name = ""
@@ -2353,46 +2353,46 @@ endsnippet
 
 context "math()"
 snippet lr) "LaTeX left right parenthesis" iA
-\left ( ${1:${VISUAL}} \right )$0
+\left( ${1:${VISUAL}} \right)$0
 endsnippet
 
 context "math()"
 snippet lr] "LaTeX left right brackets" iA
-\left [ ${1:${VISUAL}} \right ]$0
+\left[ ${1:${VISUAL}} \right]$0
 endsnippet
 
 context "math()"
 snippet lr} "LaTeX left right braces" iA
-\left \\{ ${1:${VISUAL}} \right \\}$0
+\left\\{ ${1:${VISUAL}} \right\\}$0
 endsnippet
 
 context "math()"
 snippet lr| "LaTeX left right pipe" iA
-\left | ${1:${VISUAL}} \right |$0
+\left| ${1:${VISUAL}} \right|$0
 endsnippet
 
 context "math()"
 snippet lr\| "LaTeX left right double pipe" iA
-\left \| ${1:${VISUAL}} \right \|$0
+\left\| ${1:${VISUAL}} \right\|$0
 endsnippet
 
 context "math()"
 snippet lr> "LaTeX left right double pipe" iA
-\left < ${1:${VISUAL}} \right >$0
+\left< ${1:${VISUAL}} \right>$0
 endsnippet
 
 context "math()"
 snippet lra "LaTeX angled brackets" iA
-\langle ${1:${VISUAL}} \rangle$0
+\left\langle ${1:${VISUAL}} \right\rangle$0
 endsnippet
 
 context "math()"
 snippet lrc "LaTeX left right ceiling" iA
-\lceil ${1:${VISUAL}} \rceil$0
+\left\lceil ${1:${VISUAL}} \right\rceil$0
 endsnippet
 
 context "math()"
 snippet lrf "LaTeX left right floor" iA
-\lfloor ${1:${VISUAL}} \rfloor$0
+\left\lfloor ${1:${VISUAL}} \right\rfloor$0
 endsnippet
 
