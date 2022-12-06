@@ -2128,11 +2128,11 @@ endsnippet
 context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)pw' "LaTeX piecewise" rbA
-\left\\\\{\begin{matrix}
+\left\\\\{\begin{array}{ll}
 `!p
-snip.rv = create_matrix(2, match.group(1), ", & ","\t", ", \\\\\\\\\n")
+snip.rv = create_matrix(2, match.group(1), ", & ","\t", " \\\\\\\\\n")
 `
-\end{matrix}\right.$0
+\end{array}\right.$0
 endsnippet
 
 # Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
