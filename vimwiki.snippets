@@ -347,7 +347,7 @@ endsnippet
 snippet ve "YouTube Video link with embedded image" w
 [📺 ${1:${VISUAL}}]($2)$0
 
-[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="200"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
+[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="auto"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
 endsnippet
 
 snippet p "Video playlist link" w
@@ -374,7 +374,7 @@ snippet ih "HTML Image link" w
 <a id="$1">
 	<img data-enlargeable style="cursor: zoom-in"
 	src="`!p snip.rv = get_wiki_files_dir()`$1.${2:png}"
-	width="${3:500px}" alt="${4:alt}">
+	width="${3:auto}" alt="${4:alt}">
 </a>
 
 > $4
@@ -1037,7 +1037,6 @@ for i in range(0, len(video_url)):
 
 snip.rv =  "- [" + desc + "](" + link + ")\n\n" + "[<img src=\"https://img.youtube.com/vi/" + video_id + "/0.jpg\" alt=\"" + desc_clean + "\" width=\"${1:auto}\"/>](" + link + " \"" + desc_clean + "\")$0" `
 endsnippet
-
 
 # Usage: &name-of-link&alink
 snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wr

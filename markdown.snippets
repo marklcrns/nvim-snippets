@@ -234,7 +234,7 @@ endsnippet
 snippet ve "YouTube Video link with embedded image" w
 [📺 ${1:${VISUAL}}]($2)$0
 
-[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="200"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
+[<img src="https://img.youtube.com/vi/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2/}/0.jpg" alt="$1" width="auto"/>](https://www.youtube.com/embed/${2/.*(watch\?v=|\/embed\/)([a-zA-Z0-9-_]*)((&|\/|)?.*)?/$2//$1/} "$1")
 endsnippet
 
 snippet p "Video playlist link" w
@@ -261,10 +261,18 @@ snippet ih "HTML Image link" w
 <a id="$1">
 	<img data-enlargeable style="cursor: zoom-in"
 	src="`!p snip.rv = get_wiki_files_dir()`$1.${2:png}"
-	width="${3:500px}" alt="${4:alt}">
+	width="${3:auto}" alt="${4:alt}">
 </a>
 
 > $4
+endsnippet
+
+snippet '!\[(.*)\]\((.*)\)' "Convert image link to enlargeable image" r
+<a id="`!p snip.rv = os.path.splitext(os.path.basename(match.group(2)))[0]`">
+	<img data-enlargeable style="cursor: zoom-in"
+	src="`!p snip.rv = match.group(2)`"
+	width="${1:auto}" alt="`!p snip.rv = match.group(1)`">
+</a>$0
 endsnippet
 
 snippet a "Markdown anchor link" w
@@ -534,7 +542,7 @@ for i in range(0, len(video_url)):
 		break
 
 # snip.rv = "[![${1:Alt text}](https://img.youtube.com/vi/" + video_id + "/2.jpg)](" + link + "${1/.*/ \"$0\"/})$0"
-snip.rv = "[<img src=\"https://img.youtube.com/vi/" + video_id + "/0.jpg\" alt=\"${1:Alt text}\" width=\"200\"/>](" + link + "${1/.*/ \"$0\"/})$0"
+snip.rv = "[<img src=\"https://img.youtube.com/vi/" + video_id + "/0.jpg\" alt=\"${1:Alt text}\" width=\"auto\"/>](" + link + "${1/.*/ \"$0\"/})$0"
 `
 endsnippet
 
@@ -607,6 +615,38 @@ if match.group(1):
 else:
 	snip.rv = "[📺 $1](" + link + ")$0"
 `
+endsnippet
+
+# Usage: [<desc>](<youtube-link>)<tab>
+post_jump "create_matrix_placeholders(snip)"
+snippet '(-\ )?\[(.*)\]\((\()?((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))\)' "Convert md youtube link to pseudo embedded youtube video link" wr
+`!p
+# Strip emojis, leading and trailing whitespaces
+desc = match.group(2)
+home_url = match.group(4)
+http_url = match.group(5)
+www_url = match.group(6)
+domain_url = match.group(7)
+video_url = match.group(8)
+video_mode = match.group(9)
+video_id = match.group(10)
+link = "https://www.youtube.com"
+
+desc_clean = strip_emojis(desc).strip()
+
+# check if video_url is embedded
+if 'embed' in video_mode:
+	# exclude embed and replace with the standard "watch?v="
+	video_url = "/watch?v=" + video_id
+
+# strip unnecessary video_url features
+for i in range(0, len(video_url)):
+	if video_url[i] != "&":
+		link += video_url[i]
+	else:
+		break
+
+snip.rv =  "- [" + desc + "](" + link + ")\n\n" + "[<img src=\"https://img.youtube.com/vi/" + video_id + "/0.jpg\" alt=\"" + desc_clean + "\" width=\"${1:auto}\"/>](" + link + " \"" + desc_clean + "\")$0" `
 endsnippet
 
 # Usage: &name-of-link&alink
