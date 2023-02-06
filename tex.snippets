@@ -112,12 +112,17 @@ endsnippet
 
 context "math()"
 snippet def= "Latex define equal symbol" iA
-\overset{\underset{\mathrm{def}}{}}{=}
+\overset{\underset{\mathrm{${1:def}}}{}}{${2:=}}$0
 endsnippet
 
 context "math()"
-snippet sim "Latex symmetrical symbol" iA
+snippet ~ "Latex symmetrical symbol" i
 \sim
+endsnippet
+
+context "math()"
+snippet ~= "Latex symmetrical equals symbol" i
+\simeq
 endsnippet
 
 context "math()"
@@ -471,11 +476,6 @@ snippet '' "LaTeX double prime" i
 endsnippet
 
 context "math()"
-snippet ~ "LaTeX ~ symbol" i
-\sim
-endsnippet
-
-context "math()"
 snippet vec "LaTeX vector" iA
 \vec{${1:${VISUAL}}}$0
 endsnippet
@@ -725,7 +725,7 @@ snippet eps "LaTeX epsilon symbol" i
 endsnippet
 
 context "math()"
-snippet veps "LaTeX varepsilon symbol" i
+snippet vep "LaTeX varepsilon symbol" i
 \varepsilon
 endsnippet
 
@@ -745,7 +745,7 @@ snippet the "LaTeX theta symbol" i
 endsnippet
 
 context "math()"
-snippet vthe "LaTeX vartheta symbol" i
+snippet vth "LaTeX vartheta symbol" i
 \vartheta
 endsnippet
 
@@ -795,7 +795,7 @@ snippet rho "LaTeX rho greek symbol" i
 endsnippet
 
 context "math()"
-snippet vrho "LaTeX phi greek symbol" i
+snippet vrh "LaTeX phi greek symbol" i
 \varrho
 endsnippet
 
@@ -805,7 +805,7 @@ snippet sig "LaTeX sigma greek symbol" i
 endsnippet
 
 context "math()"
-snippet vsig "LaTeX varsigma greek symbol" i
+snippet vsi "LaTeX varsigma greek symbol" i
 \varsigma
 endsnippet
 
@@ -825,7 +825,7 @@ snippet phi "LaTeX phi greek symbol" i
 endsnippet
 
 context "math()"
-snippet vphi "LaTeX varphi greek symbol" i
+snippet vph "LaTeX varphi greek symbol" i
 \varphi
 endsnippet
 
