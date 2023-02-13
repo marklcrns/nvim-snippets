@@ -197,12 +197,12 @@ endsnippet
 # Matches ^ followed by pattern of characters using negative lookbehind
 
 context "math()"
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" irA
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" irA
 ^{$1}$0
 endsnippet
 
 context "math()"
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" irA
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" irA
 _{$1}$0
 endsnippet
 
@@ -947,8 +947,18 @@ elif prefix == ';':
 endsnippet
 
 context "math()"
-snippet dis "LaTeX Displaystyle" w
+snippet diss "LaTeX Display mode" i
 {\displaystyle ${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet texs "LaTeX Text mode" i
+{\textstyle ${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet scrs "LaTeX Script mode" i
+{\scriptstyle ${1:${VISUAL}}}$0
 endsnippet
 
 snippet xtt "LaTeX text" iA
