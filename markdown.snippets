@@ -257,15 +257,7 @@ snippet vf "vfile link" w
 [⬇ ${1:${VISUAL}}](vfile:`!p snip.rv = get_wiki_files_dir()`$2)$0
 endsnippet
 
-snippet i "Image link" w
-![${1:${VISUAL}}](`!p snip.rv = get_wiki_files_dir()`$2)$0
-endsnippet
-
-snippet ie "Clickable Image link" w
-[![${1:${VISUAL}}](${2:path/to/image})](${3:redirect-link} "${4:Alt}")$0
-endsnippet
-
-snippet ih "HTML Image link" w
+snippet i "Enlargeable HTML image link" w
 <a id="$1">
 	<img data-enlargeable style="cursor: zoom-in"
 	src="`!p snip.rv = get_wiki_files_dir()`$1.${2:png}"
@@ -273,6 +265,14 @@ snippet ih "HTML Image link" w
 </a>
 
 > $4
+endsnippet
+
+snippet il "Markdown image link" w
+![${1:${VISUAL}}](`!p snip.rv = get_wiki_files_dir()`$2)$0
+endsnippet
+
+snippet ie "Clickable Markdown image link" w
+[![${1:${VISUAL}}](${2:path/to/image})](${3:redirect-link} "${4:Alt}")$0
 endsnippet
 
 snippet '!\[(.*)\]\((.*)\)' "Convert image link to enlargeable image" r
