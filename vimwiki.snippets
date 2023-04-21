@@ -1301,22 +1301,22 @@ endsnippet
 # Matches ^ followed by pattern of characters using negative lookbehind
 
 context "math()"
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" irA
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" ir
 ^{$1}$0
 endsnippet
 
 context "math()"
-snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" irA
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" ir
 _{$1}$0
 endsnippet
 
-snippet _ "LaTeX subscript" i
-_{$1}$0
-endsnippet
-
-snippet ^ "LaTeX superscript" i
-^{$1}$0
-endsnippet
+# snippet _ "LaTeX subscript" i
+# _{$1}$0
+# endsnippet
+#
+# snippet ^ "LaTeX superscript" i
+# ^{$1}$0
+# endsnippet
 
 # Math
 # ============================================================
