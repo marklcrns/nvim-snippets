@@ -1,1 +1,1 @@
-# Personal Ultisnips Snippets
+# Personal Neovim snippets

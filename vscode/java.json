@@ -1,0 +1,74 @@
+{
+  "jdoc": {
+    "prefix": "jdoc",
+    "description": "Java javadoc",
+    "body": [
+      "/**",
+      " * $0",
+      " */"
+    ]
+  },
+  "bcom": {
+    "prefix": "bcom",
+    "description": "Java block comment",
+    "body": [
+      "/*",
+      "\t${0:$TM_SELECTED_TEXT}",
+      " */"
+    ]
+  },
+  "pln": {
+    "prefix": "pln",
+    "description": "Java System.out.println",
+    "body": "System.out.println(${1:$TM_SELECTED_TEXT});$0"
+  },
+  "dpln": {
+    "prefix": "dpln",
+    "description": "Java debug System.out.println",
+    "body": [
+      "////////// TODO: DELETE ME LATER //////////",
+      "System.out.println(${1:$TM_SELECTED_TEXT});$0"
+    ]
+  },
+  "prsf": {
+    "prefix": "prsf",
+    "description": "Java private static final field",
+    "body": "private static final $0;",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "pusf": {
+    "prefix": "pusf",
+    "description": "Java public static final field",
+    "body": "public static final $0;",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "pus": {
+    "prefix": "pus",
+    "description": "Java public static",
+    "body": "public static $0;"
+  },
+  "pusv": {
+    "prefix": "pusv",
+    "description": "Java public static void",
+    "body": [
+      "public static void ${1:$TM_SELECTED_TEXT}($2) {",
+      "\t$0",
+      "\\}"
+    ]
+  },
+  "try": {
+    "prefix": "try",
+    "description": "Java try-catch block",
+    "body": [
+      "try {",
+      "\t${0:$TM_SELECTED_TEXT}",
+      "\\} catch(${1:Exception} e) {",
+      "\te.printStackTrace();",
+      "\\}"
+    ]
+  }
+}

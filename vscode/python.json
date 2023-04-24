@@ -1,0 +1,22 @@
+{
+  "p": {
+    "prefix": "p",
+    "description": "Print statement",
+    "body": "print(${1:$TM_SELECTED_TEXT})"
+  },
+  "pstr": {
+    "prefix": "pstr",
+    "description": "Print statement",
+    "body": "print(\"${1:$TM_SELECTED_TEXT}\")"
+  },
+  "pcat": {
+    "prefix": "pcat",
+    "description": "Print statement",
+    "body": "print(\"${1:$TM_SELECTED_TEXT}: \" + $0)"
+  },
+  "+": {
+    "prefix": "+",
+    "description": "test",
+    "body": "test"
+  }
+}

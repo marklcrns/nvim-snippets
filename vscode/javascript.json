@@ -1,0 +1,10 @@
+{
+  "clvar": {
+    "prefix": "clvar",
+    "description": "Console log",
+    "body": "console.log(\"${1:$TM_SELECTED_TEXT}: \" + ${2:$TM_SELECTED_TEXT});$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  }
+}

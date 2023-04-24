@@ -1,0 +1,1306 @@
+{
+  "<=": {
+    "prefix": "<=",
+    "description": "LaTeX less than or equals to",
+    "body": "\\leq",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  ">=": {
+    "prefix": ">=",
+    "description": "LaTeX greater than or equals to",
+    "body": "\\geq",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  ">>": {
+    "prefix": ">>",
+    "description": "LaTeX much greater than",
+    "body": "\\gg",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "<<": {
+    "prefix": "<<",
+    "description": "LaTeX muchn less than",
+    "body": "\\ll",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "!=": {
+    "prefix": "!=",
+    "description": "LaTeX not equals to",
+    "body": "\\neq",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "~~": {
+    "prefix": "~~",
+    "description": "LaTeX approximation symbol",
+    "body": "\\approx",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "-=": {
+    "prefix": "-=",
+    "description": "LaTeX equivalent symbol",
+    "body": "\\equiv",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "=>": {
+    "prefix": "=>",
+    "description": "LaTeX implies symbol",
+    "body": "\\implies",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "=<": {
+    "prefix": "=<",
+    "description": "LaTeX implied by symbol",
+    "body": "\\impliedby",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "def=": {
+    "prefix": "def=",
+    "description": "Latex define equal symbol",
+    "body": "\\overset{\\underset{\\mathrm{${1:def}\\}\\}{\\}\\}{${2:=}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "~": {
+    "prefix": "~",
+    "description": "Latex symmetrical symbol",
+    "body": "\\sim"
+  },
+  "~=": {
+    "prefix": "~=",
+    "description": "Latex symmetrical equals symbol",
+    "body": "\\simeq"
+  },
+  "prop": {
+    "prefix": "prop",
+    "description": "LaTeX proportional to symbol",
+    "body": "\\propto",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "'iff'": {
+    "prefix": "'iff'",
+    "description": "LaTeX if and only if symbol",
+    "body": "\\iff",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "sub": {
+    "prefix": "sub",
+    "description": "Latex proper subset symbol",
+    "body": "\\subset",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "nsub": {
+    "prefix": "nsub",
+    "description": "Latex not a proper subset symbol",
+    "body": "\\not\\subset",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "subeq": {
+    "prefix": "subeq",
+    "description": "Latex subset symbol",
+    "body": "\\subseteq",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "nsubeq": {
+    "prefix": "nsubeq",
+    "description": "Latex not a subset symbol",
+    "body": "\\not\\subseteq",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "sup": {
+    "prefix": "sup",
+    "description": "Latex superset symbol",
+    "body": "\\superset",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "nsup": {
+    "prefix": "nsup",
+    "description": "Latex not a superset symbol",
+    "body": "\\not\\superset",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "!0": {
+    "prefix": "!0",
+    "description": "Latex emptyset symbol",
+    "body": "\\emptyset",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "in": {
+    "prefix": "in",
+    "description": "Latex in symbol",
+    "body": "\\in"
+  },
+  "ni": {
+    "prefix": "ni",
+    "description": "Latex in reverse symbol",
+    "body": "\\ni"
+  },
+  "!in": {
+    "prefix": "!in",
+    "description": "Latex not in reverse symbol",
+    "body": "\\not\\ni"
+  },
+  "b//": {
+    "prefix": "b//",
+    "description": "LaTeX symbol binomial coefficient",
+    "body": "\\binom{${1:$TM_SELECTED_TEXT}\\}{$2\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "sqrt": {
+    "prefix": "sqrt",
+    "description": "LaTeX square root",
+    "body": "\\sqrt{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "inf": {
+    "prefix": "inf",
+    "description": "LaTeX infinity",
+    "body": "\\infty",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "VV": {
+    "prefix": "VV",
+    "description": "Latex large intersection",
+    "body": "\\bigcap_{${1:i \\in ${2: I}}\\} $0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "UU": {
+    "prefix": "UU",
+    "description": "Latex large union",
+    "body": "\\bigcup_{${1:i \\in ${2: I}}\\} $0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "'setm'": {
+    "prefix": "'setm'",
+    "description": "Latex set minus",
+    "body": "\\setminus",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "comp": {
+    "prefix": "comp",
+    "description": "LaTeX complement",
+    "body": "^{c\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "inv": {
+    "prefix": "inv",
+    "description": "LaTeX inverse",
+    "body": "^{-1\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "ang": {
+    "prefix": "ang",
+    "description": "LaTeX angle symbol",
+    "body": "\\angle{$1\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "int": {
+    "prefix": "int",
+    "description": "Latex integration",
+    "body": "\\int${1:_{${2:-\\infty}\\}^{${3:\\infty}\\}} ${4:${5:f(x)}\\;dx}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "dint": {
+    "prefix": "dint",
+    "description": "LaTeX displaystyle integral",
+    "body": "{\\displaystyle \\int${1:_{${2:-\\infty}\\}^{${3:\\infty}\\}} ${4:${5:f(x)}\\;dx}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "sum": {
+    "prefix": "sum",
+    "description": "LaTeX summation",
+    "body": "\\sum${1:_{${2:i} = ${3:1}\\}^{${4:n}\\}} ${5:${6:f(${7:x_{i\\}})}\\;${8:\\Delta{x\\}}}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lim": {
+    "prefix": "lim",
+    "description": "Latex limit",
+    "body": "\\lim${1:_{${2:n} \\to ${3:\\infty}\\}} ${4:${5:f(x)} = ${6:x}}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "reim": {
+    "prefix": "reim",
+    "description": "LaTeX Reiman sum",
+    "body": "\\lim_{${1:n} \\to ${2:\\infty}\\} \\sum_{${3:i} = ${3:1}\\}^{${4:n}\\} ${5:${6:f(${7:x_{i\\}})}${8:\\Delta{x\\}}}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lims": {
+    "prefix": "lims",
+    "description": "Latex limit superior",
+    "body": "\\limsup_{${1:n} \\to ${2:\\infty}\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "prod": {
+    "prefix": "prod",
+    "description": "Latex product",
+    "body": "\\prod${1:_{${2:n=${3:1}}\\}^{${4:\\infty}\\}} ${5:$TM_SELECTED_TEXT}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "pder": {
+    "prefix": "pder",
+    "description": "Latex partial derivative",
+    "body": "\\frac{\\partial ${1:V}\\}{\\partial ${2:x}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "der": {
+    "prefix": "der",
+    "description": "Latex derivative",
+    "body": "\\frac{d${1:V}\\}{d${2:x}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "_}": {
+    "prefix": "_}",
+    "description": "LaTeX underbrace",
+    "body": "\\underbrace{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "^}": {
+    "prefix": "^}",
+    "description": "LaTeX overbrace",
+    "body": "\\overbrace{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "PP": {
+    "prefix": "PP",
+    "description": "LaTeX prime numbers",
+    "body": "\\mathbb{P\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "NN": {
+    "prefix": "NN",
+    "description": "LaTeX natural numbers",
+    "body": "\\mathbb{N\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "ZZ": {
+    "prefix": "ZZ",
+    "description": "LaTeX integer numbers",
+    "body": "\\mathbb{Z\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "WW": {
+    "prefix": "WW",
+    "description": "LaTeX whole numbers",
+    "body": "\\mathbb{W\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "II": {
+    "prefix": "II",
+    "description": "LaTeX irrational numbers",
+    "body": "\\mathbb{I\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "QQ": {
+    "prefix": "QQ",
+    "description": "LaTeX rational numbers",
+    "body": "\\mathbb{Q\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "RR": {
+    "prefix": "RR",
+    "description": "LaTeX real numbers",
+    "body": "\\mathbb{R\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "CC": {
+    "prefix": "CC",
+    "description": "LaTeX complex numbers",
+    "body": "\\mathbb{C\\}",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "SS": {
+    "prefix": "SS",
+    "description": "LaTeX section",
+    "body": "\\S",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "iE": {
+    "prefix": "iE",
+    "description": "LaTeX exists",
+    "body": "\\exists",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "iA": {
+    "prefix": "iA",
+    "description": "LaTeX forall",
+    "body": "\\forall",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xx": {
+    "prefix": "xx",
+    "description": "LaTeX cross",
+    "body": "\\times",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "tf": {
+    "prefix": "tf",
+    "description": "LaTeX therefore symbol",
+    "body": "\\therefore",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bc": {
+    "prefix": "bc",
+    "description": "LaTeX because symbol",
+    "body": "\\because",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "to": {
+    "prefix": "to",
+    "description": "to",
+    "body": "\\to",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "mto": {
+    "prefix": "mto",
+    "description": "mapsto",
+    "body": "\\mapsto",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "c.": {
+    "prefix": "c.",
+    "description": "LaTeX cdot",
+    "body": "\\cdot",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  ".c": {
+    "prefix": ".c",
+    "description": "LaTeX center dots",
+    "body": "\\cdots",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  ".l": {
+    "prefix": ".l",
+    "description": "LaTeX lower dots",
+    "body": "\\ldots",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  ".v": {
+    "prefix": ".v",
+    "description": "LaTeX vertical dots",
+    "body": "\\vdots",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  ".d": {
+    "prefix": ".d",
+    "description": "LaTeX diagonal dots",
+    "body": "\\ddots",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "'": {
+    "prefix": "'",
+    "description": "LaTeX prime",
+    "body": "^{\\prime\\}"
+  },
+  "''": {
+    "prefix": "''",
+    "description": "LaTeX double prime",
+    "body": "^{\\prime \\prime\\}"
+  },
+  "vec": {
+    "prefix": "vec",
+    "description": "LaTeX vector",
+    "body": "\\vec{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "'det'": {
+    "prefix": "'det'",
+    "description": "LaTeX determinant",
+    "body": "\\det $0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "mag": {
+    "prefix": "mag",
+    "description": "LaTeX vector's magnitude",
+    "body": "\\|${1:$TM_SELECTED_TEXT}\\|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "hat": {
+    "prefix": "hat",
+    "description": "LaTeX hat",
+    "body": "\\hat{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "||": {
+    "prefix": "||",
+    "description": "LaTeX parallel sign",
+    "body": "\\parallel"
+  },
+  "|": {
+    "prefix": "|",
+    "description": "LaTeX mid sign",
+    "body": "\\mid"
+  },
+  "n|": {
+    "prefix": "n|",
+    "description": "LaTeX not mid sign",
+    "body": "\\nmid"
+  },
+  "Ua": {
+    "prefix": "Ua",
+    "description": "LaTeX double lined uparrow",
+    "body": "\\Uparrow"
+  },
+  "Da": {
+    "prefix": "Da",
+    "description": "LaTeX double lined downarrow",
+    "body": "\\Downarrow"
+  },
+  "Uda": {
+    "prefix": "Uda",
+    "description": "LaTeX double lined updownarrow",
+    "body": "\\Updownarrow"
+  },
+  "La": {
+    "prefix": "La",
+    "description": "LaTeX double lined leftarrow",
+    "body": "\\Leftarrow"
+  },
+  "Ra": {
+    "prefix": "Ra",
+    "description": "LaTeX double lined rightarrow",
+    "body": "\\Rightarrow"
+  },
+  "Lra": {
+    "prefix": "Lra",
+    "description": "LaTeX double lined leftrightarrow",
+    "body": "\\Leftrightarrow"
+  },
+  "Lal": {
+    "prefix": "Lal",
+    "description": "LaTeX double lined long leftarrow",
+    "body": "\\Longleftarrow"
+  },
+  "Ral": {
+    "prefix": "Ral",
+    "description": "LaTeX double lined long rightarrow",
+    "body": "\\Longrightarrow"
+  },
+  "Lral": {
+    "prefix": "Lral",
+    "description": "LaTeX double lined long leftrightarrow",
+    "body": "\\Longleftrightarrow"
+  },
+  "da": {
+    "prefix": "da",
+    "description": "LaTeX single lined downarrow",
+    "body": "\\downarrow"
+  },
+  "uda": {
+    "prefix": "uda",
+    "description": "LaTeX single lined updownarrow",
+    "body": "\\updownarrow"
+  },
+  "la": {
+    "prefix": "la",
+    "description": "LaTeX single lined leftarrow",
+    "body": "\\leftarrow"
+  },
+  "ra": {
+    "prefix": "ra",
+    "description": "LaTeX single lined rightarrow",
+    "body": "\\rightarrow"
+  },
+  "lal": {
+    "prefix": "lal",
+    "description": "LaTeX long single lined leftarrow",
+    "body": "\\longleftarrow"
+  },
+  "ral": {
+    "prefix": "ral",
+    "description": "LaTeX long single lined rightarrow",
+    "body": "\\longrightarrow"
+  },
+  "lral": {
+    "prefix": "lral",
+    "description": "LaTeX long single lined leftrightarrow",
+    "body": "\\Longleftrightarrow"
+  },
+  "^la": {
+    "prefix": "^la",
+    "description": "LaTeX overset left arrow",
+    "body": "\\overset{$1\\}\\leftarrow$0"
+  },
+  "_la": {
+    "prefix": "_la",
+    "description": "LaTeX underset left arrow",
+    "body": "\\underset{$1\\}\\leftarrow$0"
+  },
+  "^ra": {
+    "prefix": "^ra",
+    "description": "LaTeX overset right arrow",
+    "body": "\\overset{$1\\}\\rightarrow$0"
+  },
+  "_ra": {
+    "prefix": "_ra",
+    "description": "LaTeX underset right arrow",
+    "body": "\\underset{$1\\}\\rightarrow$0"
+  },
+  "cir": {
+    "prefix": "cir",
+    "description": "LaTeX degrees symbol",
+    "body": "\\circ"
+  },
+  "vv": {
+    "prefix": "vv",
+    "description": "Latex intersection symbol",
+    "body": "\\cap",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "uu": {
+    "prefix": "uu",
+    "description": "Latex union symbol",
+    "body": "\\cup",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "nab": {
+    "prefix": "nab",
+    "description": "Latex inverted delta greek symbol",
+    "body": "\\nabla"
+  },
+  "suitc": {
+    "prefix": "suitc",
+    "description": "LaTeX club suit symbol",
+    "body": "\\clubsuit"
+  },
+  "suith": {
+    "prefix": "suith",
+    "description": "LaTeX heart suit symbol",
+    "body": "\\heartsuit"
+  },
+  "suits": {
+    "prefix": "suits",
+    "description": "LaTeX spade suit symbol",
+    "body": "\\spadesuit"
+  },
+  "suitd": {
+    "prefix": "suitd",
+    "description": "LaTeX diamond suit symbol",
+    "body": "\\diamondsuit"
+  },
+  "alp": {
+    "prefix": "alp",
+    "description": "LaTeX alpha symbol",
+    "body": "\\alpha"
+  },
+  "bet": {
+    "prefix": "bet",
+    "description": "LaTeX beta symbol",
+    "body": "\\beta"
+  },
+  "del": {
+    "prefix": "del",
+    "description": "LaTeX delta symbol",
+    "body": "\\delta"
+  },
+  "eps": {
+    "prefix": "eps",
+    "description": "LaTeX epsilon symbol",
+    "body": "\\epsilon"
+  },
+  "vep": {
+    "prefix": "vep",
+    "description": "LaTeX varepsilon symbol",
+    "body": "\\varepsilon"
+  },
+  "zet": {
+    "prefix": "zet",
+    "description": "LaTeX zeta symbol",
+    "body": "\\zeta"
+  },
+  "eta": {
+    "prefix": "eta",
+    "description": "LaTeX eta symbol",
+    "body": "\\eta"
+  },
+  "the": {
+    "prefix": "the",
+    "description": "LaTeX theta symbol",
+    "body": "\\theta"
+  },
+  "vth": {
+    "prefix": "vth",
+    "description": "LaTeX vartheta symbol",
+    "body": "\\vartheta"
+  },
+  "gam": {
+    "prefix": "gam",
+    "description": "LaTeX gamma symbol",
+    "body": "\\gamma"
+  },
+  "kap": {
+    "prefix": "kap",
+    "description": "LaTeX gamma symbol",
+    "body": "\\kappa"
+  },
+  "lam": {
+    "prefix": "lam",
+    "description": "LaTeX lambda symbol",
+    "body": "\\lambda"
+  },
+  "xi": {
+    "prefix": "xi",
+    "description": "LaTeX xi greek symbol",
+    "body": "\\xi"
+  },
+  "mu": {
+    "prefix": "mu",
+    "description": "LaTeX mu greek symbol",
+    "body": "\\mu"
+  },
+  "nu": {
+    "prefix": "nu",
+    "description": "LaTeX nu greek symbol",
+    "body": "\\nu"
+  },
+  "pi": {
+    "prefix": "pi",
+    "description": "LaTeX pi greek symbol",
+    "body": "\\pi"
+  },
+  "vpi": {
+    "prefix": "vpi",
+    "description": "LaTeX varpi greek symbol",
+    "body": "\\varpi"
+  },
+  "rho": {
+    "prefix": "rho",
+    "description": "LaTeX rho greek symbol",
+    "body": "\\rho"
+  },
+  "vrh": {
+    "prefix": "vrh",
+    "description": "LaTeX phi greek symbol",
+    "body": "\\varrho"
+  },
+  "sig": {
+    "prefix": "sig",
+    "description": "LaTeX sigma greek symbol",
+    "body": "\\sigma"
+  },
+  "vsi": {
+    "prefix": "vsi",
+    "description": "LaTeX varsigma greek symbol",
+    "body": "\\varsigma"
+  },
+  "tau": {
+    "prefix": "tau",
+    "description": "LaTeX tau greek symbol",
+    "body": "\\tau"
+  },
+  "ups": {
+    "prefix": "ups",
+    "description": "LaTeX upsilon greek symbol",
+    "body": "\\upsilon"
+  },
+  "phi": {
+    "prefix": "phi",
+    "description": "LaTeX phi greek symbol",
+    "body": "\\phi"
+  },
+  "vph": {
+    "prefix": "vph",
+    "description": "LaTeX varphi greek symbol",
+    "body": "\\varphi"
+  },
+  "chi": {
+    "prefix": "chi",
+    "description": "LaTeX chi greek symbol",
+    "body": "\\chi"
+  },
+  "psi": {
+    "prefix": "psi",
+    "description": "LaTeX psi greek symbol",
+    "body": "\\psi"
+  },
+  "ome": {
+    "prefix": "ome",
+    "description": "LaTeX omega greek symbol",
+    "body": "\\omega"
+  },
+  "Gam": {
+    "prefix": "Gam",
+    "description": "LaTeX Gamma greek symbol",
+    "body": "\\Gamma"
+  },
+  "Del": {
+    "prefix": "Del",
+    "description": "LaTeX Delta greek symbol",
+    "body": "\\Delta"
+  },
+  "The": {
+    "prefix": "The",
+    "description": "LaTeX Theta greek symbol",
+    "body": "\\Theta"
+  },
+  "Lam": {
+    "prefix": "Lam",
+    "description": "LaTeX Lambda greek symbol",
+    "body": "\\Lambda"
+  },
+  "Xi": {
+    "prefix": "Xi",
+    "description": "LaTeX Xi greek symbol",
+    "body": "\\Xi"
+  },
+  "Pi": {
+    "prefix": "Pi",
+    "description": "LaTeX Pi greek symbol",
+    "body": "\\Pi"
+  },
+  "Sig": {
+    "prefix": "Sig",
+    "description": "LaTeX Sigma greek symbol",
+    "body": "\\Sigma"
+  },
+  "Ups": {
+    "prefix": "Ups",
+    "description": "LaTeX Upsilon greek symbol",
+    "body": "\\Upsilon"
+  },
+  "Phi": {
+    "prefix": "Phi",
+    "description": "LaTeX Phi greek symbol",
+    "body": "\\Phi"
+  },
+  "Psi": {
+    "prefix": "Psi",
+    "description": "LaTeX Psi greek symbol",
+    "body": "\\Psi"
+  },
+  "Ome": {
+    "prefix": "Ome",
+    "description": "LaTeX Omega greek symbol",
+    "body": "\\Omega"
+  },
+  "diss": {
+    "prefix": "diss",
+    "description": "LaTeX Display mode",
+    "body": "{\\displaystyle ${1:$TM_SELECTED_TEXT}\\}$0"
+  },
+  "texs": {
+    "prefix": "texs",
+    "description": "LaTeX Text mode",
+    "body": "{\\textstyle ${1:$TM_SELECTED_TEXT}\\}$0"
+  },
+  "scrs": {
+    "prefix": "scrs",
+    "description": "LaTeX Script mode",
+    "body": "{\\scriptstyle ${1:$TM_SELECTED_TEXT}\\}$0"
+  },
+  "xtt": {
+    "prefix": "xtt",
+    "description": "LaTeX text",
+    "body": "\\text{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xtbo": {
+    "prefix": "xtbo",
+    "description": "LaTeX text bold",
+    "body": "\\textbf{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xtit": {
+    "prefix": "xtit",
+    "description": "LaTeX text italic",
+    "body": "\\textit{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xsbo": {
+    "prefix": "xsbo",
+    "description": "LaTeX symbol bold",
+    "body": "\\boldsymbol{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xmbo": {
+    "prefix": "xmbo",
+    "description": "LaTeX math bold",
+    "body": "\\mathbf{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xmit": {
+    "prefix": "xmit",
+    "description": "LaTeX math italic",
+    "body": "\\mathit{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xmca": {
+    "prefix": "xmca",
+    "description": "LaTeX mathcal",
+    "body": "\\mathcal{$1\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xmbb": {
+    "prefix": "xmbb",
+    "description": "LaTeX mathbb",
+    "body": "\\mathbb{$1\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "pha": {
+    "prefix": "pha",
+    "description": "LaTeX phantom placeholder",
+    "body": "\\phantom{$1\\}$0"
+  },
+  "npha": {
+    "prefix": "npha",
+    "description": "LaTeX negative phantom placeholder",
+    "body": "\\phantom{-\\}$0"
+  },
+  "xsol": {
+    "prefix": "xsol",
+    "description": "LaTeX overline",
+    "body": "\\overline{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "xsul": {
+    "prefix": "xsul",
+    "description": "LaTeX underline",
+    "body": "\\underline{${1:$TM_SELECTED_TEXT}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "cout": {
+    "prefix": "cout",
+    "description": "LaTeX Cancel out",
+    "body": "\\cancel{${1:$TM_SELECTED_TEXT}\\}$0"
+  },
+  "col": {
+    "prefix": "col",
+    "description": "LaTeX text color",
+    "body": "{\\color{#${1:ff0000}\\}{${2:$TM_SELECTED_TEXT}\\}\\}$0"
+  },
+  "coc": {
+    "prefix": "coc",
+    "description": "Cancel out with color",
+    "body": "{\\color{#${1:ff0000}\\}{\\cancel{{\\color{#${1:000000}\\}{${3:$TM_SELECTED_TEXT}\\}\\}\\}\\}\\}$0"
+  },
+  "nl": {
+    "prefix": "nl",
+    "description": "LaTeX empty line",
+    "body": "~\\\\",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "begin": {
+    "prefix": "begin",
+    "description": "LaTeX begin function",
+    "body": [
+      "\\begin{$1\\}",
+      "\t${0:$TM_SELECTED_TEXT}",
+      "\\end{$1\\}"
+    ],
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bmat": {
+    "prefix": "bmat",
+    "description": "LaTeX in-line brackets matrix",
+    "body": "\\begin{bmatrix\\} ${1:$TM_SELECTED_TEXT} \\end{bmatrix\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Bmat": {
+    "prefix": "Bmat",
+    "description": "LaTeX in-line curly braces matrix",
+    "body": "\\begin{Bmatrix\\} ${1:$TM_SELECTED_TEXT} \\end{Bmatrix\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "pmat": {
+    "prefix": "pmat",
+    "description": "LaTeX in-line parenthesis matrix",
+    "body": "\\begin{pmatrix\\} ${1:$TM_SELECTED_TEXT} \\end{pmatrix\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "vmat": {
+    "prefix": "vmat",
+    "description": "LaTeX in-line determinant matrix",
+    "body": "\\begin{vmatrix\\} ${1:$TM_SELECTED_TEXT} \\end{vmatrix\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Vmat": {
+    "prefix": "Vmat",
+    "description": "LaTeX in-line double absolute values matrix",
+    "body": "\\begin{Vmatrix\\} ${1:$TM_SELECTED_TEXT} \\end{Vmatrix\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bg)": {
+    "prefix": "bg)",
+    "description": "LaTeX big parenthesis",
+    "body": "\\bigl( ${1:$TM_SELECTED_TEXT} \\bigr)$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Bg)": {
+    "prefix": "Bg)",
+    "description": "LaTeX very big parenthesis",
+    "body": "\\Bigl( ${1:$TM_SELECTED_TEXT} \\Bigr)$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bg]": {
+    "prefix": "bg]",
+    "description": "LaTeX big brackets",
+    "body": "\\bigl[ ${1:$TM_SELECTED_TEXT} \\bigr]$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Bg]": {
+    "prefix": "Bg]",
+    "description": "LaTeX big brackets",
+    "body": "\\Bigl[ ${1:$TM_SELECTED_TEXT} \\Bigr]$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bg}": {
+    "prefix": "bg}",
+    "description": "LaTeX very big braces",
+    "body": "\\bigl\\{ ${1:$TM_SELECTED_TEXT} \\bigr\\\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Bg}": {
+    "prefix": "Bg}",
+    "description": "LaTeX very big braces",
+    "body": "\\Bigl\\{ ${1:$TM_SELECTED_TEXT} \\Bigr\\\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bg|": {
+    "prefix": "bg|",
+    "description": "LaTeX big pipe",
+    "body": "\\bigl| ${1:$TM_SELECTED_TEXT} \\bigr|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Bg|": {
+    "prefix": "Bg|",
+    "description": "LaTeX very big pipe",
+    "body": "\\Bigl| ${1:$TM_SELECTED_TEXT} \\Bigr|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "bg\\|": {
+    "prefix": "bg\\|",
+    "description": "LaTeX big double pipe",
+    "body": "\\bigl\\| ${1:$TM_SELECTED_TEXT} \\bigr\\|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "Bg\\|": {
+    "prefix": "Bg\\|",
+    "description": "LaTeX very big double pipe",
+    "body": "\\Bigl\\| ${1:$TM_SELECTED_TEXT} \\Bigr\\|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lr)": {
+    "prefix": "lr)",
+    "description": "LaTeX left right parenthesis",
+    "body": "\\left( ${1:$TM_SELECTED_TEXT} \\right)$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lr]": {
+    "prefix": "lr]",
+    "description": "LaTeX left right brackets",
+    "body": "\\left[ ${1:$TM_SELECTED_TEXT} \\right]$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lr}": {
+    "prefix": "lr}",
+    "description": "LaTeX left right braces",
+    "body": "\\left\\{ ${1:$TM_SELECTED_TEXT} \\right\\\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lr|": {
+    "prefix": "lr|",
+    "description": "LaTeX left right pipe",
+    "body": "\\left| ${1:$TM_SELECTED_TEXT} \\right|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lr\\|": {
+    "prefix": "lr\\|",
+    "description": "LaTeX left right double pipe",
+    "body": "\\left\\| ${1:$TM_SELECTED_TEXT} \\right\\|$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lr>": {
+    "prefix": "lr>",
+    "description": "LaTeX left right double pipe",
+    "body": "\\left< ${1:$TM_SELECTED_TEXT} \\right>$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lra": {
+    "prefix": "lra",
+    "description": "LaTeX angled brackets",
+    "body": "\\left\\langle ${1:$TM_SELECTED_TEXT} \\right\\rangle$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lrc": {
+    "prefix": "lrc",
+    "description": "LaTeX left right ceiling",
+    "body": "\\left\\lceil ${1:$TM_SELECTED_TEXT} \\right\\rceil$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "lrf": {
+    "prefix": "lrf",
+    "description": "LaTeX left right floor",
+    "body": "\\left\\lfloor ${1:$TM_SELECTED_TEXT} \\right\\rfloor$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "temp": {
+    "prefix": "temp",
+    "description": "LaTeX basic template",
+    "body": [
+      "\\documentclass[10pt, letterpaper]{article\\}",
+      "",
+      "\\usepackage[margin=1in]{geometry\\}",
+      "\\usepackage{amsmath, amssymb\\}",
+      "\\usepackage{graphicx\\}",
+      "",
+      "\\author{$1\\}",
+      "\\title{$2\\}",
+      "",
+      "\\begin{document\\}",
+      "\\maketitle",
+      "\\tableofcontents",
+      "\\newpage",
+      "",
+      "$0",
+      "\\end{document\\}"
+    ],
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "upac": {
+    "prefix": "upac",
+    "description": "LaTeX \\usepackage",
+    "body": "\\usepackage[${1:options}]{${2:package}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "ncom": {
+    "prefix": "ncom",
+    "description": "LaTeX \\newcommand",
+    "body": "\\newcommand{${1:${TM_SELECTED_TEXT:var}}\\}{${2:command}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "defcol": {
+    "prefix": "defcol",
+    "description": "LaTeX \\definecolor",
+    "body": "\\definecolor{${1:${TM_SELECTED_TEXT:var}}\\}{${2:rgb}\\}{${3:value}\\}$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "math": {
+    "prefix": "math",
+    "description": "LaTeX displaymath",
+    "body": [
+      "\\[",
+      "\t${1:$TM_SELECTED_TEXT}",
+      "\\]$0"
+    ],
+    "luasnip": {
+      "autotrigger": true
+    }
+  },
+  "imath": {
+    "prefix": "imath",
+    "description": "LaTeX inlinemath",
+    "body": "\\(${1:$TM_SELECTED_TEXT}\\)$0",
+    "luasnip": {
+      "autotrigger": true
+    }
+  }
+}
