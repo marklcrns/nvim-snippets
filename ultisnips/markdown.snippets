@@ -28,16 +28,6 @@ global !p
 import os, re
 from datetime import datetime, timedelta, date
 
-def math():
-    return vim.eval('vimtex#syntax#in_mathzone()') == '1'
-
-def comment():
-    return vim.eval('vimtex#syntax#in_comment()') == '1'
-
-def env(name):
-    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
-    return x != '0' and x != '0'
-
 def get_wiki_files_dir():
 	root = os.getcwd()
 	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
@@ -767,7 +757,6 @@ endsnippet
 
 # ====================LaTeX/Mathjax Snippets==================== #
 
-context "math()"
 snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "LaTeX auto currency" rwA
 `!p snip.rv = "\$" + match.group(1) + " "`
 endsnippet
@@ -775,132 +764,106 @@ endsnippet
 # Symbols (Relations)
 # ============================================================
 
-context "math()"
 snippet <= "LaTeX less than or equals to" iA
 \leq
 endsnippet
 
-context "math()"
 snippet >= "LaTeX greater than or equals to" iA
 \geq
 endsnippet
 
-context "math()"
 snippet >> "LaTeX much greater than" iA
 \gg
 endsnippet
 
-context "math()"
 snippet << "LaTeX muchn less than" iA
 \ll
 endsnippet
 
-context "math()"
 snippet != "LaTeX not equals to" iA
 \neq
 endsnippet
 
-context "math()"
 snippet ~~ "LaTeX approximation symbol" iA
 \approx
 endsnippet
 
-context "math()"
 snippet ~= "LaTeX congruent symbol" iA
 \cong
 endsnippet
 
-context "math()"
 snippet -= "LaTeX equivalent symbol" iA
 \equiv
 endsnippet
 
-context "math()"
 snippet => "LaTeX implies symbol" iA
 \implies
 endsnippet
 
-context "math()"
 snippet =< "LaTeX implied by symbol" iA
 \impliedby
 endsnippet
 
-context "math()"
 snippet def= "Latex define equal symbol" iA
 \overset{\underset{\mathrm{${1:def}}}{}}{${2:=}}$0
 endsnippet
 
-context "math()"
 snippet ~ "Latex symmetrical symbol" i
 \sim
 endsnippet
 
-context "math()"
 snippet ~= "Latex symmetrical equals symbol" i
 \simeq
 endsnippet
 
-context "math()"
 snippet prop "LaTeX proportional to symbol" iA
 \propto
 endsnippet
 
-context "math()"
 snippet 'iff' "LaTeX if and only if symbol" iA
 \iff
 endsnippet
 
-context "math()"
 snippet sub "Latex proper subset symbol" iA
 \subset
 endsnippet
 
-context "math()"
 snippet nsub "Latex not a proper subset symbol" iA
 \not\subset
 endsnippet
 
-context "math()"
 snippet subeq "Latex subset symbol" iA
 \subseteq
 endsnippet
 
-context "math()"
 snippet nsubeq "Latex not a subset symbol" iA
 \not\subseteq
 endsnippet
 
-context "math()"
 snippet sup "Latex superset symbol" iA
 \superset
 endsnippet
 
-context "math()"
 snippet nsup "Latex not a superset symbol" iA
 \not\superset
 endsnippet
 
-context "math()"
 snippet !0 "Latex emptyset symbol" iA
 \emptyset
 endsnippet
 
-context "math()"
 snippet in "Latex in symbol" w
 \in
 endsnippet
 
-context "math()"
 snippet !in "Latex not in symbol" w
 \not\in
 endsnippet
 
-context "math()"
 snippet ni "Latex in reverse symbol" w
 \ni
 endsnippet
 
-context "math()"
 snippet !in "Latex not in reverse symbol" w
 \not\ni
 endsnippet
@@ -911,12 +874,10 @@ endsnippet
 # Auto exponent/superscript
 # Matches ^ followed by pattern of characters using negative lookbehind
 
-context "math()"
 snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))\^' "LaTeX auto exponent/superscript" ir
 ^{$1}$0
 endsnippet
 
-context "math()"
 snippet '((?<=[a-zA-Z0-9]|\)|\}|\]|\|)|(?<=sin|cos|tan|csc|sec|cot))_' "LaTeX auto subscript" ir
 _{$1}$0
 endsnippet
@@ -936,7 +897,6 @@ endsnippet
 # f// -> \frac{$1}{$2}$0
 # df// -> \dfrac{$1}{$2}$0
 # tf// -> \tfrac{$1}{$2}$0
-context "math()"
 snippet '(d|t)?f//' "LaTeX normal/display/textstyle fraction" riA
 `!p
 snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
@@ -945,7 +905,6 @@ endsnippet
 
 # Usage:
 # b// -> \binom{$1}{$2}$0
-context "math()"
 snippet b// "LaTeX symbol binomial coefficient" iA
 \binom{${1:${VISUAL}}}{$2}$0
 endsnippet
@@ -953,7 +912,6 @@ endsnippet
 # Usage:
 # abc/f/ -> \frac{abc}{$0}
 # (abc)/f/ -> \frac{abc}{$0}
-context "math()"
 snippet '(\()?(.*)(\))?/f/' "LaTeX () auto fraction" wrA
 \frac{`!p snip.rv = match.group(2)`}{$0}
 endsnippet
@@ -961,23 +919,19 @@ endsnippet
 # Usage:
 # abc/b/ -> \binom{abc}{$0}
 # (abc)/b/ -> \binom{abc}{$0}
-context "math()"
 snippet '(\()?(.*)(\))?/b/' "LaTeX () auto binomial" wrA
 \binom{`!p snip.rv = match.group(2)`}{$0}
 endsnippet
 
-context "math()"
 snippet sqrt "LaTeX square root" iA
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet '(\d+|n|x|y|z)root' "LaTeX root of n" irA
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
 # Logarthmic function
-context "math()"
 snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "LaTeX Logarithmic function" ir
 `!p
 log = match.group(1)
@@ -985,247 +939,198 @@ base = "_{" + match.group(2) + "}" if match.group(2) else ""
 snip.rv = "\\" + log + base`($1)$0
 endsnippet
 
-context "math()"
 snippet inf "LaTeX infinity" iA
 \infty
 endsnippet
 
-context "math()"
 snippet VV "Latex large intersection" iA
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
-context "math()"
 snippet UU "Latex large union" iA
 \bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
-context "math()"
 snippet 'setm' "Latex set minus" iA
 \setminus
 endsnippet
 
-context "math()"
 snippet comp "LaTeX complement" iA
 ^{c}
 endsnippet
 
-context "math()"
 snippet inv "LaTeX inverse" iA
 ^{-1}
 endsnippet
 
-context "math()"
 snippet ang "LaTeX angle symbol" iA
 \angle{$1}$0
 endsnippet
 
-context "math()"
 snippet int "Latex integration" wA
 \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
 endsnippet
 
-context "math()"
 snippet dint "LaTeX displaystyle integral" wA
 {\displaystyle \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}}$0
 endsnippet
 
-context "math()"
 snippet sum "LaTeX summation" wA
 \sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}\;${8:\Delta{x}}}$0
 endsnippet
 
-context "math()"
 snippet lim "Latex limit" iA
 \lim${1:_{${2:n} \to ${3:\infty}}} ${4:${5:f(x)} = ${6:x}}$0
 endsnippet
 
-context "math()"
 snippet reim "LaTeX Reiman sum" wA
 \lim_{${1:n} \to ${2:\infty}} \sum_{${3:i} = ${3:1}}^{${4:n}} ${5:${6:f(${7:x_{i}})}${8:\Delta{x}}}$0
 endsnippet
 
-context "math()"
 snippet lims "Latex limit superior" wA
 \limsup_{${1:n} \to ${2:\infty}}
 endsnippet
 
-context "math()"
 snippet prod "Latex product" wA
 \prod${1:_{${2:n=${3:1}}}^{${4:\infty}}} ${5:${VISUAL}}$0
 endsnippet
 
-context "math()"
 snippet pder "Latex partial derivative" wA
 \frac{\partial ${1:V}}{\partial ${2:x}}$0
 endsnippet
 
-context "math()"
 snippet der "Latex derivative" wA
 \frac{d${1:V}}{d${2:x}}$0
 endsnippet
 
-context "math()"
 snippet _} "LaTeX underbrace" iA
 \underbrace{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet ^} "LaTeX overbrace" iA
 \overbrace{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet PP "LaTeX prime numbers" iA
 \mathbb{P}
 endsnippet
 
-context "math()"
 snippet NN "LaTeX natural numbers" iA
 \mathbb{N}
 endsnippet
 
-context "math()"
 snippet ZZ "LaTeX integer numbers" iA
 \mathbb{Z}
 endsnippet
 
-context "math()"
 snippet WW "LaTeX whole numbers" iA
 \mathbb{W}
 endsnippet
 
-context "math()"
 snippet II "LaTeX irrational numbers" iA
 \mathbb{I}
 endsnippet
 
-context "math()"
 snippet QQ "LaTeX rational numbers" iA
 \mathbb{Q}
 endsnippet
 
-context "math()"
 snippet RR "LaTeX real numbers" iA
 \mathbb{R}
 endsnippet
 
-context "math()"
 snippet CC "LaTeX complex numbers" iA
 \mathbb{C}
 endsnippet
 
-context "math()"
 snippet SS "LaTeX section" iA
 \S
 endsnippet
 
-context "math()"
 snippet iE "LaTeX exists" iA
 \exists
 endsnippet
 
-context "math()"
 snippet iA "LaTeX forall" iA
 \forall
 endsnippet
 
-context "math()"
 snippet xx "LaTeX cross" iA
 \times
 endsnippet
 
-context "math()"
 snippet tf "LaTeX therefore symbol" iA
 \therefore
 endsnippet
 
-context "math()"
 snippet bc "LaTeX because symbol" iA
 \because
 endsnippet
 
-context "math()"
 snippet to "to" iA
 \to
 endsnippet
 
-context "math()"
 snippet mto "mapsto" iA
 \mapsto
 endsnippet
 
-context "math()"
 snippet c. "LaTeX cdot" iA
 \cdot
 endsnippet
 
-context "math()"
 snippet .c "LaTeX center dots" iA
 \cdots
 endsnippet
 
-context "math()"
 snippet .l "LaTeX lower dots" iA
 \ldots
 endsnippet
 
-context "math()"
 snippet .v "LaTeX vertical dots" iA
 \vdots
 endsnippet
 
-context "math()"
 snippet .d "LaTeX diagonal dots" iA
 \ddots
 endsnippet
 
-context "math()"
 snippet ' "LaTeX prime" i
 ^{\prime}
 endsnippet
 
-context "math()"
 snippet '' "LaTeX double prime" i
 ^{\prime \prime}
 endsnippet
 
-context "math()"
 snippet vec "LaTeX vector" iA
 \vec{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet 'det' "LaTeX determinant" iA
 \det $0
 endsnippet
 
-context "math()"
 snippet mag "LaTeX vector's magnitude" iA
 \\|${1:${VISUAL}}\\|$0
 endsnippet
 
-context "math()"
 snippet hat "LaTeX hat" iA
 \hat{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet || "LaTeX parallel sign" i
 \parallel
 endsnippet
 
-context "math()"
 snippet | "LaTeX mid sign" i
 \mid
 endsnippet
 
-context "math()"
 snippet n| "LaTeX not mid sign" i
 \nmid
 endsnippet
 
-context "math()"
 snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "LaTeX trig functions" wrA
 `!p
 # Constants
@@ -1255,107 +1160,86 @@ endsnippet
 # Symbols (Arrows)
 # ============================================================
 
-context "math()"
 snippet Ua "LaTeX double lined uparrow" i
 \Uparrow
 endsnippet
 
-context "math()"
 snippet Da "LaTeX double lined downarrow" i
 \Downarrow
 endsnippet
 
-context "math()"
 snippet Uda "LaTeX double lined updownarrow" i
 \Updownarrow
 endsnippet
 
-context "math()"
 snippet La "LaTeX double lined leftarrow" i
 \Leftarrow
 endsnippet
 
-context "math()"
 snippet Ra "LaTeX double lined rightarrow" i
 \Rightarrow
 endsnippet
 
-context "math()"
 snippet Lra "LaTeX double lined leftrightarrow" i
 \Leftrightarrow
 endsnippet
 
-context "math()"
 snippet Lal "LaTeX double lined long leftarrow" i
 \Longleftarrow
 endsnippet
 
-context "math()"
 snippet Ral "LaTeX double lined long rightarrow" i
 \Longrightarrow
 endsnippet
 
-context "math()"
 snippet Lral "LaTeX double lined long leftrightarrow" i
 \Longleftrightarrow
 endsnippet
 
-context "math()"
 snippet da "LaTeX single lined downarrow" i
 \downarrow
 endsnippet
 
-context "math()"
 snippet uda "LaTeX single lined updownarrow" i
 \updownarrow
 endsnippet
 
-context "math()"
 snippet la "LaTeX single lined leftarrow" i
 \leftarrow
 endsnippet
 
-context "math()"
 snippet ra "LaTeX single lined rightarrow" i
 \rightarrow
 endsnippet
 
-context "math()"
 snippet lra "LaTeX single lined leftrightarrow" i
 \leftrightarrow
 endsnippet
 
-context "math()"
 snippet lal "LaTeX long single lined leftarrow" i
 \longleftarrow
 endsnippet
 
-context "math()"
 snippet ral "LaTeX long single lined rightarrow" i
 \longrightarrow
 endsnippet
 
-context "math()"
 snippet lral "LaTeX long single lined leftrightarrow" i
 \Longleftrightarrow
 endsnippet
 
-context "math()"
 snippet ^la "LaTeX overset left arrow" i
 \overset{$1}\leftarrow$0
 endsnippet
 
-context "math()"
 snippet _la "LaTeX underset left arrow" i
 \underset{$1}\leftarrow$0
 endsnippet
 
-context "math()"
 snippet ^ra "LaTeX overset right arrow" i
 \overset{$1}\rightarrow$0
 endsnippet
 
-context "math()"
 snippet _ra "LaTeX underset right arrow" i
 \underset{$1}\rightarrow$0
 endsnippet
@@ -1363,22 +1247,18 @@ endsnippet
 # Symbols (Logic)
 # ============================================================
 
-context "math()"
 snippet '(?<=[a-zA-Z0-9])cir' "LaTeX auto degrees symbol" irA
 ^{\circ}
 endsnippet
 
-context "math()"
 snippet cir "LaTeX degrees symbol" i
 \circ
 endsnippet
 
-context "math()"
 snippet vv "Latex intersection symbol" iA
 \cap
 endsnippet
 
-context "math()"
 snippet uu "Latex union symbol" iA
 \cup
 endsnippet
@@ -1386,32 +1266,26 @@ endsnippet
 # Symbols (Misc)
 # ============================================================
 
-context "math()"
 snippet '(\+-|-\+)' "LaTeX plus minus sign" irA
 \pm
 endsnippet
 
-context "math()"
 snippet nab "Latex inverted delta greek symbol" i
 \nabla
 endsnippet
 
-context "math()"
 snippet suitc "LaTeX club suit symbol" i
 \clubsuit
 endsnippet
 
-context "math()"
 snippet suith "LaTeX heart suit symbol" i
 \heartsuit
 endsnippet
 
-context "math()"
 snippet suits "LaTeX spade suit symbol" i
 \spadesuit
 endsnippet
 
-context "math()"
 snippet suitd "LaTeX diamond suit symbol" i
 \diamondsuit
 endsnippet
@@ -1419,197 +1293,158 @@ endsnippet
 # Symbols (Greek)
 # ============================================================
 
-context "math()"
 snippet alp "LaTeX alpha symbol" i
 \alpha
 endsnippet
 
-context "math()"
 snippet bet "LaTeX beta symbol" i
 \beta
 endsnippet
 
-context "math()"
 snippet del "LaTeX delta symbol" i
 \delta
 endsnippet
 
-context "math()"
 snippet eps "LaTeX epsilon symbol" i
 \epsilon
 endsnippet
 
-context "math()"
 snippet vep "LaTeX varepsilon symbol" i
 \varepsilon
 endsnippet
 
-context "math()"
 snippet zet "LaTeX zeta symbol" i
 \zeta
 endsnippet
 
-context "math()"
 snippet eta "LaTeX eta symbol" i
 \eta
 endsnippet
 
-context "math()"
 snippet the "LaTeX theta symbol" i
 \theta
 endsnippet
 
-context "math()"
 snippet vth "LaTeX vartheta symbol" i
 \vartheta
 endsnippet
 
-context "math()"
 snippet gam "LaTeX gamma symbol" i
 \gamma
 endsnippet
 
-context "math()"
 snippet kap "LaTeX gamma symbol" i
 \kappa
 endsnippet
 
-context "math()"
 snippet lam "LaTeX lambda symbol" i
 \lambda
 endsnippet
 
-context "math()"
 snippet xi "LaTeX xi greek symbol" i
 \xi
 endsnippet
 
-context "math()"
 snippet mu "LaTeX mu greek symbol" i
 \mu
 endsnippet
 
-context "math()"
 snippet nu "LaTeX nu greek symbol" i
 \nu
 endsnippet
 
-context "math()"
 snippet pi "LaTeX pi greek symbol" i
 \pi
 endsnippet
 
-context "math()"
 snippet vpi "LaTeX varpi greek symbol" i
 \varpi
 endsnippet
 
-context "math()"
 snippet rho "LaTeX rho greek symbol" i
 \rho
 endsnippet
 
-context "math()"
 snippet vrh "LaTeX phi greek symbol" i
 \varrho
 endsnippet
 
-context "math()"
 snippet sig "LaTeX sigma greek symbol" i
 \sigma
 endsnippet
 
-context "math()"
 snippet vsi "LaTeX varsigma greek symbol" i
 \varsigma
 endsnippet
 
-context "math()"
 snippet tau "LaTeX tau greek symbol" i
 \tau
 endsnippet
 
-context "math()"
 snippet ups "LaTeX upsilon greek symbol" i
 \upsilon
 endsnippet
 
-context "math()"
 snippet phi "LaTeX phi greek symbol" i
 \phi
 endsnippet
 
-context "math()"
 snippet vph "LaTeX varphi greek symbol" i
 \varphi
 endsnippet
 
-context "math()"
 snippet chi "LaTeX chi greek symbol" i
 \chi
 endsnippet
 
-context "math()"
 snippet psi "LaTeX psi greek symbol" i
 \psi
 endsnippet
 
-context "math()"
 snippet ome "LaTeX omega greek symbol" i
 \omega
 endsnippet
 
-context "math()"
 snippet Gam "LaTeX Gamma greek symbol" i
 \Gamma
 endsnippet
 
-context "math()"
 snippet Del "LaTeX Delta greek symbol" i
 \Delta
 endsnippet
 
-context "math()"
 snippet The "LaTeX Theta greek symbol" i
 \Theta
 endsnippet
 
-context "math()"
 snippet Lam "LaTeX Lambda greek symbol" i
 \Lambda
 endsnippet
 
-context "math()"
 snippet Xi "LaTeX Xi greek symbol" i
 \Xi
 endsnippet
 
-context "math()"
 snippet Pi "LaTeX Pi greek symbol" i
 \Pi
 endsnippet
 
-context "math()"
 snippet Sig "LaTeX Sigma greek symbol" i
 \Sigma
 endsnippet
 
-context "math()"
 snippet Ups "LaTeX Upsilon greek symbol" i
 \Upsilon
 endsnippet
 
-context "math()"
 snippet Phi "LaTeX Phi greek symbol" i
 \Phi
 endsnippet
 
-context "math()"
 snippet Psi "LaTeX Psi greek symbol" i
 \Psi
 endsnippet
 
-context "math()"
 snippet Ome "LaTeX Omega greek symbol" i
 \Omega
 endsnippet
@@ -1617,7 +1452,6 @@ endsnippet
 # Syntax
 # ============================================================
 
-context "math()"
 snippet '(\\|!)!' "LaTex small negative spacing" rw
 `!p
 prefix = match.group(1)
@@ -1628,7 +1462,6 @@ elif prefix == '!':
 `
 endsnippet
 
-context "math()"
 snippet '(\\|,),' "LaTex small spacing" rw
 `!p
 prefix = match.group(1)
@@ -1639,7 +1472,6 @@ elif prefix == ',':
 `
 endsnippet
 
-context "math()"
 snippet '(\\|:):' "LaTex medium spacing" rw
 `!p
 prefix = match.group(1)
@@ -1650,7 +1482,6 @@ elif prefix == ':':
 `
 endsnippet
 
-context "math()"
 snippet '(\\|;);' "LaTex large spacing" rw
 `!p
 prefix = match.group(1)
@@ -1661,17 +1492,14 @@ elif prefix == ';':
 `
 endsnippet
 
-context "math()"
 snippet diss "LaTeX Display mode" i
 {\displaystyle ${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet texs "LaTeX Text mode" i
 {\textstyle ${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet scrs "LaTeX Script mode" i
 {\scriptstyle ${1:${VISUAL}}}$0
 endsnippet
@@ -1688,99 +1516,80 @@ snippet xtit "LaTeX text italic" iA
 \textit{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet xsbo "LaTeX symbol bold" iA
 \boldsymbol{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet xmbo "LaTeX math bold" iA
 \mathbf{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet xmit "LaTeX math italic" iA
 \mathit{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet xmca "LaTeX mathcal" iA
 \mathcal{$1}$0
 endsnippet
 
-context "math()"
 snippet xmbb "LaTeX mathbb" iA
 \mathbb{$1}$0
 endsnippet
 
-context "math()"
 snippet pha "LaTeX phantom placeholder" i
 \phantom{$1}$0
 endsnippet
 
-context "math()"
 snippet npha "LaTeX negative phantom placeholder" i
 \phantom{-}$0
 endsnippet
 
-context "math()"
 snippet xsol "LaTeX overline" iA
 \overline{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet xsul "LaTeX underline" iA
 \underline{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet cout "LaTeX Cancel out" w
 \cancel{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
 snippet col "LaTeX text color" w
 {\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
 endsnippet
 
-context "math()"
 snippet coc "Cancel out with color" w
 {\color{#${1:ff0000}}{\cancel{{\color{#${1:000000}}{${3:${VISUAL}}}}}}}$0
 endsnippet
 
-context "math()"
 snippet nl "LaTeX empty line" bA
 ~\\\\
 endsnippet
 
-context "math()"
 snippet begin "LaTeX begin function" bA
 \begin{$1}
 	${0:${VISUAL}}
 \end{$1}
 endsnippet
 
-context "math()"
 snippet bmat "LaTeX in-line brackets matrix" wbA
 \begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
 endsnippet
 
-context "math()"
 snippet Bmat "LaTeX in-line curly braces matrix" wbA
 \begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
 endsnippet
 
-context "math()"
 snippet pmat "LaTeX in-line parenthesis matrix" wbA
 \begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
 endsnippet
 
-context "math()"
 snippet vmat "LaTeX in-line determinant matrix" wbA
 \begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
 endsnippet
 
-context "math()"
 snippet Vmat "LaTeX in-line double absolute values matrix" wbA
 \begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
 endsnippet
@@ -1789,7 +1598,6 @@ endsnippet
 # \begin{array}{#column}
 #   &*[column*row] \\
 # \end{array}
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+),(\d+)ar' "LaTeX array" rbA
 \begin{array}{`!p
@@ -1806,7 +1614,6 @@ endsnippet
 # \begin{aligned}
 #   &= \\ *[#columng]
 # \end{array}
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)eq' "LaTeX block align equations" rbA
 \begin{aligned}
@@ -1820,7 +1627,6 @@ endsnippet
 # \begin{aligned}
 #   , & , \\ *[#column]
 # \end{array}
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)pw' "LaTeX piecewise" rbA
 \left\\\\{\begin{array}{ll}
@@ -1834,7 +1640,6 @@ endsnippet
 # either `l or r` (optional) as separators, `b` (optional) as the boundary type
 # , and `n,n` as the matrix size (rows, column). No spaces and ignore
 # parenthesis, and can't have both separators and boundary together.
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+),(\d+)(m)?' "LaTeX matrix" wr
 `!p
@@ -1907,7 +1712,6 @@ endsnippet
 # item<tab> ->
 # item
 # item
-context "math()"
 context "env('itemize')"
 snippet '(?<=\\item)(.+)' "LaTeX item" r
 `!p snip.rv = match.group(1)`
@@ -1918,7 +1722,6 @@ endsnippet
 # item<tab> ->
 # item
 # item
-context "math()"
 context "env('enumerate')"
 snippet '(?<=\\item)(.+)' "LaTeX item" r
 `!p snip.rv = match.group(1)`
@@ -1929,7 +1732,6 @@ endsnippet
 # item<tab> ->
 # item
 # item
-context "math()"
 context "env('description')"
 snippet '(?<=\\item)(.+)' "LaTeX item" r
 `!p snip.rv = match.group(1)`
@@ -1941,7 +1743,6 @@ endsnippet
 # \begin{itemize}
 #   item*[number]
 # \end{itemiz}
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)item' "LaTeX itemize" brA
 \begin{itemize}
@@ -1959,7 +1760,6 @@ endsnippet
 # \begin{enumerate}
 #   item*[number]
 # \end{enumerate}
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)enum' "LaTeX enumerate" brA
 \begin{enumerate}
@@ -1977,7 +1777,6 @@ endsnippet
 # \begin{description}
 #   item*[number]
 # \end{description}
-context "math()"
 post_jump "create_matrix_placeholders(snip)"
 snippet '(\d+)desc' "LaTeX description" brA
 \begin{description}
@@ -1993,97 +1792,78 @@ endsnippet
 # Brackets
 # ============================================================
 
-context "math()"
 snippet bg) "LaTeX big parenthesis" iA
 \bigl( ${1:${VISUAL}} \bigr)$0
 endsnippet
 
-context "math()"
 snippet Bg) "LaTeX very big parenthesis" iA
 \Bigl( ${1:${VISUAL}} \Bigr)$0
 endsnippet
 
-context "math()"
 snippet bg] "LaTeX big brackets" iA
 \bigl[ ${1:${VISUAL}} \bigr]$0
 endsnippet
 
-context "math()"
 snippet Bg] "LaTeX big brackets" iA
 \Bigl[ ${1:${VISUAL}} \Bigr]$0
 endsnippet
 
-context "math()"
 snippet bg} "LaTeX very big braces" iA
 \bigl\\{ ${1:${VISUAL}} \bigr\\}$0
 endsnippet
 
-context "math()"
 snippet Bg} "LaTeX very big braces" iA
 \Bigl\\{ ${1:${VISUAL}} \Bigr\\}$0
 endsnippet
 
-context "math()"
 snippet bg| "LaTeX big pipe" iA
 \bigl| ${1:${VISUAL}} \bigr|$0
 endsnippet
 
-context "math()"
 snippet Bg| "LaTeX very big pipe" iA
 \Bigl| ${1:${VISUAL}} \Bigr|$0
 endsnippet
 
-context "math()"
 snippet bg\| "LaTeX big double pipe" iA
 \bigl\\| ${1:${VISUAL}} \bigr\\|$0
 endsnippet
 
-context "math()"
 snippet Bg\| "LaTeX very big double pipe" iA
 \Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
 endsnippet
 
-context "math()"
 snippet lr) "LaTeX left right parenthesis" iA
 \left( ${1:${VISUAL}} \right)$0
 endsnippet
 
-context "math()"
 snippet lr] "LaTeX left right brackets" iA
 \left[ ${1:${VISUAL}} \right]$0
 endsnippet
 
-context "math()"
 snippet lr} "LaTeX left right braces" iA
 \left\\{ ${1:${VISUAL}} \right\\}$0
 endsnippet
 
-context "math()"
 snippet lr| "LaTeX left right pipe" iA
 \left| ${1:${VISUAL}} \right|$0
 endsnippet
 
-context "math()"
 snippet lr\| "LaTeX left right double pipe" iA
 \left\| ${1:${VISUAL}} \right\|$0
 endsnippet
 
-context "math()"
 snippet lr> "LaTeX left right double pipe" iA
 \left< ${1:${VISUAL}} \right>$0
 endsnippet
 
-context "math()"
 snippet lra "LaTeX angled brackets" iA
 \left\langle ${1:${VISUAL}} \right\rangle$0
 endsnippet
 
-context "math()"
 snippet lrc "LaTeX left right ceiling" iA
 \left\lceil ${1:${VISUAL}} \right\rceil$0
 endsnippet
 
-context "math()"
 snippet lrf "LaTeX left right floor" iA
 \left\lfloor ${1:${VISUAL}} \right\rfloor$0
 endsnippet
