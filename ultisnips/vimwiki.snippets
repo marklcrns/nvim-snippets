@@ -769,7 +769,7 @@ tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
 snip.rv = "(" + tomorrow + ")"`
 endsnippet
 
-snippet task "Todo/Task checkbox" bA
+snippet task "Todo/Task checkbox" b
 * [ ] $0
 endsnippet
 
@@ -950,7 +950,7 @@ snip.rv = "[<img src=\"https://img.youtube.com/vi/" + video_id + "/0.jpg\" alt=\
 endsnippet
 
 # Usage: (00:00:00 or 00:00)<youtube-url>&t<tab>
-snippet '((\d{1,2}:)?(\d{1,2}):(\d{2}))((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&t' "YouTube url with time stamp" wrA
+snippet '((\d{1,2}:)?(\d{1,2}):(\d{2}))((https:\/\/)?(www\.)?(youtube.com))((\/embed\/|\/watch\?v=)?(.*))&t' "YouTube url with time stamp" wr
 [(`!p snip.rv = match.group(1)`)](`!p
 # check if hours exist
 hours = match.group(2)
@@ -1146,54 +1146,54 @@ endsnippet
 
 # ====================LaTeX/Mathjax Snippets==================== #
 
-snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "LaTeX auto currency" rwA
+snippet '(?<!\\|\)|\])\$([0-9]+,[0-9]+(\.[0-9]+)?)\s(?!\$)' "LaTeX auto currency" rw
 `!p snip.rv = "\$" + match.group(1) + " "`
 endsnippet
 
 # Symbols (Relations)
 # ============================================================
 
-snippet <= "LaTeX less than or equals to" iA
+snippet <= "LaTeX less than or equals to" i
 \leq
 endsnippet
 
-snippet >= "LaTeX greater than or equals to" iA
+snippet >= "LaTeX greater than or equals to" i
 \geq
 endsnippet
 
-snippet >> "LaTeX much greater than" iA
+snippet >> "LaTeX much greater than" i
 \gg
 endsnippet
 
-snippet << "LaTeX muchn less than" iA
+snippet << "LaTeX muchn less than" i
 \ll
 endsnippet
 
-snippet != "LaTeX not equals to" iA
+snippet != "LaTeX not equals to" i
 \neq
 endsnippet
 
-snippet ~~ "LaTeX approximation symbol" iA
+snippet ~~ "LaTeX approximation symbol" i
 \approx
 endsnippet
 
-snippet ~= "LaTeX congruent symbol" iA
+snippet ~= "LaTeX congruent symbol" i
 \cong
 endsnippet
 
-snippet -= "LaTeX equivalent symbol" iA
+snippet -= "LaTeX equivalent symbol" i
 \equiv
 endsnippet
 
-snippet => "LaTeX implies symbol" iA
+snippet => "LaTeX implies symbol" i
 \implies
 endsnippet
 
-snippet =< "LaTeX implied by symbol" iA
+snippet =< "LaTeX implied by symbol" i
 \impliedby
 endsnippet
 
-snippet def= "Latex define equal symbol" iA
+snippet def= "Latex define equal symbol" i
 \overset{\underset{\mathrm{${1:def}}}{}}{${2:=}}$0
 endsnippet
 
@@ -1205,39 +1205,39 @@ snippet ~= "Latex symmetrical equals symbol" i
 \simeq
 endsnippet
 
-snippet prop "LaTeX proportional to symbol" iA
+snippet prop "LaTeX proportional to symbol" i
 \propto
 endsnippet
 
-snippet 'iff' "LaTeX if and only if symbol" iA
+snippet 'iff' "LaTeX if and only if symbol" i
 \iff
 endsnippet
 
-snippet sub "Latex proper subset symbol" iA
+snippet sub "Latex proper subset symbol" i
 \subset
 endsnippet
 
-snippet nsub "Latex not a proper subset symbol" iA
+snippet nsub "Latex not a proper subset symbol" i
 \not\subset
 endsnippet
 
-snippet subeq "Latex subset symbol" iA
+snippet subeq "Latex subset symbol" i
 \subseteq
 endsnippet
 
-snippet nsubeq "Latex not a subset symbol" iA
+snippet nsubeq "Latex not a subset symbol" i
 \not\subseteq
 endsnippet
 
-snippet sup "Latex superset symbol" iA
+snippet sup "Latex superset symbol" i
 \superset
 endsnippet
 
-snippet nsup "Latex not a superset symbol" iA
+snippet nsup "Latex not a superset symbol" i
 \not\superset
 endsnippet
 
-snippet !0 "Latex emptyset symbol" iA
+snippet !0 "Latex emptyset symbol" i
 \emptyset
 endsnippet
 
@@ -1286,7 +1286,7 @@ endsnippet
 # f// -> \frac{$1}{$2}$0
 # df// -> \dfrac{$1}{$2}$0
 # tf// -> \tfrac{$1}{$2}$0
-snippet '(d|t)?f//' "LaTeX normal/display/textstyle fraction" riA
+snippet '(d|t)?f//' "LaTeX normal/display/textstyle fraction" ri
 `!p
 snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
 `frac{${1:${VISUAL}}}{$2}$0
@@ -1294,29 +1294,29 @@ endsnippet
 
 # Usage:
 # b// -> \binom{$1}{$2}$0
-snippet b// "LaTeX symbol binomial coefficient" iA
+snippet b// "LaTeX symbol binomial coefficient" i
 \binom{${1:${VISUAL}}}{$2}$0
 endsnippet
 
 # Usage:
 # abc/f/ -> \frac{abc}{$0}
 # (abc)/f/ -> \frac{abc}{$0}
-snippet '(\()?(.*)(\))?/f/' "LaTeX () auto fraction" wrA
+snippet '(\()?(.*)(\))?/f/' "LaTeX () auto fraction" wr
 \frac{`!p snip.rv = match.group(2)`}{$0}
 endsnippet
 
 # Usage:
 # abc/b/ -> \binom{abc}{$0}
 # (abc)/b/ -> \binom{abc}{$0}
-snippet '(\()?(.*)(\))?/b/' "LaTeX () auto binomial" wrA
+snippet '(\()?(.*)(\))?/b/' "LaTeX () auto binomial" wr
 \binom{`!p snip.rv = match.group(2)`}{$0}
 endsnippet
 
-snippet sqrt "LaTeX square root" iA
+snippet sqrt "LaTeX square root" i
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet '(\d+|n|x|y|z)root' "LaTeX root of n" irA
+snippet '(\d+|n|x|y|z)root' "LaTeX root of n" ir
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
@@ -1328,159 +1328,159 @@ base = "_{" + match.group(2) + "}" if match.group(2) else ""
 snip.rv = "\\" + log + base`($1)$0
 endsnippet
 
-snippet inf "LaTeX infinity" iA
+snippet inf "LaTeX infinity" i
 \infty
 endsnippet
 
-snippet VV "Latex large intersection" iA
+snippet VV "Latex large intersection" i
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
-snippet UU "Latex large union" iA
+snippet UU "Latex large union" i
 \bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
-snippet 'setm' "Latex set minus" iA
+snippet 'setm' "Latex set minus" i
 \setminus
 endsnippet
 
-snippet comp "LaTeX complement" iA
+snippet comp "LaTeX complement" i
 ^{c}
 endsnippet
 
-snippet inv "LaTeX inverse" iA
+snippet inv "LaTeX inverse" i
 ^{-1}
 endsnippet
 
-snippet ang "LaTeX angle symbol" iA
+snippet ang "LaTeX angle symbol" i
 \angle{$1}$0
 endsnippet
 
-snippet int "Latex integration" wA
+snippet int "Latex integration" w
 \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}$0
 endsnippet
 
-snippet dint "LaTeX displaystyle integral" wA
+snippet dint "LaTeX displaystyle integral" w
 {\displaystyle \int${1:_{${2:-\infty}}^{${3:\infty}}} ${4:${5:f(x)}\;dx}}$0
 endsnippet
 
-snippet sum "LaTeX summation" wA
+snippet sum "LaTeX summation" w
 \sum${1:_{${2:i} = ${3:1}}^{${4:n}}} ${5:${6:f(${7:x_{i}})}\;${8:\Delta{x}}}$0
 endsnippet
 
-snippet lim "Latex limit" iA
+snippet lim "Latex limit" i
 \lim${1:_{${2:n} \to ${3:\infty}}} ${4:${5:f(x)} = ${6:x}}$0
 endsnippet
 
-snippet reim "LaTeX Reiman sum" wA
+snippet reim "LaTeX Reiman sum" w
 \lim_{${1:n} \to ${2:\infty}} \sum_{${3:i} = ${3:1}}^{${4:n}} ${5:${6:f(${7:x_{i}})}${8:\Delta{x}}}$0
 endsnippet
 
-snippet lims "Latex limit superior" wA
+snippet lims "Latex limit superior" w
 \limsup_{${1:n} \to ${2:\infty}}
 endsnippet
 
-snippet prod "Latex product" wA
+snippet prod "Latex product" w
 \prod${1:_{${2:n=${3:1}}}^{${4:\infty}}} ${5:${VISUAL}}$0
 endsnippet
 
-snippet pder "Latex partial derivative" wA
+snippet pder "Latex partial derivative" w
 \frac{\partial ${1:V}}{\partial ${2:x}}$0
 endsnippet
 
-snippet der "Latex derivative" wA
+snippet der "Latex derivative" w
 \frac{d${1:V}}{d${2:x}}$0
 endsnippet
 
-snippet _} "LaTeX underbrace" iA
+snippet _} "LaTeX underbrace" i
 \underbrace{${1:${VISUAL}}}$0
 endsnippet
 
-snippet ^} "LaTeX overbrace" iA
+snippet ^} "LaTeX overbrace" i
 \overbrace{${1:${VISUAL}}}$0
 endsnippet
 
-snippet PP "LaTeX prime numbers" iA
+snippet PP "LaTeX prime numbers" i
 \mathbb{P}
 endsnippet
 
-snippet NN "LaTeX natural numbers" iA
+snippet NN "LaTeX natural numbers" i
 \mathbb{N}
 endsnippet
 
-snippet ZZ "LaTeX integer numbers" iA
+snippet ZZ "LaTeX integer numbers" i
 \mathbb{Z}
 endsnippet
 
-snippet WW "LaTeX whole numbers" iA
+snippet WW "LaTeX whole numbers" i
 \mathbb{W}
 endsnippet
 
-snippet II "LaTeX irrational numbers" iA
+snippet II "LaTeX irrational numbers" i
 \mathbb{I}
 endsnippet
 
-snippet QQ "LaTeX rational numbers" iA
+snippet QQ "LaTeX rational numbers" i
 \mathbb{Q}
 endsnippet
 
-snippet RR "LaTeX real numbers" iA
+snippet RR "LaTeX real numbers" i
 \mathbb{R}
 endsnippet
 
-snippet CC "LaTeX complex numbers" iA
+snippet CC "LaTeX complex numbers" i
 \mathbb{C}
 endsnippet
 
-snippet SS "LaTeX section" iA
+snippet SS "LaTeX section" i
 \S
 endsnippet
 
-snippet iE "LaTeX exists" iA
+snippet iE "LaTeX exists" i
 \exists
 endsnippet
 
-snippet iA "LaTeX forall" iA
+snippet iA "LaTeX forall" i
 \forall
 endsnippet
 
-snippet xx "LaTeX cross" iA
+snippet xx "LaTeX cross" i
 \times
 endsnippet
 
-snippet tf "LaTeX therefore symbol" iA
+snippet tf "LaTeX therefore symbol" i
 \therefore
 endsnippet
 
-snippet bc "LaTeX because symbol" iA
+snippet bc "LaTeX because symbol" i
 \because
 endsnippet
 
-snippet to "to" iA
+snippet to "to" i
 \to
 endsnippet
 
-snippet mto "mapsto" iA
+snippet mto "mapsto" i
 \mapsto
 endsnippet
 
-snippet c. "LaTeX cdot" iA
+snippet c. "LaTeX cdot" i
 \cdot
 endsnippet
 
-snippet .c "LaTeX center dots" iA
+snippet .c "LaTeX center dots" i
 \cdots
 endsnippet
 
-snippet .l "LaTeX lower dots" iA
+snippet .l "LaTeX lower dots" i
 \ldots
 endsnippet
 
-snippet .v "LaTeX vertical dots" iA
+snippet .v "LaTeX vertical dots" i
 \vdots
 endsnippet
 
-snippet .d "LaTeX diagonal dots" iA
+snippet .d "LaTeX diagonal dots" i
 \ddots
 endsnippet
 
@@ -1492,19 +1492,19 @@ snippet '' "LaTeX double prime" i
 ^{\prime \prime}
 endsnippet
 
-snippet vec "LaTeX vector" iA
+snippet vec "LaTeX vector" i
 \vec{${1:${VISUAL}}}$0
 endsnippet
 
-snippet 'det' "LaTeX determinant" iA
+snippet 'det' "LaTeX determinant" i
 \det $0
 endsnippet
 
-snippet mag "LaTeX vector's magnitude" iA
+snippet mag "LaTeX vector's magnitude" i
 \\|${1:${VISUAL}}\\|$0
 endsnippet
 
-snippet hat "LaTeX hat" iA
+snippet hat "LaTeX hat" i
 \hat{${1:${VISUAL}}}$0
 endsnippet
 
@@ -1520,7 +1520,7 @@ snippet n| "LaTeX not mid sign" i
 \nmid
 endsnippet
 
-snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "LaTeX trig functions" wrA
+snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "LaTeX trig functions" wr
 `!p
 # Constants
 mult = "" if match.group(1) == None else match.group(1)
@@ -1636,7 +1636,7 @@ endsnippet
 # Symbols (Logic)
 # ============================================================
 
-snippet '(?<=[a-zA-Z0-9])cir' "LaTeX auto degrees symbol" irA
+snippet '(?<=[a-zA-Z0-9])cir' "LaTeX auto degrees symbol" ir
 ^{\circ}
 endsnippet
 
@@ -1644,18 +1644,18 @@ snippet cir "LaTeX degrees symbol" i
 \circ
 endsnippet
 
-snippet vv "Latex intersection symbol" iA
+snippet vv "Latex intersection symbol" i
 \cap
 endsnippet
 
-snippet uu "Latex union symbol" iA
+snippet uu "Latex union symbol" i
 \cup
 endsnippet
 
 # Symbols (Misc)
 # ============================================================
 
-snippet '(\+-|-\+)' "LaTeX plus minus sign" irA
+snippet '(\+-|-\+)' "LaTeX plus minus sign" ir
 \pm
 endsnippet
 
@@ -1893,35 +1893,35 @@ snippet scrs "LaTeX Script mode" i
 {\scriptstyle ${1:${VISUAL}}}$0
 endsnippet
 
-snippet xtt "LaTeX text" iA
+snippet xtt "LaTeX text" i
 \text{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xtbo "LaTeX text bold" iA
+snippet xtbo "LaTeX text bold" i
 \textbf{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xtit "LaTeX text italic" iA
+snippet xtit "LaTeX text italic" i
 \textit{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xsbo "LaTeX symbol bold" iA
+snippet xsbo "LaTeX symbol bold" i
 \boldsymbol{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xmbo "LaTeX math bold" iA
+snippet xmbo "LaTeX math bold" i
 \mathbf{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xmit "LaTeX math italic" iA
+snippet xmit "LaTeX math italic" i
 \mathit{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xmca "LaTeX mathcal" iA
+snippet xmca "LaTeX mathcal" i
 \mathcal{$1}$0
 endsnippet
 
-snippet xmbb "LaTeX mathbb" iA
+snippet xmbb "LaTeX mathbb" i
 \mathbb{$1}$0
 endsnippet
 
@@ -1933,11 +1933,11 @@ snippet npha "LaTeX negative phantom placeholder" i
 \phantom{-}$0
 endsnippet
 
-snippet xsol "LaTeX overline" iA
+snippet xsol "LaTeX overline" i
 \overline{${1:${VISUAL}}}$0
 endsnippet
 
-snippet xsul "LaTeX underline" iA
+snippet xsul "LaTeX underline" i
 \underline{${1:${VISUAL}}}$0
 endsnippet
 
@@ -1953,33 +1953,33 @@ snippet coc "Cancel out with color" w
 {\color{#${1:ff0000}}{\cancel{{\color{#${1:000000}}{${3:${VISUAL}}}}}}}$0
 endsnippet
 
-snippet nl "LaTeX empty line" bA
+snippet nl "LaTeX empty line" b
 ~\\\\
 endsnippet
 
-snippet begin "LaTeX begin function" bA
+snippet begin "LaTeX begin function" b
 \begin{$1}
 	${0:${VISUAL}}
 \end{$1}
 endsnippet
 
-snippet bmat "LaTeX in-line brackets matrix" wbA
+snippet bmat "LaTeX in-line brackets matrix" wb
 \begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
 endsnippet
 
-snippet Bmat "LaTeX in-line curly braces matrix" wbA
+snippet Bmat "LaTeX in-line curly braces matrix" wb
 \begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
 endsnippet
 
-snippet pmat "LaTeX in-line parenthesis matrix" wbA
+snippet pmat "LaTeX in-line parenthesis matrix" wb
 \begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
 endsnippet
 
-snippet vmat "LaTeX in-line determinant matrix" wbA
+snippet vmat "LaTeX in-line determinant matrix" wb
 \begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
 endsnippet
 
-snippet Vmat "LaTeX in-line double absolute values matrix" wbA
+snippet Vmat "LaTeX in-line double absolute values matrix" wb
 \begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
 endsnippet
 
@@ -1988,7 +1988,7 @@ endsnippet
 #   &*[column*row] \\
 # \end{array}
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+),(\d+)ar' "LaTeX array" rbA
+snippet '(\d+),(\d+)ar' "LaTeX array" rb
 \begin{array}{`!p
 orient = ""
 for _ in range(0, int(match.group(1))): orient += "l"
@@ -2004,7 +2004,7 @@ endsnippet
 #   &= \\ *[#columng]
 # \end{array}
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)eq' "LaTeX block align equations" rbA
+snippet '(\d+)eq' "LaTeX block align equations" rb
 \begin{aligned}
 `!p
 snip.rv = create_matrix(2, match.group(1), " &= ","\t", " \\\\\\\\\n")
@@ -2017,7 +2017,7 @@ endsnippet
 #   , & , \\ *[#column]
 # \end{array}
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)pw' "LaTeX piecewise" rbA
+snippet '(\d+)pw' "LaTeX piecewise" rb
 \left\\\\{\begin{array}{ll}
 `!p
 snip.rv = create_matrix(2, match.group(1), ", & ","\t", " \\\\\\\\\n")
@@ -2133,7 +2133,7 @@ endsnippet
 #   item*[number]
 # \end{itemiz}
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)item' "LaTeX itemize" brA
+snippet '(\d+)item' "LaTeX itemize" br
 \begin{itemize}
 `!p
 res = "\t\\item $1"
@@ -2150,7 +2150,7 @@ endsnippet
 #   item*[number]
 # \end{enumerate}
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)enum' "LaTeX enumerate" brA
+snippet '(\d+)enum' "LaTeX enumerate" br
 \begin{enumerate}
 `!p
 res = "\t\\item $1"
@@ -2167,7 +2167,7 @@ endsnippet
 #   item*[number]
 # \end{description}
 post_jump "create_matrix_placeholders(snip)"
-snippet '(\d+)desc' "LaTeX description" brA
+snippet '(\d+)desc' "LaTeX description" br
 \begin{description}
 `!p
 res = "\t\\item $1"
@@ -2181,79 +2181,79 @@ endsnippet
 # Brackets
 # ============================================================
 
-snippet bg) "LaTeX big parenthesis" iA
+snippet bg) "LaTeX big parenthesis" i
 \bigl( ${1:${VISUAL}} \bigr)$0
 endsnippet
 
-snippet Bg) "LaTeX very big parenthesis" iA
+snippet Bg) "LaTeX very big parenthesis" i
 \Bigl( ${1:${VISUAL}} \Bigr)$0
 endsnippet
 
-snippet bg] "LaTeX big brackets" iA
+snippet bg] "LaTeX big brackets" i
 \bigl[ ${1:${VISUAL}} \bigr]$0
 endsnippet
 
-snippet Bg] "LaTeX big brackets" iA
+snippet Bg] "LaTeX big brackets" i
 \Bigl[ ${1:${VISUAL}} \Bigr]$0
 endsnippet
 
-snippet bg} "LaTeX very big braces" iA
+snippet bg} "LaTeX very big braces" i
 \bigl\\{ ${1:${VISUAL}} \bigr\\}$0
 endsnippet
 
-snippet Bg} "LaTeX very big braces" iA
+snippet Bg} "LaTeX very big braces" i
 \Bigl\\{ ${1:${VISUAL}} \Bigr\\}$0
 endsnippet
 
-snippet bg| "LaTeX big pipe" iA
+snippet bg| "LaTeX big pipe" i
 \bigl| ${1:${VISUAL}} \bigr|$0
 endsnippet
 
-snippet Bg| "LaTeX very big pipe" iA
+snippet Bg| "LaTeX very big pipe" i
 \Bigl| ${1:${VISUAL}} \Bigr|$0
 endsnippet
 
-snippet bg\| "LaTeX big double pipe" iA
+snippet bg\| "LaTeX big double pipe" i
 \bigl\\| ${1:${VISUAL}} \bigr\\|$0
 endsnippet
 
-snippet Bg\| "LaTeX very big double pipe" iA
+snippet Bg\| "LaTeX very big double pipe" i
 \Bigl\\| ${1:${VISUAL}} \Bigr\\|$0
 endsnippet
 
-snippet lr) "LaTeX left right parenthesis" iA
+snippet lr) "LaTeX left right parenthesis" i
 \left( ${1:${VISUAL}} \right)$0
 endsnippet
 
-snippet lr] "LaTeX left right brackets" iA
+snippet lr] "LaTeX left right brackets" i
 \left[ ${1:${VISUAL}} \right]$0
 endsnippet
 
-snippet lr} "LaTeX left right braces" iA
+snippet lr} "LaTeX left right braces" i
 \left\\{ ${1:${VISUAL}} \right\\}$0
 endsnippet
 
-snippet lr| "LaTeX left right pipe" iA
+snippet lr| "LaTeX left right pipe" i
 \left| ${1:${VISUAL}} \right|$0
 endsnippet
 
-snippet lr\| "LaTeX left right double pipe" iA
+snippet lr\| "LaTeX left right double pipe" i
 \left\| ${1:${VISUAL}} \right\|$0
 endsnippet
 
-snippet lr> "LaTeX left right double pipe" iA
+snippet lr> "LaTeX left right double pipe" i
 \left< ${1:${VISUAL}} \right>$0
 endsnippet
 
-snippet lra "LaTeX angled brackets" iA
+snippet lra "LaTeX angled brackets" i
 \left\langle ${1:${VISUAL}} \right\rangle$0
 endsnippet
 
-snippet lrc "LaTeX left right ceiling" iA
+snippet lrc "LaTeX left right ceiling" i
 \left\lceil ${1:${VISUAL}} \right\rceil$0
 endsnippet
 
-snippet lrf "LaTeX left right floor" iA
+snippet lrf "LaTeX left right floor" i
 \left\lfloor ${1:${VISUAL}} \right\rfloor$0
 endsnippet
 
